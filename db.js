@@ -81,10 +81,11 @@ async function initSchema() {
     )
   `;
 
-  // Add study_level column if it doesn't exist (migration for existing tables)
-  await sql`
-    ALTER TABLE applications ADD COLUMN IF NOT EXISTS study_level VARCHAR(20)
-  `;
+  // Migrations for existing tables
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS study_level      VARCHAR(20)`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS mobility_stage   VARCHAR(30)`;
+  await sql`ALTER TABLE universities  ADD COLUMN IF NOT EXISTS agreement_file       TEXT`;
+  await sql`ALTER TABLE universities  ADD COLUMN IF NOT EXISTS agreement_file_name  VARCHAR(255)`;
 
   await sql`
     CREATE TABLE IF NOT EXISTS application_documents (

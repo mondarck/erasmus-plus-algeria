@@ -990,9 +990,9 @@ textarea.form-input { resize:vertical; min-height:100px; }
       <div class="sidebar-section">القائمة الرئيسية</div>
       <div class="sidebar-item active" onclick="switchView('student','v-overview',this)"><span class="icon">🏠</span> لوحة التحكم</div>
       <div class="sidebar-item" onclick="switchView('student','v-grants',this)"><span class="icon">🔍</span> المنح المتاحة</div>
-      <div class="sidebar-item" onclick="switchView('student','v-myapps',this)"><span class="icon">📄</span> طلباتي <span class="sidebar-badge">2</span></div>
+      <div class="sidebar-item" onclick="switchView('student','v-myapps',this)"><span class="icon">📄</span> طلباتي <span class="sidebar-badge" id="badge-myapps" style="display:none;">0</span></div>
       <div class="sidebar-item" onclick="switchView('student','v-profile',this)"><span class="icon">👤</span> ملفي الشخصي</div>
-      <div class="sidebar-item" onclick="switchView('student','v-notifs',this)"><span class="icon">🔔</span> الإشعارات <span class="sidebar-badge">3</span></div>
+      <div class="sidebar-item" onclick="switchView('student','v-notifs',this)"><span class="icon">🔔</span> الإشعارات <span class="sidebar-badge" id="badge-notifs" style="display:none;">0</span></div>
       <div class="sidebar-bottom">
         <div class="user-info">
           <div class="user-avatar">م.أ</div>
@@ -1049,9 +1049,9 @@ textarea.form-input { resize:vertical; min-height:100px; }
           <div class="page-header"><h2>📄 طلباتي</h2><p>تتبع حالة جميع طلباتك</p></div>
           <div class="card">
             <table class="data-table">
-              <thead><tr><th>المنحة</th><th>الجامعة</th><th>التاريخ</th><th>الحالة</th><th>ملاحظة المشرف</th><th>الملفات</th></tr></thead>
+              <thead><tr><th>المنحة</th><th>الجامعة</th><th>التاريخ</th><th>الحالة</th><th>مرحلة الحراك</th><th>ملاحظة المشرف</th><th>الملفات</th></tr></thead>
               <tbody id="student-myapps-body">
-                <tr><td colspan="6" style="text-align:center;color:var(--gray-mid);padding:30px;">لم تتقدم على أي منحة بعد</td></tr>
+                <tr><td colspan="7" style="text-align:center;color:var(--gray-mid);padding:30px;">لم تتقدم على أي منحة بعد</td></tr>
               </tbody>
             </table>
           </div>
@@ -1087,9 +1087,11 @@ textarea.form-input { resize:vertical; min-height:100px; }
         <div class="dash-view" id="student-v-notifs">
           <div class="page-header"><h2>🔔 الإشعارات</h2></div>
           <div class="card">
-            <div style="text-align:center;color:var(--gray-mid);padding:40px 20px;">
-              <div style="font-size:2rem;margin-bottom:10px;">🔔</div>
-              <div>لا توجد إشعارات حالياً</div>
+            <div id="notifs-body">
+              <div style="text-align:center;color:var(--gray-mid);padding:40px 20px;">
+                <div style="font-size:2rem;margin-bottom:10px;">🔔</div>
+                <div>لا توجد إشعارات حالياً</div>
+              </div>
             </div>
           </div>
         </div>
@@ -1155,7 +1157,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
       <div class="sidebar-section">الإدارة</div>
       <div class="sidebar-item active" onclick="switchView('admin','v-dashboard',this)"><span class="icon">📊</span> لوحة التحكم</div>
       <div class="sidebar-item" onclick="switchView('admin','v-grants',this)"><span class="icon">🎓</span> المنح</div>
-      <div class="sidebar-item" onclick="switchView('admin','v-applications',this)"><span class="icon">📋</span> الطلبات <span class="sidebar-badge">12</span></div>
+      <div class="sidebar-item" onclick="switchView('admin','v-applications',this)"><span class="icon">📋</span> الطلبات <span class="sidebar-badge" id="badge-admin-apps" style="display:none;">0</span></div>
       <div class="sidebar-item" onclick="switchView('admin','v-universities',this)"><span class="icon">🏛️</span> الجامعات</div>
       <div class="sidebar-item" onclick="switchView('admin','v-reports',this)"><span class="icon">📈</span> التقارير</div>
       <div id="superadmin-menu" style="display:none;">
@@ -1214,7 +1216,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
           </div>
           <div class="card">
             <table class="data-table">
-              <thead><tr><th>عنوان المنحة</th><th>الجامعة</th><th>المناصب</th><th>التقديم</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+              <thead><tr><th>عنوان المنحة</th><th>الجامعة</th><th>المناصب</th><th>الطلبات / المقبولون</th><th>التقديم</th><th>الحالة</th><th>إجراءات</th></tr></thead>
               <tbody id="admin-grants-table"></tbody>
             </table>
           </div>
@@ -1224,9 +1226,17 @@ textarea.form-input { resize:vertical; min-height:100px; }
         <div class="dash-view" id="admin-v-applications">
           <div class="page-header"><h2>📋 إدارة الطلبات</h2><p>مراجعة وتغيير حالة الطلبات</p></div>
           <div class="filter-bar">
-            <input class="filter-input" placeholder="🔍 بحث بالاسم..." style="flex:1;">
-            <select class="filter-select"><option>كل الحالات</option><option>قيد المراجعة</option><option>مقبول</option><option>مرفوض</option><option>قائمة انتظار</option></select>
-            <select class="filter-select"><option>كل المنح</option><option>برشلونة</option><option>روما</option><option>باريس</option></select>
+            <input class="filter-input" id="apps-filter-search" placeholder="🔍 بحث بالاسم أو البريد..." style="flex:1;" oninput="filterAdminApps()">
+            <select class="filter-select" id="apps-filter-status" onchange="filterAdminApps()">
+              <option value="">كل الحالات</option>
+              <option value="pending">قيد الانتظار</option>
+              <option value="review">قيد المراجعة</option>
+              <option value="accepted">مقبول</option>
+              <option value="rejected">مرفوض</option>
+            </select>
+            <select class="filter-select" id="apps-filter-grant" onchange="filterAdminApps()">
+              <option value="">كل المنح</option>
+            </select>
           </div>
           <div class="card">
             <table class="data-table">
@@ -1299,7 +1309,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
           </div>
           <div class="card">
             <table class="data-table">
-              <thead><tr><th>الجامعة</th><th>الدولة</th><th>جهة الاتصال</th><th>الاتفاقية</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+              <thead><tr><th>الجامعة</th><th>الدولة</th><th>جهة الاتصال</th><th>الاتفاقية</th><th>ملف</th><th>الحالة</th><th>إجراءات</th></tr></thead>
               <tbody id="unis-table-body">
                 <tr><td colspan="6" style="text-align:center;color:var(--gray-mid);padding:24px;">جاري التحميل...</td></tr>
               </tbody>
@@ -1508,7 +1518,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
 <!-- University Modal -->
 <div class="modal-overlay" id="uni-modal">
   <div class="modal">
-    <div class="modal-title">🏛️ إضافة جامعة شريكة</div>
+    <div class="modal-title" id="uni-modal-title">🏛️ إضافة جامعة شريكة</div>
     <div class="form-group"><label class="form-label-dark">اسم الجامعة</label><input id="uni-name" class="form-input-white" placeholder="University of..."></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
       <div class="form-group"><label class="form-label-dark">الدولة</label><input id="uni-country" class="form-input-white" placeholder="إسبانيا"></div>
@@ -1523,9 +1533,22 @@ textarea.form-input { resize:vertical; min-height:100px; }
       <div class="form-group"><label class="form-label-dark">بداية الاتفاقية</label><input id="uni-start" class="form-input-white" type="date"></div>
       <div class="form-group"><label class="form-label-dark">نهاية الاتفاقية</label><input id="uni-end" class="form-input-white" type="date"></div>
     </div>
+    <div class="form-group">
+      <label class="form-label-dark">📄 ملف الاتفاقية (PDF)</label>
+      <div class="upload-row" style="margin-top:6px;">
+        <label for="uni-agreement-file" style="flex:1;color:var(--gray-text);font-size:0.88rem;">
+          <span class="file-none" id="uni-agreement-label">لم يتم اختيار ملف</span>
+        </label>
+        <input type="file" id="uni-agreement-file" accept=".pdf" onchange="updateFileLabel(this,'uni-agreement-label')">
+        <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('uni-agreement-file').click()">اختيار PDF</button>
+      </div>
+      <div id="uni-existing-agreement" style="margin-top:6px;font-size:0.82rem;color:var(--green);display:none;">
+        ✅ يوجد ملف اتفاقية مرفوع — اختر ملفاً جديداً للاستبدال
+      </div>
+    </div>
     <div class="modal-footer">
       <button class="action-btn ghost" onclick="closeModal('uni-modal')">إلغاء</button>
-      <button class="action-btn gold-btn" onclick="addUniversity()">✅ إضافة</button>
+      <button class="action-btn gold-btn" id="uni-submit-btn" onclick="saveUniversity()">✅ إضافة</button>
     </div>
   </div>
 </div>
@@ -1594,7 +1617,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
       <div id="rv-documents" style="display:flex;flex-direction:column;gap:8px;margin-top:8px;"></div></div>
     <div style="border-top:1px solid var(--gray-light);padding-top:14px;margin-top:4px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
       <div class="form-group"><label class="form-label-dark">القرار</label>
-        <select id="rv-status" class="form-input-white">
+        <select id="rv-status" class="form-input-white" onchange="toggleMobilitySection()">
           <option value="pending">قيد الانتظار</option>
           <option value="review">قيد المراجعة</option>
           <option value="accepted">✅ مقبول</option>
@@ -1602,6 +1625,19 @@ textarea.form-input { resize:vertical; min-height:100px; }
         </select></div>
       <div class="form-group"><label class="form-label-dark">ملاحظة للمتقدم</label>
         <textarea id="rv-note" class="form-input-white" style="min-height:60px;" placeholder="ملاحظة اختيارية..."></textarea></div>
+    </div>
+    <!-- Mobility tracking section — visible only when status = accepted -->
+    <div id="rv-mobility-section" style="display:none;margin-top:10px;background:#e8f7ef;border-radius:10px;padding:12px;">
+      <div style="font-weight:700;font-size:0.88rem;color:var(--blue-deep);margin-bottom:8px;">🗺️ مرحلة الحراك الأكاديمي</div>
+      <select id="rv-mobility-stage" class="form-input-white">
+        <option value="la_pending">📝 إعداد Learning Agreement</option>
+        <option value="la_approved">✅ تمت الموافقة على LA</option>
+        <option value="departed">✈️ المتقدم غادر للخارج</option>
+        <option value="abroad">🌍 في الخارج حالياً</option>
+        <option value="returned">🏠 عاد من الحراك</option>
+        <option value="complete">🎓 انتهت الحراكية بنجاح</option>
+      </select>
+      <button class="action-btn primary" style="margin-top:8px;width:100%;" onclick="saveMobilityStage()">🔄 تحديث مرحلة الحراك</button>
     </div>
     <div class="modal-footer">
       <button class="action-btn ghost" onclick="closeModal('review-modal')">إغلاق</button>
@@ -1702,6 +1738,7 @@ function makeGrantCard(g, clickFn, showPositions = false) {
     <div class="grant-meta">
       <span>🗓️ الإغلاق: <strong class="grant-deadline">${formatDeadline(g.deadline)}</strong></span>
       ${showPositions ? `<span>👥 <span class="grant-positions">${g.positions ?? 0} مناصب</span></span>` : ''}
+      ${(g.positions_remaining !== undefined && g.positions > 0) ? `<span style="color:#4de89a;font-size:0.82rem;">✅ متبقي: ${g.positions_remaining}</span>` : ''}
     </div>
   </div>`;
 }
@@ -1765,10 +1802,21 @@ async function renderAdminGrantsTable() {
     const publishBtn = isDraft
       ? `<button class="action-btn primary" onclick="toggleGrantStatus(${g.id},'active')">🚀 نشر</button>`
       : `<button class="action-btn ghost"   onclick="toggleGrantStatus(${g.id},'draft')">⏸ إيقاف</button>`;
+    const posTotal    = parseInt(g.positions) || 0;
+    const posAccepted = parseInt(g.accepted_count) || 0;
+    const posRemain   = parseInt(g.positions_remaining) ?? (posTotal - posAccepted);
+    const appsCount   = parseInt(g.applications_count) || 0;
     return `<tr>
       <td><strong>${g.title}</strong></td>
       <td>${g.university_name || '—'}</td>
-      <td>${g.positions ?? 0}</td>
+      <td>
+        <span title="إجمالي المناصب">${posTotal}</span>
+        <small style="color:var(--green);display:block;">متبقي: ${posRemain}</small>
+      </td>
+      <td>
+        <span style="color:var(--gold);">${appsCount} طلب</span>
+        <small style="color:var(--green);display:block;">مقبول: ${posAccepted}</small>
+      </td>
       <td>${formatDeadline(g.deadline)}</td>
       <td>${statusHtml}</td>
       <td style="display:flex;gap:6px;flex-wrap:wrap;">
@@ -1894,14 +1942,55 @@ async function loadStudentDashboard() {
     if (el('s-kpi-accepted')) el('s-kpi-accepted').textContent = apps.filter(a => a.status === 'accepted').length;
     if (el('s-kpi-review'))   el('s-kpi-review').textContent   = apps.filter(a => a.status === 'review' || a.status === 'pending').length;
 
+    // Update sidebar badges with real numbers
+    const badgeMyapps = el('badge-myapps');
+    if (badgeMyapps) {
+      badgeMyapps.textContent = apps.length;
+      badgeMyapps.style.display = apps.length > 0 ? '' : 'none';
+    }
+    const appsWithNotes = apps.filter(a => a.admin_note);
+    const badgeNotifs = el('badge-notifs');
+    if (badgeNotifs) {
+      badgeNotifs.textContent = appsWithNotes.length;
+      badgeNotifs.style.display = appsWithNotes.length > 0 ? '' : 'none';
+    }
+
+    // Render notifications view
+    const notifsBody = el('notifs-body');
+    if (notifsBody) {
+      const MOBILITY_LABELS = {
+        la_pending:'📝 إعداد Learning Agreement', la_approved:'✅ تمت الموافقة على LA',
+        departed:'✈️ غادر للخارج', abroad:'🌍 في الخارج حالياً',
+        returned:'🏠 عاد من الحراك', complete:'🎓 انتهت الحراكية بنجاح'
+      };
+      const STATUS_LABELS = { pending:'قيد الانتظار', review:'قيد المراجعة', accepted:'مقبول', rejected:'مرفوض' };
+      const notifItems = apps.filter(a => a.admin_note || a.status === 'accepted' || a.status === 'rejected');
+      notifsBody.innerHTML = notifItems.length
+        ? notifItems.map(a => `
+            <div style="border-bottom:1px solid var(--gray-light);padding:14px 4px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <strong style="color:var(--blue-deep);font-size:0.9rem;">📋 ${a.grant_title}</strong>
+                <span class="status ${a.status==='accepted'?'status-accepted':a.status==='rejected'?'status-rejected':'status-review'}">${STATUS_LABELS[a.status]||a.status}</span>
+              </div>
+              ${a.admin_note ? `<div style="background:#fff3cd;color:#856404;border-radius:8px;padding:8px 12px;font-size:0.85rem;">💬 ${a.admin_note}</div>` : ''}
+              ${a.status==='accepted' && a.mobility_stage ? `<div style="background:#e8f7ef;color:var(--green);border-radius:8px;padding:8px 12px;font-size:0.85rem;margin-top:6px;">🗺️ ${MOBILITY_LABELS[a.mobility_stage]||a.mobility_stage}</div>` : ''}
+            </div>`).join('')
+        : '<div style="text-align:center;color:var(--gray-mid);padding:40px 20px;"><div style="font-size:2rem;margin-bottom:10px;">🔔</div><div>لا توجد إشعارات حالياً</div></div>';
+    }
+
     const STATUS = {
       pending:  ['status-review',   'قيد الانتظار'],
       review:   ['status-review',   'قيد المراجعة'],
       accepted: ['status-accepted', 'مقبول'],
       rejected: ['status-rejected', 'مرفوض'],
     };
+    const MOBILITY_LABELS_S = {
+      la_pending:'📝 إعداد LA', la_approved:'✅ LA موافق',
+      departed:'✈️ غادر', abroad:'🌍 في الخارج',
+      returned:'🏠 عاد', complete:'🎓 مكتمل'
+    };
     const empty4 = '<tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:24px;">لا توجد طلبات بعد</td></tr>';
-    const empty5 = '<tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;">لم تتقدم على أي منحة بعد</td></tr>';
+    const empty5 = '<tr><td colspan="7" style="text-align:center;color:var(--gray-mid);padding:30px;">لم تتقدم على أي منحة بعد</td></tr>';
 
     const recentBody = el('student-recent-apps');
     const myappsBody = el('student-myapps-body');
@@ -1924,11 +2013,15 @@ async function loadStudentDashboard() {
         const noteHtml = a.admin_note
           ? `<span style="display:inline-block;background:#fff3cd;color:#856404;border-radius:6px;padding:3px 8px;font-size:0.8rem;max-width:200px;white-space:normal;">💬 ${a.admin_note}</span>`
           : '<span style="color:var(--gray-mid);font-size:0.8rem;">—</span>';
+        const mobilityHtml = (a.status === 'accepted' && a.mobility_stage)
+          ? `<span style="display:inline-block;background:#e8f7ef;color:var(--green);border-radius:6px;padding:3px 8px;font-size:0.78rem;">${MOBILITY_LABELS_S[a.mobility_stage]||a.mobility_stage}</span>`
+          : (a.status === 'accepted' ? '<span style="color:var(--gold);font-size:0.78rem;">⏳ بانتظار الخطوة التالية</span>' : '<span style="color:var(--gray-mid);font-size:0.78rem;">—</span>');
         return `<tr>
           <td><strong>${a.grant_title}</strong></td>
           <td>${a.university_name || '—'}</td>
           <td>${date}</td>
           <td><span class="status ${sc}">${sl}</span></td>
+          <td>${mobilityHtml}</td>
           <td>${noteHtml}</td>
           <td><button class="action-btn ghost" style="font-size:0.78rem;" onclick="openDocsModal(${a.id},'${a.grant_title.replace(/'/g,"\\'")}')">📁 الملفات</button></td>
         </tr>`;
@@ -1980,6 +2073,22 @@ async function loadAdminDashboard() {
     if (appsRes.ok) {
       allAdminApps = await appsRes.json();
       renderAdminAppsTable(allAdminApps);
+
+      // Update admin sidebar badge
+      const pendingCount = allAdminApps.filter(a => a.status === 'pending' || a.status === 'review').length;
+      const badgeAdmin = document.getElementById('badge-admin-apps');
+      if (badgeAdmin) {
+        badgeAdmin.textContent = pendingCount;
+        badgeAdmin.style.display = pendingCount > 0 ? '' : 'none';
+      }
+
+      // Populate grant filter dropdown
+      const grantSel = document.getElementById('apps-filter-grant');
+      if (grantSel) {
+        const grantTitles = [...new Set(allAdminApps.map(a => a.grant_title).filter(Boolean))];
+        grantSel.innerHTML = '<option value="">كل المنح</option>' +
+          grantTitles.map(t => `<option value="${t}">${t}</option>`).join('');
+      }
     }
   } catch(e) { console.error(e); }
   // Also refresh admin grants table if visible
@@ -2013,6 +2122,20 @@ function renderAdminAppsTable(apps) {
   if (allBody)    allBody.innerHTML    = apps.length ? apps.map(makeRow).join('')           : empty;
 }
 
+function filterAdminApps() {
+  const search  = (document.getElementById('apps-filter-search')?.value || '').trim().toLowerCase();
+  const status  = document.getElementById('apps-filter-status')?.value  || '';
+  const grant   = document.getElementById('apps-filter-grant')?.value   || '';
+  const filtered = allAdminApps.filter(a => {
+    const matchSearch = !search || (a.student_name  || '').toLowerCase().includes(search)
+                                || (a.student_email || '').toLowerCase().includes(search);
+    const matchStatus = !status || a.status === status;
+    const matchGrant  = !grant  || a.grant_title === grant;
+    return matchSearch && matchStatus && matchGrant;
+  });
+  renderAdminAppsTable(filtered);
+}
+
 // ========== ADMIN REVIEW MODAL ==========
 let currentReviewAppId = null;
 
@@ -2035,6 +2158,14 @@ async function openReviewModal(appId) {
   el('rv-status').value                = app.status;
   el('rv-note').value                  = app.admin_note  || '';
 
+  // Mobility section — show only for accepted
+  const mobSection = el('rv-mobility-section');
+  if (mobSection) {
+    mobSection.style.display = app.status === 'accepted' ? '' : 'none';
+    const mobSel = el('rv-mobility-stage');
+    if (mobSel && app.mobility_stage) mobSel.value = app.mobility_stage;
+  }
+
   const docsDiv = el('rv-documents');
   docsDiv.innerHTML = '<div style="color:var(--gray-mid);font-size:0.85rem;">جاري تحميل الوثائق...</div>';
   try {
@@ -2052,6 +2183,29 @@ async function openReviewModal(appId) {
   } catch(e) { docsDiv.innerHTML = '<div style="color:var(--gray-mid);">خطأ في تحميل الوثائق</div>'; }
 
   document.getElementById('review-modal').classList.add('open');
+}
+
+function toggleMobilitySection() {
+  const status = document.getElementById('rv-status')?.value;
+  const mobSection = document.getElementById('rv-mobility-section');
+  if (mobSection) mobSection.style.display = status === 'accepted' ? '' : 'none';
+}
+
+async function saveMobilityStage() {
+  const mobility_stage = document.getElementById('rv-mobility-stage')?.value;
+  if (!mobility_stage || !currentReviewAppId) return;
+  try {
+    const res = await fetch(`/api/applications/${currentReviewAppId}/mobility`, {
+      method: 'PATCH', headers: authHeader(),
+      body: JSON.stringify({ mobility_stage }),
+    });
+    const data = await res.json();
+    if (!res.ok) { alert(data.error || 'خطأ في تحديث مرحلة الحراك'); return; }
+    // Update local cache
+    const idx = allAdminApps.findIndex(a => a.id === currentReviewAppId);
+    if (idx !== -1) allAdminApps[idx].mobility_stage = mobility_stage;
+    alert('✅ تم تحديث مرحلة الحراك بنجاح');
+  } catch { alert('تعذر الاتصال بالخادم'); }
 }
 
 async function saveReview() {
@@ -2379,7 +2533,7 @@ async function renderUniversities() {
   if (!tbody) return;
 
   if (!unis.length) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد جامعات مسجلة بعد</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد جامعات مسجلة بعد</td></tr>';
     return;
   }
 
@@ -2394,18 +2548,42 @@ async function renderUniversities() {
       else if (daysLeft < 90) statusHtml = '<span class="status status-wait">تنتهي قريباً</span>';
     }
 
+    const agreementBtn = u.agreement_file_name
+      ? `<button class="action-btn ghost" style="font-size:0.78rem;" onclick="downloadUniAgreement(${u.id},'${(u.agreement_file_name||'agreement.pdf').replace(/'/g,"\\'")}')">📄 الاتفاقية</button>`
+      : '<span style="color:var(--gray-mid);font-size:0.78rem;">لا يوجد ملف</span>';
+
     return `<tr>
       <td><strong>${u.name}</strong><br><small style="color:var(--gray-mid)">${u.city || ''}</small></td>
       <td>${u.country || '—'}</td>
       <td>${u.contact_name || '—'}<br><small style="color:var(--gray-mid)">${u.contact_email || ''}</small></td>
       <td>${start} → ${end}</td>
+      <td>${agreementBtn}</td>
       <td>${statusHtml}</td>
-      <td><button class="action-btn danger" onclick="deleteUniversity(${u.id})">حذف</button></td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="action-btn primary" onclick="openUniModal(${u.id})">تعديل</button>
+        <button class="action-btn danger" onclick="deleteUniversity(${u.id})">حذف</button>
+      </td>
     </tr>`;
   }).join('');
 }
 
-async function addUniversity() {
+async function downloadUniAgreement(uniId, fileName) {
+  try {
+    const res = await fetch(`/api/universities/${uniId}/agreement`, { headers: authHeader() });
+    if (!res.ok) { alert('تعذر تحميل ملف الاتفاقية'); return; }
+    const data = await res.json();
+    const link = document.createElement('a');
+    link.href = data.file_data;
+    link.download = data.file_name || fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch { alert('تعذر الاتصال بالخادم'); }
+}
+
+let currentUniEditId = null;
+
+async function saveUniversity() {
   const name            = document.getElementById('uni-name').value.trim();
   const country         = document.getElementById('uni-country').value.trim();
   const city            = document.getElementById('uni-city').value.trim();
@@ -2417,23 +2595,32 @@ async function addUniversity() {
 
   if (!name) { alert('يرجى إدخال اسم الجامعة'); return; }
 
+  // Read agreement file if selected
+  let agreement_file = null, agreement_file_name = null;
+  const fileInput = document.getElementById('uni-agreement-file');
+  if (fileInput && fileInput.files && fileInput.files[0]) {
+    const file = fileInput.files[0];
+    agreement_file_name = file.name;
+    agreement_file = await readFileAsBase64(file);
+  }
+
+  const payload = { name, country, city, contact_name, contact_email, contact_phone, agreement_start, agreement_end };
+  if (agreement_file) { payload.agreement_file = agreement_file; payload.agreement_file_name = agreement_file_name; }
+
   try {
-    const res  = await fetch('/api/universities', {
-      method: 'POST',
+    const isEdit = currentUniEditId !== null;
+    const res = await fetch(isEdit ? `/api/universities/${currentUniEditId}` : '/api/universities', {
+      method: isEdit ? 'PUT' : 'POST',
       headers: authHeader(),
-      body: JSON.stringify({ name, country, city, contact_name, contact_email, contact_phone, agreement_start, agreement_end }),
+      body: JSON.stringify(payload),
     });
     const data = await res.json();
-    if (!res.ok) { alert(data.error || 'خطأ في إضافة الجامعة'); return; }
-
-    // Reset form fields
-    ['uni-name','uni-country','uni-city','uni-contact','uni-email','uni-phone','uni-start','uni-end']
-      .forEach(id => { document.getElementById(id).value = ''; });
+    if (!res.ok) { alert(data.error || (isEdit ? 'خطأ في تعديل الجامعة' : 'خطأ في إضافة الجامعة')); return; }
 
     closeModal('uni-modal');
-    cachedUniversities = null;   // force fresh fetch
+    cachedUniversities = null;
     await renderUniversities();
-    alert(`تم إضافة "${data.name}" بنجاح`);
+    alert(isEdit ? `✅ تم تعديل "${data.name}" بنجاح` : `✅ تم إضافة "${data.name}" بنجاح`);
   } catch { alert('تعذر الاتصال بالخادم'); }
 }
 
@@ -2574,7 +2761,42 @@ async function addAdmin() {
   } catch { alert('تعذر الاتصال بالخادم'); }
 }
 
-function openUniModal()   { document.getElementById('uni-modal').classList.add('open'); }
+function openUniModal(uniId) {
+  currentUniEditId = uniId || null;
+  const titleEl  = document.getElementById('uni-modal-title');
+  const submitEl = document.getElementById('uni-submit-btn');
+  const existingEl = document.getElementById('uni-existing-agreement');
+
+  // Reset form
+  ['uni-name','uni-country','uni-city','uni-contact','uni-email','uni-phone','uni-start','uni-end']
+    .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  const fileInput = document.getElementById('uni-agreement-file');
+  if (fileInput) fileInput.value = '';
+  const fileLbl = document.getElementById('uni-agreement-label');
+  if (fileLbl) { fileLbl.textContent = 'لم يتم اختيار ملف'; fileLbl.className = 'file-none'; }
+  if (existingEl) existingEl.style.display = 'none';
+
+  if (uniId) {
+    // Edit mode — pre-fill from cache
+    if (titleEl)  titleEl.textContent  = '🏛️ تعديل بيانات الجامعة';
+    if (submitEl) submitEl.textContent = '💾 حفظ التعديلات';
+    const u = (cachedUniversities || []).find(x => x.id === uniId);
+    if (u) {
+      const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+      set('uni-name', u.name); set('uni-country', u.country); set('uni-city', u.city);
+      set('uni-contact', u.contact_name); set('uni-email', u.contact_email); set('uni-phone', u.contact_phone);
+      if (u.agreement_start) set('uni-start', u.agreement_start.substring(0, 10));
+      if (u.agreement_end)   set('uni-end',   u.agreement_end.substring(0, 10));
+      if (u.agreement_file_name && existingEl) existingEl.style.display = '';
+    }
+  } else {
+    // Add mode
+    if (titleEl)  titleEl.textContent  = '🏛️ إضافة جامعة شريكة';
+    if (submitEl) submitEl.textContent = '✅ إضافة';
+  }
+
+  document.getElementById('uni-modal').classList.add('open');
+}
 function closeModal(id)   { document.getElementById(id).classList.remove('open'); }
 
 document.querySelectorAll('.modal-overlay').forEach(overlay => {

@@ -4,14 +4,19 @@ const { authMiddleware, requireRole } = require('../middleware/auth');
 
 const router = express.Router();
 
-// GET /api/grants  — public: all active grants with university info
+// GET /api/grants  — public: all active grants with university info + stats
 router.get('/', async (req, res) => {
   try {
     const grants = await sql`
-      SELECT g.*, u.name AS university_name, u.country, u.city
+      SELECT g.*, u.name AS university_name, u.country, u.city,
+             COUNT(a.id)                                        AS applications_count,
+             COUNT(a.id) FILTER (WHERE a.status = 'accepted')  AS accepted_count,
+             GREATEST(0, g.positions - COUNT(a.id) FILTER (WHERE a.status = 'accepted')) AS positions_remaining
       FROM   grants g
-      LEFT JOIN universities u ON g.university_id = u.id
+      LEFT JOIN universities u  ON g.university_id = u.id
+      LEFT JOIN applications  a ON a.grant_id = g.id
       WHERE  g.status = 'active'
+      GROUP BY g.id, u.name, u.country, u.city
       ORDER  BY g.created_at DESC
     `;
     res.json(grants);
@@ -21,13 +26,18 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET /api/grants/all  — admin: all grants regardless of status
+// GET /api/grants/all  — admin: all grants regardless of status, with stats
 router.get('/all', authMiddleware, requireRole('admin', 'superadmin'), async (req, res) => {
   try {
     const grants = await sql`
-      SELECT g.*, u.name AS university_name, u.country
+      SELECT g.*, u.name AS university_name, u.country,
+             COUNT(a.id)                                        AS applications_count,
+             COUNT(a.id) FILTER (WHERE a.status = 'accepted')  AS accepted_count,
+             GREATEST(0, g.positions - COUNT(a.id) FILTER (WHERE a.status = 'accepted')) AS positions_remaining
       FROM   grants g
-      LEFT JOIN universities u ON g.university_id = u.id
+      LEFT JOIN universities u  ON g.university_id = u.id
+      LEFT JOIN applications  a ON a.grant_id = g.id
+      GROUP BY g.id, u.name, u.country
       ORDER  BY g.created_at DESC
     `;
     res.json(grants);

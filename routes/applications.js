@@ -194,6 +194,29 @@ router.get('/doc/:docId', authMiddleware, async (req, res) => {
   }
 });
 
+// PATCH /api/applications/:id/mobility  — admin: update mobility stage for accepted applicants
+router.patch('/:id/mobility', authMiddleware, requireRole('admin', 'superadmin'), async (req, res) => {
+  const { mobility_stage } = req.body;
+  const allowed = ['la_pending', 'la_approved', 'departed', 'abroad', 'returned', 'complete'];
+  if (!allowed.includes(mobility_stage)) {
+    return res.status(400).json({ error: 'مرحلة غير صالحة' });
+  }
+  try {
+    const [app] = await sql`
+      UPDATE applications
+      SET mobility_stage = ${mobility_stage},
+          updated_at     = NOW()
+      WHERE id = ${req.params.id} AND status = 'accepted'
+      RETURNING *
+    `;
+    if (!app) return res.status(404).json({ error: 'الطلب غير موجود أو غير مقبول' });
+    res.json(app);
+  } catch (err) {
+    console.error('mobility update error:', err);
+    res.status(500).json({ error: 'خطأ في الخادم' });
+  }
+});
+
 // GET /api/applications/my/documents-status  — student: which docs uploaded per application
 router.get('/my/docs-status', authMiddleware, async (req, res) => {
   try {
