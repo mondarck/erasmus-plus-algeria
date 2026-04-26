@@ -780,6 +780,17 @@ textarea.form-input { resize:vertical; min-height:100px; }
 .upload-zone .upload-icon { font-size:2rem; margin-bottom:8px; }
 .upload-zone p { font-size:0.88rem; }
 
+/* File upload rows */
+.upload-row {
+  display:flex; align-items:center; justify-content:space-between;
+  background:var(--gray-light); border-radius:10px; padding:10px 14px;
+  gap:12px;
+}
+.upload-row label { cursor:pointer; display:flex; align-items:center; gap:10px; font-size:0.88rem; color:var(--blue-deep); flex:1; }
+.upload-row input[type=file] { display:none; }
+.upload-row .file-chosen { font-size:0.78rem; color:var(--green); margin-top:2px; }
+.upload-row .file-none    { font-size:0.78rem; color:var(--gray-mid); }
+
 /* Chart bar simple */
 .bar-chart { display:flex; flex-direction:column; gap:12px; }
 .bar-item { display:flex; align-items:center; gap:12px; }
@@ -1060,14 +1071,14 @@ textarea.form-input { resize:vertical; min-height:100px; }
               <div class="form-group"><label class="form-label-dark">البريد الإلكتروني</label><input id="profile-email" class="form-input-white" placeholder="البريد الإلكتروني" readonly></div>
               <div class="form-group"><label class="form-label-dark">رقم الهاتف</label><input id="profile-phone" class="form-input-white" placeholder="+213 XXX XXX XXX"></div>
               <div class="form-group"><label class="form-label-dark">الكلية</label><input id="profile-faculty" class="form-input-white" placeholder="الكلية / القسم"></div>
-              <button class="action-btn primary" style="margin-top:8px;" onclick="alert('تم حفظ التعديلات!')">💾 حفظ التعديلات</button>
+              <button class="action-btn primary" style="margin-top:8px;" onclick="saveProfile()">💾 حفظ التعديلات</button>
             </div>
             <div class="card">
               <div class="card-title">تغيير كلمة المرور</div>
-              <div class="form-group"><label class="form-label-dark">كلمة المرور الحالية</label><input type="password" class="form-input-white" placeholder="••••••••"></div>
-              <div class="form-group"><label class="form-label-dark">كلمة المرور الجديدة</label><input type="password" class="form-input-white" placeholder="••••••••"></div>
-              <div class="form-group"><label class="form-label-dark">تأكيد كلمة المرور الجديدة</label><input type="password" class="form-input-white" placeholder="••••••••"></div>
-              <button class="action-btn primary" onclick="alert('تم تغيير كلمة المرور!')">🔐 تغيير كلمة المرور</button>
+              <div class="form-group"><label class="form-label-dark">كلمة المرور الحالية</label><input type="password" id="profile-current-pass" class="form-input-white" placeholder="••••••••" autocomplete="current-password"></div>
+              <div class="form-group"><label class="form-label-dark">كلمة المرور الجديدة</label><input type="password" id="profile-new-pass" class="form-input-white" placeholder="••••••••" autocomplete="new-password"></div>
+              <div class="form-group"><label class="form-label-dark">تأكيد كلمة المرور الجديدة</label><input type="password" id="profile-confirm-pass" class="form-input-white" placeholder="••••••••" autocomplete="new-password"></div>
+              <button class="action-btn primary" onclick="changePassword()">🔐 تغيير كلمة المرور</button>
             </div>
           </div>
         </div>
@@ -1383,23 +1394,55 @@ textarea.form-input { resize:vertical; min-height:100px; }
       <label class="form-label-dark">الخبرات السابقة</label>
       <textarea id="apply-experience" class="form-input-white" style="min-height:70px;" placeholder="أي خبرات أو مشاريع بحثية سابقة..."></textarea>
     </div>
-    <div class="form-group">
-      <label class="form-label-dark">مستوى اللغة</label>
-      <select id="apply-language" class="form-input-white">
-        <option value="A1">A1 — مبتدئ</option><option value="A2">A2</option><option value="B1">B1</option><option value="B2">B2 — متوسط-متقدم</option><option value="C1">C1</option><option value="C2">C2 — متقدم</option>
-      </select>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="form-group">
+        <label class="form-label-dark">مستوى اللغة الإنجليزية</label>
+        <select id="apply-language" class="form-input-white">
+          <option value="A1">A1 — مبتدئ</option><option value="A2">A2</option><option value="B1">B1</option><option value="B2">B2 — متوسط-متقدم</option><option value="C1">C1</option><option value="C2">C2 — متقدم</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label-dark">المستوى الدراسي <span style="color:#e74c3c">*</span></label>
+        <select id="apply-study-level" class="form-input-white">
+          <option value="">— اختر المستوى —</option>
+          <option value="master2">ماستر 2</option>
+          <option value="doctorate">دكتوراه</option>
+        </select>
+      </div>
     </div>
     <div class="divider"></div>
     <div class="form-group">
-      <label class="form-label-dark">رفع الوثائق المطلوبة</label>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
-        <div class="upload-zone"><div class="upload-icon">📄</div><p>السيرة الذاتية (PDF)</p><small>اضغط للرفع أو اسحب الملف</small></div>
-        <div class="upload-zone"><div class="upload-icon">✉️</div><p>خطاب النية (PDF)</p></div>
+      <label class="form-label-dark">📁 الوثائق المطلوبة <small style="color:var(--gray-mid)">(PDF أو صورة)</small></label>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px;">
+        <div class="upload-row">
+          <label for="doc-transcripts">📊 <span>كشوف النقاط</span><br><span class="file-none" id="lbl-transcripts">لم يتم الاختيار بعد</span></label>
+          <input type="file" id="doc-transcripts" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileLabel(this,'lbl-transcripts')">
+          <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('doc-transcripts').click()">اختيار</button>
+        </div>
+        <div class="upload-row">
+          <label for="doc-language-cert">🌐 <span>شهادة مستوى اللغة الإنجليزية</span><br><span class="file-none" id="lbl-language-cert">لم يتم الاختيار بعد</span></label>
+          <input type="file" id="doc-language-cert" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileLabel(this,'lbl-language-cert')">
+          <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('doc-language-cert').click()">اختيار</button>
+        </div>
+        <div class="upload-row">
+          <label for="doc-thesis-plan">📝 <span>خطة عمل المذكرة</span><br><span class="file-none" id="lbl-thesis-plan">لم يتم الاختيار بعد</span></label>
+          <input type="file" id="doc-thesis-plan" accept=".pdf,.doc,.docx" onchange="updateFileLabel(this,'lbl-thesis-plan')">
+          <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('doc-thesis-plan').click()">اختيار</button>
+        </div>
+        <div class="upload-row">
+          <label for="doc-supervisor-auth">✅ <span>ترخيص من الأستاذ المشرف</span><br><span class="file-none" id="lbl-supervisor-auth">لم يتم الاختيار بعد</span></label>
+          <input type="file" id="doc-supervisor-auth" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileLabel(this,'lbl-supervisor-auth')">
+          <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('doc-supervisor-auth').click()">اختيار</button>
+        </div>
+        <div class="upload-row">
+          <label for="doc-invitation-letter">✉️ <span>رسالة دعوة من الجامعة المستقبلة</span><br><span class="file-none" id="lbl-invitation-letter">لم يتم الاختيار بعد</span></label>
+          <input type="file" id="doc-invitation-letter" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileLabel(this,'lbl-invitation-letter')">
+          <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('doc-invitation-letter').click()">اختيار</button>
+        </div>
       </div>
     </div>
     <div class="modal-footer">
       <button class="action-btn ghost" onclick="closeModal('apply-modal')">إلغاء</button>
-      <button class="action-btn ghost" onclick="alert('تم حفظ المسودة!')">حفظ مسودة</button>
       <button class="action-btn gold-btn" onclick="submitApplication()">إرسال الطلب ✅</button>
     </div>
   </div>
@@ -1487,6 +1530,43 @@ textarea.form-input { resize:vertical; min-height:100px; }
   </div>
 </div>
 
+<!-- Review Modal (Admin) -->
+<div class="modal-overlay" id="review-modal">
+  <div class="modal" style="max-width:680px;">
+    <div class="modal-title">📋 مراجعة الطلب</div>
+    <div style="background:var(--gray-light);border-radius:10px;padding:14px;margin-bottom:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div><div style="font-size:0.75rem;color:var(--gray-mid);">المتقدم</div><div id="rv-student-name" style="font-weight:700;color:var(--blue-deep);"></div></div>
+      <div><div style="font-size:0.75rem;color:var(--gray-mid);">البريد الإلكتروني</div><div id="rv-student-email" style="color:var(--blue-deep);font-size:0.9rem;"></div></div>
+      <div><div style="font-size:0.75rem;color:var(--gray-mid);">الكلية</div><div id="rv-student-faculty" style="color:var(--blue-deep);"></div></div>
+      <div><div style="font-size:0.75rem;color:var(--gray-mid);">المنحة</div><div id="rv-grant-title" style="font-weight:600;color:var(--blue-deep);font-size:0.9rem;"></div></div>
+      <div><div style="font-size:0.75rem;color:var(--gray-mid);">المستوى الدراسي</div><div id="rv-study-level" style="color:var(--blue-deep);"></div></div>
+      <div><div style="font-size:0.75rem;color:var(--gray-mid);">مستوى اللغة</div><div id="rv-language" style="color:var(--blue-deep);"></div></div>
+      <div><div style="font-size:0.75rem;color:var(--gray-mid);">تاريخ التقديم</div><div id="rv-date" style="color:var(--blue-deep);"></div></div>
+    </div>
+    <div class="form-group"><label class="form-label-dark">دافع التقديم</label>
+      <div id="rv-motivation" style="background:var(--gray-light);padding:10px 14px;border-radius:8px;color:var(--blue-deep);min-height:50px;font-size:0.88rem;white-space:pre-wrap;"></div></div>
+    <div class="form-group"><label class="form-label-dark">الخبرات السابقة</label>
+      <div id="rv-experience" style="background:var(--gray-light);padding:10px 14px;border-radius:8px;color:var(--blue-deep);min-height:36px;font-size:0.88rem;white-space:pre-wrap;"></div></div>
+    <div class="form-group"><label class="form-label-dark">📁 الوثائق المرفقة</label>
+      <div id="rv-documents" style="display:flex;flex-direction:column;gap:8px;margin-top:8px;"></div></div>
+    <div style="border-top:1px solid var(--gray-light);padding-top:14px;margin-top:4px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div class="form-group"><label class="form-label-dark">القرار</label>
+        <select id="rv-status" class="form-input-white">
+          <option value="pending">قيد الانتظار</option>
+          <option value="review">قيد المراجعة</option>
+          <option value="accepted">✅ مقبول</option>
+          <option value="rejected">❌ مرفوض</option>
+        </select></div>
+      <div class="form-group"><label class="form-label-dark">ملاحظة للمتقدم</label>
+        <textarea id="rv-note" class="form-input-white" style="min-height:60px;" placeholder="ملاحظة اختيارية..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="action-btn ghost" onclick="closeModal('review-modal')">إغلاق</button>
+      <button class="action-btn gold-btn" onclick="saveReview()">💾 حفظ القرار</button>
+    </div>
+  </div>
+</div>
+
 <!-- Admin Modal -->
 <div class="modal-overlay" id="admin-modal">
   <div class="modal">
@@ -1563,7 +1643,7 @@ function formatDeadline(d) {
   catch { return d; }
 }
 
-function makeGrantCard(g, clickFn) {
+function makeGrantCard(g, clickFn, showPositions = false) {
   const [badge, label] = TYPE_MAP[g.type] || ['badge-study', g.type || ''];
   const uni = g.university_name || g.uni || '';
   const country = g.country || '';
@@ -1573,7 +1653,7 @@ function makeGrantCard(g, clickFn) {
     <div class="grant-uni">🏛️ ${uni}${country ? ' — ' + country : ''}</div>
     <div class="grant-meta">
       <span>🗓️ الإغلاق: <strong class="grant-deadline">${formatDeadline(g.deadline)}</strong></span>
-      <span>👥 <span class="grant-positions">${g.positions ?? 0} مناصب</span></span>
+      ${showPositions ? `<span>👥 <span class="grant-positions">${g.positions ?? 0} مناصب</span></span>` : ''}
     </div>
   </div>`;
 }
@@ -1585,9 +1665,17 @@ async function fetchGrants() {
   try {
     const res = await fetch('/api/grants');
     if (res.ok) { cachedGrants = await res.json(); return cachedGrants; }
-  } catch (_) { /* server not running — use fallback */ }
-  cachedGrants = grantsDataFallback;
+  } catch (_) {}
+  cachedGrants = [];
   return cachedGrants;
+}
+
+async function fetchAllGrantsAdmin() {
+  try {
+    const res = await fetch('/api/grants/all', { headers: authHeader() });
+    if (res.ok) return await res.json();
+  } catch (_) {}
+  return [];
 }
 
 function populateApplySelect(grants) {
@@ -1603,25 +1691,58 @@ async function renderGrants() {
   const lg  = document.getElementById('landing-grants');
   const sg  = document.getElementById('student-quick-grants');
   const sag = document.getElementById('student-all-grants');
-  const agt = document.getElementById('admin-grants-table');
 
-  if (lg)  lg.innerHTML  = grants.map(g => makeGrantCard(g, "showPage('page-login')")).join('');
+  if (lg)  lg.innerHTML  = grants.length ? grants.map(g => makeGrantCard(g, "showPage('page-login')")).join('') : '<p style="color:var(--gray-mid);text-align:center;padding:20px;">لا توجد منح متاحة حالياً</p>';
   if (sg)  sg.innerHTML  = grants.slice(0, 3).map(g => makeGrantCard(g, `openApplyModal(${g.id})`)).join('');
-  if (sag) sag.innerHTML = grants.map(g => makeGrantCard(g, `openApplyModal(${g.id})`)).join('');
-  if (agt) agt.innerHTML = grants.map(g => `
-    <tr>
-      <td><strong>${g.title}</strong></td>
-      <td>${g.university_name || ''}</td>
-      <td><span class="grant-positions">${g.positions ?? 0} متاح</span></td>
-      <td>${formatDeadline(g.deadline)}</td>
-      <td><span class="status status-active">نشطة</span></td>
-      <td>
-        <button class="action-btn ghost"   onclick="openGrantModal()">تعديل</button>
-        <button class="action-btn danger"  onclick="deleteGrant(${g.id})">حذف</button>
-      </td>
-    </tr>`).join('');
+  if (sag) sag.innerHTML = grants.length ? grants.map(g => makeGrantCard(g, `openApplyModal(${g.id})`)).join('') : '<p style="color:var(--gray-mid);text-align:center;padding:30px;">لا توجد منح متاحة حالياً</p>';
 
   populateApplySelect(grants);
+}
+
+async function renderAdminGrantsTable() {
+  const agt = document.getElementById('admin-grants-table');
+  if (!agt) return;
+  const grants = await fetchAllGrantsAdmin();
+  if (!grants.length) {
+    agt.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد منح مسجلة</td></tr>';
+    return;
+  }
+  agt.innerHTML = grants.map(g => {
+    const isDraft  = g.status === 'draft';
+    const statusHtml = isDraft
+      ? '<span class="status" style="background:#f5e6bb;color:#c47a1e;">مسودة</span>'
+      : g.status === 'active'
+        ? '<span class="status status-active">منشورة</span>'
+        : '<span class="status status-rejected">مغلقة</span>';
+    const publishBtn = isDraft
+      ? `<button class="action-btn primary" onclick="toggleGrantStatus(${g.id},'active')">🚀 نشر</button>`
+      : `<button class="action-btn ghost"   onclick="toggleGrantStatus(${g.id},'draft')">⏸ إيقاف</button>`;
+    return `<tr>
+      <td><strong>${g.title}</strong></td>
+      <td>${g.university_name || '—'}</td>
+      <td>${g.positions ?? 0}</td>
+      <td>${formatDeadline(g.deadline)}</td>
+      <td>${statusHtml}</td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap;">
+        ${publishBtn}
+        <button class="action-btn danger" onclick="deleteGrant(${g.id})">حذف</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+async function toggleGrantStatus(id, status) {
+  try {
+    const res = await fetch(`/api/grants/${id}`, {
+      method: 'PUT',
+      headers: authHeader(),
+      body: JSON.stringify({ status }),
+    });
+    if (!res.ok) { const d = await res.json(); alert(d.error || 'خطأ'); return; }
+    cachedGrants = null;
+    await renderAdminGrantsTable();
+    await renderGrants();
+  } catch { alert('تعذر الاتصال بالخادم'); }
 }
 
 async function deleteGrant(id) {
@@ -1764,12 +1885,15 @@ async function loadStudentDashboard() {
 }
 
 // ========== ADMIN DASHBOARD LOADER ==========
+let allAdminApps = [];
+
 async function loadAdminDashboard() {
   try {
-    const [statsRes, appsRes, unisRes] = await Promise.all([
+    const [statsRes, appsRes, unisRes, allGrantsRes] = await Promise.all([
       fetch('/api/applications/stats', { headers: authHeader() }),
       fetch('/api/applications/all',   { headers: authHeader() }),
       fetch('/api/universities'),
+      fetch('/api/grants/all',         { headers: authHeader() }),
     ]);
     const el = id => document.getElementById(id);
 
@@ -1781,7 +1905,6 @@ async function loadAdminDashboard() {
       const pending  = parseInt(s.pending)  || 0;
       const review   = parseInt(s.review)   || 0;
 
-      if (el('a-kpi-grants'))      el('a-kpi-grants').textContent      = (cachedGrants || []).length;
       if (el('a-kpi-total'))       el('a-kpi-total').textContent       = total;
       if (el('a-kpi-accepted'))    el('a-kpi-accepted').textContent    = accepted;
       if (el('a-kpi-rejected'))    el('a-kpi-rejected').textContent    = rejected;
@@ -1790,37 +1913,121 @@ async function loadAdminDashboard() {
       if (el('r-kpi-processing'))  el('r-kpi-processing').textContent  = pending + review;
     }
 
+    if (allGrantsRes.ok) {
+      const allG = await allGrantsRes.json();
+      const activeCount = allG.filter(g => g.status === 'active').length;
+      if (el('a-kpi-grants')) el('a-kpi-grants').textContent = activeCount;
+    }
+
     if (unisRes.ok) {
       const unis = await unisRes.json();
       if (el('r-kpi-unis')) el('r-kpi-unis').textContent = unis.length;
     }
 
     if (appsRes.ok) {
-      const apps = await appsRes.json();
-      const STATUS = {
-        pending:  ['status-review',   'قيد الانتظار'],
-        review:   ['status-review',   'قيد المراجعة'],
-        accepted: ['status-accepted', 'مقبول'],
-        rejected: ['status-rejected', 'مرفوض'],
-      };
-      const empty = '<tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد طلبات بعد</td></tr>';
-      const makeRow = a => {
-        const [sc, sl] = STATUS[a.status] || ['status-review', a.status];
-        const date = new Date(a.created_at).toLocaleDateString('ar-DZ');
-        return `<tr>
-          <td><strong>${a.student_name}</strong><br><small style="color:var(--gray-mid)">${a.student_faculty||''}</small></td>
-          <td>${a.grant_title}</td>
-          <td>${date}</td>
-          <td><span class="status ${sc}">${sl}</span></td>
-          <td><button class="action-btn primary">مراجعة</button></td>
-        </tr>`;
-      };
-      const recentBody = el('admin-recent-apps');
-      const allBody    = el('admin-all-apps');
-      if (recentBody) recentBody.innerHTML = apps.length ? apps.slice(0,5).map(makeRow).join('') : empty;
-      if (allBody)    allBody.innerHTML    = apps.length ? apps.map(makeRow).join('')           : empty;
+      allAdminApps = await appsRes.json();
+      renderAdminAppsTable(allAdminApps);
     }
   } catch(e) { console.error(e); }
+  // Also refresh admin grants table if visible
+  renderAdminGrantsTable();
+}
+
+function renderAdminAppsTable(apps) {
+  const STATUS = {
+    pending:  ['status-review',   'قيد الانتظار'],
+    review:   ['status-review',   'قيد المراجعة'],
+    accepted: ['status-accepted', 'مقبول'],
+    rejected: ['status-rejected', 'مرفوض'],
+  };
+  const empty = '<tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد طلبات بعد</td></tr>';
+  const makeRow = a => {
+    const [sc, sl] = STATUS[a.status] || ['status-review', a.status];
+    const date = new Date(a.created_at).toLocaleDateString('ar-DZ');
+    const level = a.study_level === 'doctorate' ? 'دكتوراه' : a.study_level === 'master2' ? 'ماستر 2' : '';
+    return `<tr>
+      <td><strong>${a.student_name}</strong><br><small style="color:var(--gray-mid)">${a.student_faculty||''}${level ? ' · '+level : ''}</small></td>
+      <td>${a.grant_title}</td>
+      <td>${date}</td>
+      <td><span class="status ${sc}">${sl}</span></td>
+      <td><button class="action-btn primary" onclick="openReviewModal(${a.id})">مراجعة</button></td>
+    </tr>`;
+  };
+  const el = id => document.getElementById(id);
+  const recentBody = el('admin-recent-apps');
+  const allBody    = el('admin-all-apps');
+  if (recentBody) recentBody.innerHTML = apps.length ? apps.slice(0,5).map(makeRow).join('') : empty;
+  if (allBody)    allBody.innerHTML    = apps.length ? apps.map(makeRow).join('')           : empty;
+}
+
+// ========== ADMIN REVIEW MODAL ==========
+let currentReviewAppId = null;
+
+async function openReviewModal(appId) {
+  currentReviewAppId = appId;
+  const app = allAdminApps.find(a => a.id === appId);
+  if (!app) return;
+  const el = id => document.getElementById(id);
+  const LEVEL = { doctorate: 'دكتوراه', master2: 'ماستر 2' };
+  el('rv-student-name').textContent    = app.student_name    || '—';
+  el('rv-student-email').textContent   = app.student_email   || '—';
+  el('rv-student-faculty').textContent = app.student_faculty || '—';
+  el('rv-grant-title').textContent     = app.grant_title     || '—';
+  el('rv-study-level').textContent     = LEVEL[app.study_level] || '—';
+  el('rv-language').textContent        = app.language_level  || '—';
+  el('rv-date').textContent            = new Date(app.created_at).toLocaleDateString('ar-DZ');
+  el('rv-motivation').textContent      = app.motivation  || '—';
+  el('rv-experience').textContent      = app.experience  || '—';
+  el('rv-status').value                = app.status;
+  el('rv-note').value                  = app.admin_note  || '';
+
+  const docsDiv = el('rv-documents');
+  docsDiv.innerHTML = '<div style="color:var(--gray-mid);font-size:0.85rem;">جاري تحميل الوثائق...</div>';
+  try {
+    const res = await fetch(`/api/applications/${appId}/documents`, { headers: authHeader() });
+    if (res.ok) {
+      const docs = await res.json();
+      const LABELS = { transcripts:'كشوف النقاط', language_cert:'شهادة مستوى اللغة', thesis_plan:'خطة عمل المذكرة', supervisor_auth:'ترخيص الأستاذ المشرف', invitation_letter:'رسالة دعوة الجامعة' };
+      docsDiv.innerHTML = docs.length
+        ? docs.map(d => `<div style="display:flex;justify-content:space-between;align-items:center;background:var(--gray-light);padding:8px 12px;border-radius:8px;">
+            <span style="color:var(--blue-deep);font-size:0.88rem;">📄 ${LABELS[d.doc_type]||d.doc_type}<br><small style="color:var(--gray-mid);">${d.file_name}</small></span>
+            <button class="action-btn ghost" style="font-size:0.78rem;" onclick="downloadDoc(${d.id},'${d.file_name}')">⬇️ تحميل</button>
+          </div>`).join('')
+        : '<div style="color:var(--gray-mid);font-size:0.85rem;">لم يتم رفع أي وثائق</div>';
+    }
+  } catch(e) { docsDiv.innerHTML = '<div style="color:var(--gray-mid);">خطأ في تحميل الوثائق</div>'; }
+
+  document.getElementById('review-modal').classList.add('open');
+}
+
+async function saveReview() {
+  const status     = document.getElementById('rv-status')?.value;
+  const admin_note = document.getElementById('rv-note')?.value.trim();
+  try {
+    const res = await fetch(`/api/applications/${currentReviewAppId}/status`, {
+      method: 'PATCH', headers: authHeader(),
+      body: JSON.stringify({ status, admin_note }),
+    });
+    const data = await res.json();
+    if (!res.ok) { alert(data.error || 'خطأ في حفظ القرار'); return; }
+    closeModal('review-modal');
+    await loadAdminDashboard();
+    alert('✅ تم حفظ القرار بنجاح');
+  } catch { alert('تعذر الاتصال بالخادم'); }
+}
+
+async function downloadDoc(docId, fileName) {
+  try {
+    const res = await fetch(`/api/applications/doc/${docId}`, { headers: authHeader() });
+    if (!res.ok) { alert('تعذر تحميل الملف'); return; }
+    const data = await res.json();
+    const link = document.createElement('a');
+    link.href = data.file_data;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch { alert('تعذر الاتصال بالخادم'); }
 }
 
 // ========== ADMIN USERS LOADER ==========
@@ -1905,12 +2112,58 @@ async function doRegister() {
   } catch { alert('تعذر الاتصال بالخادم'); }
 }
 
+// ========== FILE UPLOAD HELPERS ==========
+function updateFileLabel(input, labelId) {
+  const lbl = document.getElementById(labelId);
+  if (!lbl) return;
+  if (input.files && input.files[0]) {
+    lbl.textContent = input.files[0].name;
+    lbl.className = 'file-chosen';
+  } else {
+    lbl.textContent = 'لم يتم الاختيار بعد';
+    lbl.className = 'file-none';
+  }
+}
+
+function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload  = e => resolve(e.target.result);
+    reader.onerror = () => reject(new Error('فشل قراءة الملف'));
+    reader.readAsDataURL(file);
+  });
+}
+
+async function uploadDocuments(appId) {
+  const docInputs = [
+    { id: 'doc-transcripts',      type: 'transcripts'       },
+    { id: 'doc-language-cert',    type: 'language_cert'     },
+    { id: 'doc-thesis-plan',      type: 'thesis_plan'       },
+    { id: 'doc-supervisor-auth',  type: 'supervisor_auth'   },
+    { id: 'doc-invitation-letter',type: 'invitation_letter' },
+  ];
+  for (const { id, type } of docInputs) {
+    const input = document.getElementById(id);
+    if (!input || !input.files || !input.files[0]) continue;
+    const file = input.files[0];
+    try {
+      const file_data = await readFileAsBase64(file);
+      await fetch(`/api/applications/${appId}/documents`, {
+        method: 'POST',
+        headers: authHeader(),
+        body: JSON.stringify({ doc_type: type, file_name: file.name, file_size: file.size, file_data }),
+      });
+    } catch(e) { console.error('Error uploading', type, e); }
+  }
+}
+
 // ========== SUBMIT APPLICATION ==========
 async function submitApplication() {
   const grant_id       = document.getElementById('apply-grant')?.value;
   const motivation     = document.getElementById('apply-motivation')?.value;
   const experience     = document.getElementById('apply-experience')?.value;
   const language_level = document.getElementById('apply-language')?.value;
+  const study_level    = document.getElementById('apply-study-level')?.value;
 
   if (!getToken()) {
     alert('يرجى تسجيل الدخول أولاً');
@@ -1918,19 +2171,64 @@ async function submitApplication() {
     showPage('page-login');
     return;
   }
-  if (!grant_id) { alert('يرجى اختيار المنحة'); return; }
+  if (!grant_id)    { alert('يرجى اختيار المنحة'); return; }
+  if (!study_level) { alert('يرجى اختيار المستوى الدراسي (ماستر 2 أو دكتوراه)'); return; }
 
   try {
-    const res  = await fetch('/api/applications', {
+    const res = await fetch('/api/applications', {
       method: 'POST',
       headers: authHeader(),
-      body: JSON.stringify({ grant_id: parseInt(grant_id), motivation, experience, language_level }),
+      body: JSON.stringify({ grant_id: parseInt(grant_id), motivation, experience, language_level, study_level }),
     });
     const data = await res.json();
     if (!res.ok) { alert(data.error || 'خطأ في إرسال الطلب'); return; }
+
+    // Upload documents if any were selected
+    await uploadDocuments(data.id);
+
     closeModal('apply-modal');
     await loadStudentDashboard();
     alert('✅ تم إرسال طلبك بنجاح! سيتم مراجعته من قبل الإدارة.');
+  } catch { alert('تعذر الاتصال بالخادم'); }
+}
+
+// ========== PROFILE & PASSWORD ==========
+async function saveProfile() {
+  const name    = document.getElementById('profile-name')?.value.trim();
+  const phone   = document.getElementById('profile-phone')?.value.trim();
+  const faculty = document.getElementById('profile-faculty')?.value.trim();
+  if (!name) { alert('يرجى إدخال الاسم الكامل'); return; }
+  try {
+    const res = await fetch('/api/auth/profile', {
+      method: 'PATCH', headers: authHeader(),
+      body: JSON.stringify({ name, phone, faculty }),
+    });
+    const data = await res.json();
+    if (!res.ok) { alert(data.error || 'خطأ في حفظ البيانات'); return; }
+    const user = { ...getUser(), name: data.name, phone: data.phone, faculty: data.faculty };
+    setAuth(getToken(), user);
+    loadStudentDashboard();
+    alert('✅ تم حفظ التعديلات بنجاح');
+  } catch { alert('تعذر الاتصال بالخادم'); }
+}
+
+async function changePassword() {
+  const current = document.getElementById('profile-current-pass')?.value;
+  const newPass = document.getElementById('profile-new-pass')?.value;
+  const confirm = document.getElementById('profile-confirm-pass')?.value;
+  if (!current || !newPass || !confirm) { alert('يرجى ملء جميع حقول كلمة المرور'); return; }
+  if (newPass !== confirm) { alert('كلمتا المرور الجديدة غير متطابقتين'); return; }
+  if (newPass.length < 8)  { alert('كلمة المرور يجب أن تكون 8 أحرف على الأقل'); return; }
+  try {
+    const res = await fetch('/api/auth/password', {
+      method: 'PATCH', headers: authHeader(),
+      body: JSON.stringify({ current_password: current, new_password: newPass }),
+    });
+    const data = await res.json();
+    if (!res.ok) { alert(data.error || 'خطأ في تغيير كلمة المرور'); return; }
+    ['profile-current-pass','profile-new-pass','profile-confirm-pass']
+      .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    alert('✅ تم تغيير كلمة المرور بنجاح');
   } catch { alert('تعذر الاتصال بالخادم'); }
 }
 
@@ -2049,9 +2347,10 @@ function switchView(dashboard, viewId, clickedEl) {
   }
 
   // Load fresh data for data-driven views
-  if (viewId === 'v-universities') renderUniversities();
-  else if (viewId === 'v-users') loadAdminUsers();
+  if (viewId === 'v-universities')  renderUniversities();
+  else if (viewId === 'v-users')        loadAdminUsers();
   else if (viewId === 'v-applications') loadAdminDashboard();
+  else if (viewId === 'v-grants' && dashboard === 'admin') renderAdminGrantsTable();
   else renderGrants();
 }
 
@@ -2108,7 +2407,7 @@ async function addGrant() {
         positions, deadline, application_start, application_end,
         duration, eligibility,
         outgoing_students, incoming_students, outgoing_staff, incoming_staff,
-        status: 'active'
+        status: 'draft'
       }),
     });
     const data = await res.json();

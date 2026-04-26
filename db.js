@@ -73,10 +73,28 @@ async function initSchema() {
       motivation     TEXT,
       experience     TEXT,
       language_level VARCHAR(10),
+      study_level    VARCHAR(20)  DEFAULT NULL,
       admin_note     TEXT,
       created_at     TIMESTAMPTZ  DEFAULT NOW(),
       updated_at     TIMESTAMPTZ  DEFAULT NOW(),
       UNIQUE (user_id, grant_id)
+    )
+  `;
+
+  // Add study_level column if it doesn't exist (migration for existing tables)
+  await sql`
+    ALTER TABLE applications ADD COLUMN IF NOT EXISTS study_level VARCHAR(20)
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS application_documents (
+      id             SERIAL PRIMARY KEY,
+      application_id INTEGER REFERENCES applications(id) ON DELETE CASCADE,
+      doc_type       VARCHAR(50)  NOT NULL,
+      file_name      VARCHAR(255) NOT NULL,
+      file_size      INTEGER,
+      file_data      TEXT         NOT NULL,
+      created_at     TIMESTAMPTZ  DEFAULT NOW()
     )
   `;
 
