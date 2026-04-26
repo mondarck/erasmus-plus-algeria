@@ -9,6 +9,7 @@ const authRoutes          = require('./routes/auth');
 const grantsRoutes        = require('./routes/grants');
 const applicationsRoutes  = require('./routes/applications');
 const universitiesRoutes  = require('./routes/universities');
+const adminRoutes         = require('./routes/admin');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use('/api/auth',          authRoutes);
 app.use('/api/grants',        grantsRoutes);
 app.use('/api/applications',  applicationsRoutes);
 app.use('/api/universities',  universitiesRoutes);
+app.use('/api/admin',         adminRoutes);
 
 // Fallback — always serve the HTML for any non-API route
 app.get('*', (req, res) => {

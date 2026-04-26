@@ -886,24 +886,15 @@ textarea.form-input { resize:vertical; min-height:100px; }
 
     <div class="form-group">
       <label class="form-label">البريد الإلكتروني</label>
-      <input type="email" class="form-input" placeholder="example@university.dz" id="login-email">
+      <input type="email" class="form-input" placeholder="example@university.dz" id="login-email" autocomplete="off">
     </div>
     <div class="form-group">
       <label class="form-label">كلمة المرور</label>
-      <input type="password" class="form-input" placeholder="••••••••" id="login-pass">
+      <input type="password" class="form-input" placeholder="••••••••" id="login-pass" autocomplete="new-password">
     </div>
 
     <div style="text-align:left;margin-bottom:20px;">
       <a style="font-size:0.85rem;color:var(--gold-light);cursor:pointer;">نسيت كلمة المرور؟</a>
-    </div>
-
-    <div style="margin-bottom:12px;">
-      <label class="form-label" style="margin-bottom:6px;">الدخول كـ (للعرض التجريبي)</label>
-      <select class="form-input" id="login-role">
-        <option value="student">طالب / متقدم</option>
-        <option value="admin">مشرف / مدير المنح</option>
-        <option value="superadmin">مدير النظام</option>
-      </select>
     </div>
 
     <button class="btn-full" onclick="doLogin()">تسجيل الدخول</button>
@@ -1011,44 +1002,19 @@ textarea.form-input { resize:vertical; min-height:100px; }
         <!-- OVERVIEW -->
         <div class="dash-view active" id="student-v-overview">
           <div class="kpi-grid">
-            <div class="kpi-card"><div class="kpi-icon blue">📄</div><div><div class="kpi-num">2</div><div class="kpi-label">طلباتي الكلية</div></div></div>
-            <div class="kpi-card"><div class="kpi-icon green">✅</div><div><div class="kpi-num">1</div><div class="kpi-label">مقبول</div></div></div>
-            <div class="kpi-card"><div class="kpi-icon gold">⏳</div><div><div class="kpi-num">1</div><div class="kpi-label">قيد المراجعة</div></div></div>
-            <div class="kpi-card"><div class="kpi-icon blue">🎓</div><div><div class="kpi-num">48</div><div class="kpi-label">منح متاحة</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon blue">📄</div><div><div class="kpi-num" id="s-kpi-total">—</div><div class="kpi-label">طلباتي الكلية</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon green">✅</div><div><div class="kpi-num" id="s-kpi-accepted">—</div><div class="kpi-label">مقبول</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon gold">⏳</div><div><div class="kpi-num" id="s-kpi-review">—</div><div class="kpi-label">قيد المراجعة</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon blue">🎓</div><div><div class="kpi-num" id="s-kpi-grants">—</div><div class="kpi-label">منح متاحة</div></div></div>
           </div>
-          <div class="row-3col">
-            <div class="card">
-              <div class="card-title">آخر طلباتي <span class="card-link" onclick="switchView('student','v-myapps',null)">عرض الكل</span></div>
-              <table class="data-table">
-                <thead><tr><th>المنحة</th><th>الجامعة</th><th>الحالة</th><th></th></tr></thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Erasmus+ دراسة</strong><br><small style="color:var(--gray-mid)">2025-2026</small></td>
-                    <td>برشلونة — إسبانيا</td>
-                    <td><span class="status status-accepted">مقبول</span></td>
-                    <td><button class="action-btn ghost" onclick="showAppDetail()">عرض</button></td>
-                  </tr>
-                  <tr>
-                    <td><strong>Erasmus+ تدريب</strong><br><small style="color:var(--gray-mid)">2025</small></td>
-                    <td>روما — إيطاليا</td>
-                    <td><span class="status status-review">قيد المراجعة</span></td>
-                    <td><button class="action-btn ghost" onclick="showAppDetail()">عرض</button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="card">
-              <div class="card-title">📊 حالة طلبي المقبول</div>
-              <div class="timeline">
-                <div class="tl-item"><div class="tl-dot done"></div><div class="tl-title">✅ تم الاستلام</div><div class="tl-date">01 مارس 2025</div></div>
-                <div class="tl-item"><div class="tl-dot done"></div><div class="tl-title">✅ قيد المراجعة</div><div class="tl-date">10 مارس 2025</div></div>
-                <div class="tl-item"><div class="tl-dot done"></div><div class="tl-title">✅ مقابلة</div><div class="tl-date">20 مارس 2025</div></div>
-                <div class="tl-item"><div class="tl-dot current"></div><div class="tl-title">⭐ مقبول — انتظار تأكيدك</div><div class="tl-date">01 أبريل 2025</div></div>
-                <div class="tl-item"><div class="tl-dot pending"></div><div class="tl-title">تأكيد القبول</div><div class="tl-date">—</div></div>
-              </div>
-              <div class="alert alert-warning" style="margin-top:16px;font-size:0.83rem;">⏰ يرجى تأكيد قبولك قبل <strong>30 أبريل 2025</strong></div>
-              <button class="action-btn success" style="width:100%;margin-top:10px;" onclick="alert('تم تأكيد قبولك! سيتواصل معك المشرف قريباً.')">✅ تأكيد القبول</button>
-            </div>
+          <div class="card">
+            <div class="card-title">آخر طلباتي <span class="card-link" onclick="switchView('student','v-myapps',null)">عرض الكل</span></div>
+            <table class="data-table">
+              <thead><tr><th>المنحة</th><th>الجامعة</th><th>الحالة</th><th></th></tr></thead>
+              <tbody id="student-recent-apps">
+                <tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:24px;">لا توجد طلبات بعد</td></tr>
+              </tbody>
+            </table>
           </div>
           <div class="card">
             <div class="card-title">🔥 منح تنتهي قريباً <span class="card-link" onclick="switchView('student','v-grants',null)">عرض الكل</span></div>
@@ -1070,30 +1036,11 @@ textarea.form-input { resize:vertical; min-height:100px; }
         <!-- MY APPLICATIONS -->
         <div class="dash-view" id="student-v-myapps">
           <div class="page-header"><h2>📄 طلباتي</h2><p>تتبع حالة جميع طلباتك</p></div>
-          <div class="tabs">
-            <div class="tab active">الكل (2)</div>
-            <div class="tab">مقبول (1)</div>
-            <div class="tab">قيد المراجعة (1)</div>
-            <div class="tab">مرفوض (0)</div>
-          </div>
           <div class="card">
             <table class="data-table">
               <thead><tr><th>المنحة</th><th>الجامعة</th><th>تاريخ التقديم</th><th>الحالة</th><th>الإجراء</th></tr></thead>
-              <tbody>
-                <tr>
-                  <td><strong>Erasmus+ دراسة — برشلونة</strong></td>
-                  <td>🇪🇸 Universitat de Barcelona</td>
-                  <td>01 مارس 2025</td>
-                  <td><span class="status status-accepted">مقبول</span></td>
-                  <td><button class="action-btn primary" onclick="showAppDetail()">عرض التفاصيل</button></td>
-                </tr>
-                <tr>
-                  <td><strong>Erasmus+ تدريب — روما</strong></td>
-                  <td>🇮🇹 Sapienza University</td>
-                  <td>15 مارس 2025</td>
-                  <td><span class="status status-review">قيد المراجعة</span></td>
-                  <td><button class="action-btn ghost" onclick="showAppDetail()">عرض التفاصيل</button></td>
-                </tr>
+              <tbody id="student-myapps-body">
+                <tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;">لم تتقدم على أي منحة بعد</td></tr>
               </tbody>
             </table>
           </div>
@@ -1106,13 +1053,13 @@ textarea.form-input { resize:vertical; min-height:100px; }
             <div class="card">
               <div class="card-title">البيانات الشخصية</div>
               <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
-                <div style="width:70px;height:70px;background:linear-gradient(135deg,var(--blue-royal),var(--gold));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;color:white;">م.أ</div>
-                <div><div style="font-weight:700;font-size:1.1rem;color:var(--blue-deep);">محمد أحمد</div><div style="color:var(--gray-mid);font-size:0.85rem;">طالب — كلية العلوم</div></div>
+                <div style="width:70px;height:70px;background:linear-gradient(135deg,var(--blue-royal),var(--gold));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;color:white;" id="profile-avatar">—</div>
+                <div><div style="font-weight:700;font-size:1.1rem;color:var(--blue-deep);" id="profile-display-name">—</div><div style="color:var(--gray-mid);font-size:0.85rem;" id="profile-display-role">—</div></div>
               </div>
-              <div class="form-group"><label class="form-label-dark">الاسم الكامل</label><input class="form-input-white" value="محمد أحمد"></div>
-              <div class="form-group"><label class="form-label-dark">البريد الإلكتروني</label><input class="form-input-white" value="m.ahmed@univ-ouargla.dz"></div>
-              <div class="form-group"><label class="form-label-dark">رقم الهاتف</label><input class="form-input-white" value="+213 770 123 456"></div>
-              <div class="form-group"><label class="form-label-dark">الكلية</label><input class="form-input-white" value="كلية العلوم والتكنولوجيا"></div>
+              <div class="form-group"><label class="form-label-dark">الاسم الكامل</label><input id="profile-name" class="form-input-white" placeholder="الاسم الكامل"></div>
+              <div class="form-group"><label class="form-label-dark">البريد الإلكتروني</label><input id="profile-email" class="form-input-white" placeholder="البريد الإلكتروني" readonly></div>
+              <div class="form-group"><label class="form-label-dark">رقم الهاتف</label><input id="profile-phone" class="form-input-white" placeholder="+213 XXX XXX XXX"></div>
+              <div class="form-group"><label class="form-label-dark">الكلية</label><input id="profile-faculty" class="form-input-white" placeholder="الكلية / القسم"></div>
               <button class="action-btn primary" style="margin-top:8px;" onclick="alert('تم حفظ التعديلات!')">💾 حفظ التعديلات</button>
             </div>
             <div class="card">
@@ -1129,17 +1076,9 @@ textarea.form-input { resize:vertical; min-height:100px; }
         <div class="dash-view" id="student-v-notifs">
           <div class="page-header"><h2>🔔 الإشعارات</h2></div>
           <div class="card">
-            <div class="notif-item">
-              <div class="notif-icon" style="background:#e8f7ef;">✅</div>
-              <div><div style="font-weight:600;color:var(--blue-deep);">تم قبول طلبك!</div><div style="font-size:0.85rem;color:var(--gray-mid);margin-top:3px;">طلبك في منحة Erasmus+ دراسة — برشلونة تم قبوله. يرجى تأكيد القبول.</div><div style="font-size:0.78rem;color:var(--gray-mid);margin-top:5px;">منذ 3 ساعات</div></div>
-            </div>
-            <div class="notif-item">
-              <div class="notif-icon" style="background:#e8f0fe;">📋</div>
-              <div><div style="font-weight:600;color:var(--blue-deep);">طلبك قيد المراجعة</div><div style="font-size:0.85rem;color:var(--gray-mid);margin-top:3px;">طلبك في منحة Erasmus+ تدريب — روما قيد المراجعة من المشرف.</div><div style="font-size:0.78rem;color:var(--gray-mid);margin-top:5px;">منذ يومين</div></div>
-            </div>
-            <div class="notif-item">
-              <div class="notif-icon" style="background:var(--orange-light);">⏰</div>
-              <div><div style="font-weight:600;color:var(--blue-deep);">منحة تنتهي قريباً</div><div style="font-size:0.85rem;color:var(--gray-mid);margin-top:3px;">منحة Erasmus+ دراسة — ليون تنتهي مدة التقديم خلال 5 أيام.</div><div style="font-size:0.78rem;color:var(--gray-mid);margin-top:5px;">منذ 3 أيام</div></div>
+            <div style="text-align:center;color:var(--gray-mid);padding:40px 20px;">
+              <div style="font-size:2rem;margin-bottom:10px;">🔔</div>
+              <div>لا توجد إشعارات حالياً</div>
             </div>
           </div>
         </div>
@@ -1234,49 +1173,18 @@ textarea.form-input { resize:vertical; min-height:100px; }
         <!-- DASHBOARD -->
         <div class="dash-view active" id="admin-v-dashboard">
           <div class="kpi-grid">
-            <div class="kpi-card"><div class="kpi-icon blue">🎓</div><div><div class="kpi-num">12</div><div class="kpi-label">المنح النشطة</div></div></div>
-            <div class="kpi-card"><div class="kpi-icon gold">📋</div><div><div class="kpi-num">87</div><div class="kpi-label">إجمالي الطلبات</div></div></div>
-            <div class="kpi-card"><div class="kpi-icon green">✅</div><div><div class="kpi-num">34</div><div class="kpi-label">مقبول</div></div></div>
-            <div class="kpi-card"><div class="kpi-icon red">❌</div><div><div class="kpi-num">21</div><div class="kpi-label">مرفوض</div></div></div>
-          </div>
-
-          <div class="row-3col">
-            <div class="card">
-              <div class="card-title">📊 الطلبات حسب المنحة</div>
-              <div class="bar-chart">
-                <div class="bar-item"><div class="bar-label">برشلونة 2025</div><div class="bar-track"><div class="bar-fill" style="width:85%;background:linear-gradient(90deg,#1a3a6b,var(--gold));"></div></div><div class="bar-val">22</div></div>
-                <div class="bar-item"><div class="bar-label">روما 2025</div><div class="bar-track"><div class="bar-fill" style="width:65%;background:linear-gradient(90deg,#1a3a6b,var(--gold));"></div></div><div class="bar-val">17</div></div>
-                <div class="bar-item"><div class="bar-label">باريس 2025</div><div class="bar-track"><div class="bar-fill" style="width:50%;background:linear-gradient(90deg,#1a3a6b,var(--gold));"></div></div><div class="bar-val">13</div></div>
-                <div class="bar-item"><div class="bar-label">ميونخ 2025</div><div class="bar-track"><div class="bar-fill" style="width:38%;background:linear-gradient(90deg,#1a3a6b,var(--gold));"></div></div><div class="bar-val">10</div></div>
-                <div class="bar-item"><div class="bar-label">مدريد 2025</div><div class="bar-track"><div class="bar-fill" style="width:30%;background:linear-gradient(90deg,#1a3a6b,var(--gold));"></div></div><div class="bar-val">8</div></div>
-              </div>
-            </div>
-            <div>
-              <div class="card" style="margin-bottom:18px;">
-                <div class="card-title">⚠️ تنبيهات الاتفاقيات</div>
-                <div class="alert alert-warning" style="font-size:0.83rem;">📅 اتفاقية جامعة ليون تنتهي خلال <strong>30 يوماً</strong></div>
-                <div class="alert alert-warning" style="font-size:0.83rem;">📅 اتفاقية جامعة برلين تنتهي خلال <strong>60 يوماً</strong></div>
-              </div>
-              <div class="card">
-                <div class="card-title">🎯 توزيع الحالات</div>
-                <div style="display:flex;flex-direction:column;gap:10px;">
-                  <div><div style="display:flex;justify-content:space-between;font-size:0.83rem;margin-bottom:4px;"><span>مقبول</span><span style="color:var(--green);font-weight:700;">39%</span></div><div class="progress-bar-outer"><div class="progress-bar-inner" style="width:39%;background:var(--green);"></div></div></div>
-                  <div><div style="display:flex;justify-content:space-between;font-size:0.83rem;margin-bottom:4px;"><span>قيد المراجعة</span><span style="color:#1a56db;font-weight:700;">26%</span></div><div class="progress-bar-outer"><div class="progress-bar-inner" style="width:26%;background:#1a56db;"></div></div></div>
-                  <div><div style="display:flex;justify-content:space-between;font-size:0.83rem;margin-bottom:4px;"><span>مرفوض</span><span style="color:var(--red);font-weight:700;">24%</span></div><div class="progress-bar-outer"><div class="progress-bar-inner" style="width:24%;background:var(--red);"></div></div></div>
-                  <div><div style="display:flex;justify-content:space-between;font-size:0.83rem;margin-bottom:4px;"><span>قائمة انتظار</span><span style="color:var(--orange);font-weight:700;">11%</span></div><div class="progress-bar-outer"><div class="progress-bar-inner" style="width:11%;background:var(--orange);"></div></div></div>
-                </div>
-              </div>
-            </div>
+            <div class="kpi-card"><div class="kpi-icon blue">🎓</div><div><div class="kpi-num" id="a-kpi-grants">—</div><div class="kpi-label">المنح النشطة</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon gold">📋</div><div><div class="kpi-num" id="a-kpi-total">—</div><div class="kpi-label">إجمالي الطلبات</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon green">✅</div><div><div class="kpi-num" id="a-kpi-accepted">—</div><div class="kpi-label">مقبول</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon red">❌</div><div><div class="kpi-num" id="a-kpi-rejected">—</div><div class="kpi-label">مرفوض</div></div></div>
           </div>
 
           <div class="card">
             <div class="card-title">⏳ آخر الطلبات الواردة <span class="card-link" onclick="switchView('admin','v-applications',null)">عرض الكل</span></div>
             <table class="data-table">
               <thead><tr><th>المتقدم</th><th>المنحة</th><th>تاريخ التقديم</th><th>الحالة</th><th>الإجراء</th></tr></thead>
-              <tbody>
-                <tr><td><strong>أحمد بن يحيى</strong><br><small>طالب — علوم</small></td><td>Erasmus+ دراسة برشلونة</td><td>10 مارس 2025</td><td><span class="status status-review">قيد المراجعة</span></td><td><button class="action-btn primary" onclick="switchView('admin','v-appdetail',null)">مراجعة</button></td></tr>
-                <tr><td><strong>فاطمة مراد</strong><br><small>طالبة — هندسة</small></td><td>Erasmus+ تدريب روما</td><td>12 مارس 2025</td><td><span class="status status-review">قيد المراجعة</span></td><td><button class="action-btn primary" onclick="switchView('admin','v-appdetail',null)">مراجعة</button></td></tr>
-                <tr><td><strong>كريم بوزيد</strong><br><small>طالب — اقتصاد</small></td><td>Erasmus+ دراسة باريس</td><td>14 مارس 2025</td><td><span class="status status-wait">قائمة انتظار</span></td><td><button class="action-btn primary" onclick="switchView('admin','v-appdetail',null)">مراجعة</button></td></tr>
+              <tbody id="admin-recent-apps">
+                <tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد طلبات بعد</td></tr>
               </tbody>
             </table>
           </div>
@@ -1312,12 +1220,8 @@ textarea.form-input { resize:vertical; min-height:100px; }
           <div class="card">
             <table class="data-table">
               <thead><tr><th>المتقدم</th><th>المنحة</th><th>التاريخ</th><th>الحالة</th><th>إجراء</th></tr></thead>
-              <tbody>
-                <tr><td><strong>أحمد بن يحيى</strong><br><small style="color:var(--gray-mid)">طالب — علوم</small></td><td>دراسة برشلونة 2025</td><td>10/03/2025</td><td><span class="status status-review">قيد المراجعة</span></td><td><button class="action-btn primary" onclick="switchView('admin','v-appdetail',null)">مراجعة</button></td></tr>
-                <tr><td><strong>فاطمة مراد</strong><br><small style="color:var(--gray-mid)">طالبة — هندسة</small></td><td>تدريب روما 2025</td><td>12/03/2025</td><td><span class="status status-review">قيد المراجعة</span></td><td><button class="action-btn primary" onclick="switchView('admin','v-appdetail',null)">مراجعة</button></td></tr>
-                <tr><td><strong>كريم بوزيد</strong><br><small style="color:var(--gray-mid)">طالب — اقتصاد</small></td><td>دراسة باريس 2025</td><td>14/03/2025</td><td><span class="status status-wait">قائمة انتظار</span></td><td><button class="action-btn primary" onclick="switchView('admin','v-appdetail',null)">مراجعة</button></td></tr>
-                <tr><td><strong>سارة لعلاوي</strong><br><small style="color:var(--gray-mid)">طالبة — طب</small></td><td>دراسة برشلونة 2025</td><td>15/03/2025</td><td><span class="status status-accepted">مقبول</span></td><td><button class="action-btn ghost" onclick="switchView('admin','v-appdetail',null)">عرض</button></td></tr>
-                <tr><td><strong>يوسف حمادي</strong><br><small style="color:var(--gray-mid)">طالب — آداب</small></td><td>تدريس ميونخ 2025</td><td>16/03/2025</td><td><span class="status status-rejected">مرفوض</span></td><td><button class="action-btn ghost" onclick="switchView('admin','v-appdetail',null)">عرض</button></td></tr>
+              <tbody id="admin-all-apps">
+                <tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد طلبات بعد</td></tr>
               </tbody>
             </table>
           </div>
@@ -1396,39 +1300,15 @@ textarea.form-input { resize:vertical; min-height:100px; }
         <div class="dash-view" id="admin-v-reports">
           <div class="page-header"><h2>📈 التقارير والإحصاءات</h2></div>
           <div class="kpi-grid">
-            <div class="kpi-card"><div class="kpi-icon blue">📋</div><div><div class="kpi-num">87</div><div class="kpi-label">إجمالي الطلبات</div></div></div>
-            <div class="kpi-card"><div class="kpi-icon green">🎯</div><div><div class="kpi-num">39%</div><div class="kpi-label">نسبة القبول</div></div></div>
-            <div class="kpi-card"><div class="kpi-icon gold">👤</div><div><div class="kpi-num">62%</div><div class="kpi-label">نسبة الذكور</div></div></div>
-            <div class="kpi-card"><div class="kpi-icon red">⏳</div><div><div class="kpi-num">32</div><div class="kpi-label">قيد المعالجة</div></div></div>
-          </div>
-          <div class="row-2col">
-            <div class="card">
-              <div class="card-title">📊 الطلبات حسب الكلية</div>
-              <div class="bar-chart">
-                <div class="bar-item"><div class="bar-label">كلية العلوم</div><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--blue-royal);"></div></div><div class="bar-val">28</div></div>
-                <div class="bar-item"><div class="bar-label">كلية الهندسة</div><div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--blue-royal);"></div></div><div class="bar-val">22</div></div>
-                <div class="bar-item"><div class="bar-label">كلية الطب</div><div class="bar-track"><div class="bar-fill" style="width:52%;background:var(--blue-royal);"></div></div><div class="bar-val">16</div></div>
-                <div class="bar-item"><div class="bar-label">كلية الاقتصاد</div><div class="bar-track"><div class="bar-fill" style="width:40%;background:var(--blue-royal);"></div></div><div class="bar-val">13</div></div>
-                <div class="bar-item"><div class="bar-label">كلية الآداب</div><div class="bar-track"><div class="bar-fill" style="width:26%;background:var(--blue-royal);"></div></div><div class="bar-val">8</div></div>
-              </div>
-            </div>
-            <div class="card">
-              <div class="card-title">🌍 توزيع الوجهات</div>
-              <div class="bar-chart">
-                <div class="bar-item"><div class="bar-label">🇪🇸 إسبانيا</div><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--gold);"></div></div><div class="bar-val">25</div></div>
-                <div class="bar-item"><div class="bar-label">🇮🇹 إيطاليا</div><div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--gold);"></div></div><div class="bar-val">19</div></div>
-                <div class="bar-item"><div class="bar-label">🇫🇷 فرنسا</div><div class="bar-track"><div class="bar-fill" style="width:45%;background:var(--gold);"></div></div><div class="bar-val">14</div></div>
-                <div class="bar-item"><div class="bar-label">🇩🇪 ألمانيا</div><div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--gold);"></div></div><div class="bar-val">9</div></div>
-              </div>
-            </div>
+            <div class="kpi-card"><div class="kpi-icon blue">📋</div><div><div class="kpi-num" id="r-kpi-total">—</div><div class="kpi-label">إجمالي الطلبات</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon green">🎯</div><div><div class="kpi-num" id="r-kpi-acceptance">—</div><div class="kpi-label">نسبة القبول</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon red">⏳</div><div><div class="kpi-num" id="r-kpi-processing">—</div><div class="kpi-label">قيد المعالجة</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon gold">🏛️</div><div><div class="kpi-num" id="r-kpi-unis">—</div><div class="kpi-label">جامعات شريكة</div></div></div>
           </div>
           <div class="card">
-            <div class="card-title">📥 تصدير التقارير</div>
-            <div style="display:flex;gap:12px;flex-wrap:wrap;">
-              <button class="action-btn primary" onclick="alert('جاري تصدير ملف Excel...')">📊 تصدير Excel</button>
-              <button class="action-btn primary" onclick="alert('جاري تصدير ملف PDF...')">📄 تصدير PDF</button>
-              <button class="action-btn ghost" onclick="alert('جاري تصدير ملف CSV...')">📋 تصدير CSV</button>
-              <button class="action-btn ghost" onclick="alert('سيتم إرسال التقرير الأسبوعي عبر البريد!')">📧 تقرير دوري بالبريد</button>
+            <div style="text-align:center;color:var(--gray-mid);padding:40px 20px;">
+              <div style="font-size:2rem;margin-bottom:10px;">📊</div>
+              <div>ستظهر الإحصاءات التفصيلية بعد تراكم البيانات</div>
             </div>
           </div>
         </div>
@@ -1441,13 +1321,23 @@ textarea.form-input { resize:vertical; min-height:100px; }
           </div>
           <div class="card">
             <table class="data-table">
-              <thead><tr><th>الاسم</th><th>البريد</th><th>الدور</th><th>الحالة</th><th>إجراءات</th></tr></thead>
-              <tbody>
-                <tr><td><strong>د. أمين بلقاسم</strong></td><td>a.belkacem@univ.dz</td><td><span class="status status-active">مدير المنح</span></td><td>نشط</td><td><button class="action-btn ghost">تعديل</button> <button class="action-btn danger">حذف</button></td></tr>
-                <tr><td><strong>نور الهدى سعيد</strong></td><td>n.said@univ.dz</td><td><span class="status status-review">مشرف عادي</span></td><td>نشط</td><td><button class="action-btn ghost">تعديل</button> <button class="action-btn danger">حذف</button></td></tr>
-                <tr><td><strong>عمر طالبي</strong></td><td>o.talbi@univ.dz</td><td><span class="status status-review">مشرف عادي</span></td><td>نشط</td><td><button class="action-btn ghost">تعديل</button> <button class="action-btn danger">حذف</button></td></tr>
+              <thead><tr><th>الاسم</th><th>البريد</th><th>الدور</th><th>تاريخ الإنشاء</th></tr></thead>
+              <tbody id="admin-users-body">
+                <tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:30px;">جاري التحميل...</td></tr>
               </tbody>
             </table>
+          </div>
+
+          <!-- Danger Zone -->
+          <div class="card" style="border:1px solid #e74c3c;margin-top:24px;">
+            <div class="card-title" style="color:#e74c3c;">⚠️ منطقة الخطر</div>
+            <p style="color:var(--gray-mid);font-size:0.9rem;margin-bottom:16px;">
+              هذه العمليات لا يمكن التراجع عنها. استخدمها فقط لمسح بيانات الاختبار.
+            </p>
+            <div style="display:flex;flex-wrap:wrap;gap:12px;">
+              <button class="action-btn" style="background:#e74c3c;color:#fff;" onclick="clearAllApplications()">🗑️ مسح جميع الطلبات</button>
+              <button class="action-btn" style="background:#c0392b;color:#fff;" onclick="resetAllData()">💥 مسح كل البيانات (منح + جامعات + طلبات)</button>
+            </div>
           </div>
         </div>
 
@@ -1455,15 +1345,10 @@ textarea.form-input { resize:vertical; min-height:100px; }
         <div class="dash-view" id="admin-v-logs">
           <div class="page-header"><h2>🔍 سجل العمليات</h2></div>
           <div class="card">
-            <table class="data-table">
-              <thead><tr><th>المستخدم</th><th>العملية</th><th>التفاصيل</th><th>التوقيت</th></tr></thead>
-              <tbody>
-                <tr><td>مدير المنح</td><td><span class="status status-accepted">قبول طلب</span></td><td>قبول طلب رقم #1042 — أحمد بن يحيى</td><td>14/04/2025 10:32</td></tr>
-                <tr><td>مشرف عادي</td><td><span class="status status-review">تعديل منحة</span></td><td>تعديل مواعيد منحة برشلونة</td><td>14/04/2025 09:15</td></tr>
-                <tr><td>مدير النظام</td><td><span class="status status-active">إضافة جامعة</span></td><td>إضافة TU Munich إلى الجامعات الشريكة</td><td>13/04/2025 16:45</td></tr>
-                <tr><td>مشرف عادي</td><td><span class="status status-rejected">رفض طلب</span></td><td>رفض طلب رقم #1039 — يوسف حمادي</td><td>13/04/2025 14:22</td></tr>
-              </tbody>
-            </table>
+            <div style="text-align:center;color:var(--gray-mid);padding:40px 20px;">
+              <div style="font-size:2rem;margin-bottom:10px;">🔍</div>
+              <div>لا توجد عمليات مسجلة بعد</div>
+            </div>
           </div>
         </div>
 
@@ -1715,27 +1600,9 @@ function scrollToGrants() {
 async function doLogin() {
   const email    = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-pass').value;
-  const role     = document.getElementById('login-role').value;
 
-  // ── Demo mode: leave email blank and pick a role ──────────────────────────
-  if (!email) {
-    if (role === 'student') {
-      showPage('page-student');
-    } else if (role === 'admin') {
-      showPage('page-admin');
-      document.getElementById('admin-name').textContent = 'مدير المنح';
-      document.getElementById('admin-role').textContent = 'مشرف';
-    } else {
-      showPage('page-admin');
-      document.getElementById('admin-name').textContent = 'مدير النظام';
-      document.getElementById('admin-role').textContent = 'مدير عام';
-      document.getElementById('superadmin-menu').style.display = 'block';
-    }
-    renderGrants();
-    return;
-  }
+  if (!email || !password) { alert('يرجى إدخال البريد الإلكتروني وكلمة المرور'); return; }
 
-  // ── Real login via API ────────────────────────────────────────────────────
   try {
     const res  = await fetch('/api/auth/login', {
       method: 'POST',
@@ -1746,19 +1613,213 @@ async function doLogin() {
     if (!res.ok) { alert(data.error || 'خطأ في تسجيل الدخول'); return; }
 
     setAuth(data.token, data.user);
+    enterDashboard(data.user);
+  } catch { alert('تعذر الاتصال بالخادم'); }
+}
 
-    if (data.user.role === 'student') {
-      showPage('page-student');
-    } else {
-      showPage('page-admin');
-      document.getElementById('admin-name').textContent = data.user.name;
-      document.getElementById('admin-role').textContent =
-        data.user.role === 'superadmin' ? 'مدير عام' : 'مشرف';
-      if (data.user.role === 'superadmin') {
-        document.getElementById('superadmin-menu').style.display = 'block';
-      }
+function enterDashboard(user) {
+  if (user.role === 'student') {
+    showPage('page-student');
+    loadStudentDashboard();
+  } else {
+    showPage('page-admin');
+    document.getElementById('admin-name').textContent = user.name;
+    document.getElementById('admin-role').textContent = user.role === 'superadmin' ? 'مدير عام' : 'مشرف';
+    if (user.role === 'superadmin') document.getElementById('superadmin-menu').style.display = 'block';
+    loadAdminDashboard();
+  }
+}
+
+// ========== STUDENT DASHBOARD LOADER ==========
+async function loadStudentDashboard() {
+  const user = getUser();
+  if (!user) return;
+
+  // Sidebar + profile fields
+  const initials = user.name ? user.name.trim().split(/\s+/).map(w => w[0]).slice(0,2).join('') : '—';
+  const avatar       = document.getElementById('profile-avatar');
+  const dispName     = document.getElementById('profile-display-name');
+  const dispRole     = document.getElementById('profile-display-role');
+  const sidebarName  = document.querySelector('#page-student .user-name');
+  const sidebarRole  = document.querySelector('#page-student .user-role');
+  if (avatar)      avatar.textContent      = initials;
+  if (dispName)    dispName.textContent    = user.name  || '—';
+  if (dispRole)    dispRole.textContent    = user.faculty || 'طالب';
+  if (sidebarName) sidebarName.textContent = user.name  || '';
+  if (sidebarRole) sidebarRole.textContent = user.faculty || 'طالب';
+
+  const nameEl    = document.getElementById('profile-name');
+  const emailEl   = document.getElementById('profile-email');
+  const phoneEl   = document.getElementById('profile-phone');
+  const facultyEl = document.getElementById('profile-faculty');
+  if (nameEl)    nameEl.value    = user.name    || '';
+  if (emailEl)   emailEl.value   = user.email   || '';
+  if (phoneEl)   phoneEl.value   = user.phone   || '';
+  if (facultyEl) facultyEl.value = user.faculty || '';
+
+  // Grants KPI
+  const grantsKpi = document.getElementById('s-kpi-grants');
+  if (grantsKpi) grantsKpi.textContent = (cachedGrants || []).length;
+
+  // Applications
+  try {
+    const res = await fetch('/api/applications/my', { headers: authHeader() });
+    if (!res.ok) return;
+    const apps = await res.json();
+
+    const el = id => document.getElementById(id);
+    if (el('s-kpi-total'))    el('s-kpi-total').textContent    = apps.length;
+    if (el('s-kpi-accepted')) el('s-kpi-accepted').textContent = apps.filter(a => a.status === 'accepted').length;
+    if (el('s-kpi-review'))   el('s-kpi-review').textContent   = apps.filter(a => a.status === 'review' || a.status === 'pending').length;
+
+    const STATUS = {
+      pending:  ['status-review',   'قيد الانتظار'],
+      review:   ['status-review',   'قيد المراجعة'],
+      accepted: ['status-accepted', 'مقبول'],
+      rejected: ['status-rejected', 'مرفوض'],
+    };
+    const empty4 = '<tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:24px;">لا توجد طلبات بعد</td></tr>';
+    const empty5 = '<tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;">لم تتقدم على أي منحة بعد</td></tr>';
+
+    const recentBody = el('student-recent-apps');
+    const myappsBody = el('student-myapps-body');
+
+    if (recentBody) {
+      recentBody.innerHTML = apps.length ? apps.slice(0,3).map(a => {
+        const [sc, sl] = STATUS[a.status] || ['status-review', a.status];
+        return `<tr>
+          <td><strong>${a.grant_title}</strong></td>
+          <td>${a.university_name || '—'}</td>
+          <td><span class="status ${sc}">${sl}</span></td>
+          <td>—</td>
+        </tr>`;
+      }).join('') : empty4;
     }
-    renderGrants();
+    if (myappsBody) {
+      myappsBody.innerHTML = apps.length ? apps.map(a => {
+        const [sc, sl] = STATUS[a.status] || ['status-review', a.status];
+        const date = new Date(a.created_at).toLocaleDateString('ar-DZ');
+        return `<tr>
+          <td><strong>${a.grant_title}</strong></td>
+          <td>${a.university_name || '—'}</td>
+          <td>${date}</td>
+          <td><span class="status ${sc}">${sl}</span></td>
+          <td>—</td>
+        </tr>`;
+      }).join('') : empty5;
+    }
+  } catch(e) { console.error(e); }
+}
+
+// ========== ADMIN DASHBOARD LOADER ==========
+async function loadAdminDashboard() {
+  try {
+    const [statsRes, appsRes, unisRes] = await Promise.all([
+      fetch('/api/applications/stats', { headers: authHeader() }),
+      fetch('/api/applications/all',   { headers: authHeader() }),
+      fetch('/api/universities'),
+    ]);
+    const el = id => document.getElementById(id);
+
+    if (statsRes.ok) {
+      const s        = await statsRes.json();
+      const total    = parseInt(s.total)    || 0;
+      const accepted = parseInt(s.accepted) || 0;
+      const rejected = parseInt(s.rejected) || 0;
+      const pending  = parseInt(s.pending)  || 0;
+      const review   = parseInt(s.review)   || 0;
+
+      if (el('a-kpi-grants'))      el('a-kpi-grants').textContent      = (cachedGrants || []).length;
+      if (el('a-kpi-total'))       el('a-kpi-total').textContent       = total;
+      if (el('a-kpi-accepted'))    el('a-kpi-accepted').textContent    = accepted;
+      if (el('a-kpi-rejected'))    el('a-kpi-rejected').textContent    = rejected;
+      if (el('r-kpi-total'))       el('r-kpi-total').textContent       = total;
+      if (el('r-kpi-acceptance'))  el('r-kpi-acceptance').textContent  = total > 0 ? Math.round(accepted/total*100)+'%' : '0%';
+      if (el('r-kpi-processing'))  el('r-kpi-processing').textContent  = pending + review;
+    }
+
+    if (unisRes.ok) {
+      const unis = await unisRes.json();
+      if (el('r-kpi-unis')) el('r-kpi-unis').textContent = unis.length;
+    }
+
+    if (appsRes.ok) {
+      const apps = await appsRes.json();
+      const STATUS = {
+        pending:  ['status-review',   'قيد الانتظار'],
+        review:   ['status-review',   'قيد المراجعة'],
+        accepted: ['status-accepted', 'مقبول'],
+        rejected: ['status-rejected', 'مرفوض'],
+      };
+      const empty = '<tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد طلبات بعد</td></tr>';
+      const makeRow = a => {
+        const [sc, sl] = STATUS[a.status] || ['status-review', a.status];
+        const date = new Date(a.created_at).toLocaleDateString('ar-DZ');
+        return `<tr>
+          <td><strong>${a.student_name}</strong><br><small style="color:var(--gray-mid)">${a.student_faculty||''}</small></td>
+          <td>${a.grant_title}</td>
+          <td>${date}</td>
+          <td><span class="status ${sc}">${sl}</span></td>
+          <td><button class="action-btn primary">مراجعة</button></td>
+        </tr>`;
+      };
+      const recentBody = el('admin-recent-apps');
+      const allBody    = el('admin-all-apps');
+      if (recentBody) recentBody.innerHTML = apps.length ? apps.slice(0,5).map(makeRow).join('') : empty;
+      if (allBody)    allBody.innerHTML    = apps.length ? apps.map(makeRow).join('')           : empty;
+    }
+  } catch(e) { console.error(e); }
+}
+
+// ========== ADMIN USERS LOADER ==========
+async function loadAdminUsers() {
+  const tbody = document.getElementById('admin-users-body');
+  if (!tbody) return;
+  try {
+    const res = await fetch('/api/auth/users', { headers: authHeader() });
+    if (!res.ok) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:30px;">تعذر تحميل المستخدمين</td></tr>'; return; }
+    const users = await res.json();
+    const roleMap = { superadmin: ['status-active','مدير النظام'], admin: ['status-review','مشرف'], student: ['','طالب'] };
+    tbody.innerHTML = users.length ? users.map(u => {
+      const [sc, sl] = roleMap[u.role] || ['','—'];
+      const date = new Date(u.created_at).toLocaleDateString('ar-DZ');
+      return `<tr>
+        <td><strong>${u.name}</strong></td>
+        <td>${u.email}</td>
+        <td><span class="status ${sc}">${sl}</span></td>
+        <td>${date}</td>
+      </tr>`;
+    }).join('') : '<tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:30px;">لا يوجد مستخدمون</td></tr>';
+  } catch(e) { console.error(e); tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:30px;">خطأ في التحميل</td></tr>'; }
+}
+
+// ========== DANGER ZONE — SUPERADMIN DATA RESET ==========
+async function clearAllApplications() {
+  if (!confirm('⚠️ هل أنت متأكد؟ سيتم حذف جميع الطلبات نهائياً ولا يمكن التراجع عن هذه العملية.')) return;
+  try {
+    const res = await fetch('/api/admin/clear-applications', {
+      method: 'DELETE',
+      headers: authHeader()
+    });
+    const data = await res.json();
+    if (!res.ok) { alert(data.error || 'فشل مسح الطلبات'); return; }
+    alert('✅ ' + data.message);
+    loadAdminDashboard();
+  } catch { alert('تعذر الاتصال بالخادم'); }
+}
+
+async function resetAllData() {
+  if (!confirm('💥 تحذير شديد! سيتم حذف جميع الطلبات والمنح والجامعات. هذا لا يمكن التراجع عنه. هل تريد المتابعة؟')) return;
+  if (!confirm('تأكيد أخير: سيتم مسح كل البيانات. اكتب "نعم" في الحقل التالي للمتابعة.')) return;
+  try {
+    const res = await fetch('/api/admin/reset-all-data', {
+      method: 'DELETE',
+      headers: authHeader()
+    });
+    const data = await res.json();
+    if (!res.ok) { alert(data.error || 'فشل إعادة ضبط البيانات'); return; }
+    alert('✅ ' + data.message);
+    loadAdminDashboard();
   } catch { alert('تعذر الاتصال بالخادم'); }
 }
 
