@@ -1317,7 +1317,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
         <div class="dash-view" id="admin-v-users">
           <div class="page-header" style="display:flex;justify-content:space-between;align-items:center;">
             <div><h2>👥 إدارة المستخدمين</h2></div>
-            <button class="action-btn gold-btn">+ إضافة مشرف</button>
+            <button class="action-btn gold-btn" onclick="openAdminModal()">+ إضافة مشرف</button>
           </div>
           <div class="card">
             <table class="data-table">
@@ -1409,26 +1409,55 @@ textarea.form-input { resize:vertical; min-height:100px; }
 <div class="modal-overlay" id="grant-modal">
   <div class="modal">
     <div class="modal-title">🎓 إضافة منحة جديدة</div>
-    <div class="form-group"><label class="form-label-dark">عنوان المنحة</label><input class="form-input-white" placeholder="مثال: Erasmus+ دراسة — جامعة برشلونة 2025-2026"></div>
+    <div class="form-group">
+      <label class="form-label-dark">عنوان المنحة <span style="color:#e74c3c">*</span></label>
+      <input id="grant-title" class="form-input-white" placeholder="مثال: Erasmus+ دراسة — جامعة برشلونة 2025-2026">
+    </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-      <div class="form-group"><label class="form-label-dark">نوع الحركة</label><select class="form-input-white"><option>دراسة أكاديمية</option><option>تدريب</option><option>تدريس</option><option>تدريب موظفين</option></select></div>
-      <div class="form-group"><label class="form-label-dark">الجامعة الشريكة</label><select class="form-input-white"><option>Univ. de Barcelona</option><option>Sapienza Rome</option><option>Université Lyon 1</option><option>TU Munich</option></select></div>
+      <div class="form-group">
+        <label class="form-label-dark">نوع الحركة</label>
+        <select id="grant-type" class="form-input-white">
+          <option value="study">دراسة أكاديمية</option>
+          <option value="train">تدريب</option>
+          <option value="teach">تدريس</option>
+          <option value="staff">تدريب موظفين</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label-dark">الجامعة الشريكة</label>
+        <select id="grant-university" class="form-input-white">
+          <option value="">— اختر جامعة —</option>
+        </select>
+      </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;">
-      <div class="form-group"><label class="form-label-dark">طلاب ذاهبون</label><input class="form-input-white" type="number" value="5"></div>
-      <div class="form-group"><label class="form-label-dark">طلاب قادمون</label><input class="form-input-white" type="number" value="3"></div>
-      <div class="form-group"><label class="form-label-dark">أساتذة ذاهبون</label><input class="form-input-white" type="number" value="2"></div>
-      <div class="form-group"><label class="form-label-dark">أساتذة قادمون</label><input class="form-input-white" type="number" value="2"></div>
+      <div class="form-group"><label class="form-label-dark">طلاب ذاهبون</label><input id="grant-out-students" class="form-input-white" type="number" min="0" value="0"></div>
+      <div class="form-group"><label class="form-label-dark">طلاب قادمون</label><input id="grant-in-students" class="form-input-white" type="number" min="0" value="0"></div>
+      <div class="form-group"><label class="form-label-dark">أساتذة ذاهبون</label><input id="grant-out-staff" class="form-input-white" type="number" min="0" value="0"></div>
+      <div class="form-group"><label class="form-label-dark">أساتذة قادمون</label><input id="grant-in-staff" class="form-input-white" type="number" min="0" value="0"></div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-      <div class="form-group"><label class="form-label-dark">بداية التقديم</label><input class="form-input-white" type="date"></div>
-      <div class="form-group"><label class="form-label-dark">نهاية التقديم</label><input class="form-input-white" type="date"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+      <div class="form-group"><label class="form-label-dark">بداية التقديم</label><input id="grant-app-start" class="form-input-white" type="date"></div>
+      <div class="form-group"><label class="form-label-dark">نهاية التقديم</label><input id="grant-app-end" class="form-input-white" type="date"></div>
+      <div class="form-group"><label class="form-label-dark">آخر موعد (Deadline)</label><input id="grant-deadline" class="form-input-white" type="date"></div>
     </div>
-    <div class="form-group"><label class="form-label-dark">مدة الحركة</label><select class="form-input-white"><option>شهر واحد</option><option>شهران</option><option>فصل دراسي (5 أشهر)</option><option>سنة كاملة</option></select></div>
-    <div class="form-group"><label class="form-label-dark">معايير الأهلية</label><textarea class="form-input-white" style="min-height:70px;" placeholder="مثال: معدل لا يقل عن 12/20، إجادة اللغة الإنجليزية B2..."></textarea></div>
+    <div class="form-group">
+      <label class="form-label-dark">مدة الحركة</label>
+      <select id="grant-duration" class="form-input-white">
+        <option value="أسبوعان">أسبوعان</option>
+        <option value="شهر واحد">شهر واحد</option>
+        <option value="شهران">شهران</option>
+        <option value="فصل دراسي (5 أشهر)">فصل دراسي (5 أشهر)</option>
+        <option value="سنة كاملة">سنة كاملة</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label-dark">معايير الأهلية</label>
+      <textarea id="grant-eligibility" class="form-input-white" style="min-height:70px;" placeholder="مثال: معدل لا يقل عن 12/20، إجادة اللغة الإنجليزية B2..."></textarea>
+    </div>
     <div class="modal-footer">
       <button class="action-btn ghost" onclick="closeModal('grant-modal')">إلغاء</button>
-      <button class="action-btn gold-btn" onclick="alert('تم إضافة المنحة بنجاح!');closeModal('grant-modal')">✅ إضافة المنحة</button>
+      <button class="action-btn gold-btn" onclick="addGrant()">✅ إضافة المنحة</button>
     </div>
   </div>
 </div>
@@ -1458,16 +1487,39 @@ textarea.form-input { resize:vertical; min-height:100px; }
   </div>
 </div>
 
+<!-- Admin Modal -->
+<div class="modal-overlay" id="admin-modal">
+  <div class="modal">
+    <div class="modal-title">👤 إضافة مشرف جديد</div>
+    <div class="form-group">
+      <label class="form-label-dark">الاسم الكامل <span style="color:#e74c3c">*</span></label>
+      <input id="admin-new-name" class="form-input-white" placeholder="الاسم الكامل">
+    </div>
+    <div class="form-group">
+      <label class="form-label-dark">البريد الإلكتروني <span style="color:#e74c3c">*</span></label>
+      <input id="admin-new-email" class="form-input-white" type="email" placeholder="email@university.dz" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label class="form-label-dark">كلمة المرور <span style="color:#e74c3c">*</span></label>
+      <input id="admin-new-pass" class="form-input-white" type="password" placeholder="8 أحرف على الأقل" autocomplete="new-password">
+    </div>
+    <div class="form-group">
+      <label class="form-label-dark">الدور</label>
+      <select id="admin-new-role" class="form-input-white">
+        <option value="admin">مشرف (Admin)</option>
+        <option value="superadmin">مدير عام (Superadmin)</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="action-btn ghost" onclick="closeModal('admin-modal')">إلغاء</button>
+      <button class="action-btn gold-btn" onclick="addAdmin()">✅ إضافة المشرف</button>
+    </div>
+  </div>
+</div>
+
 <script>
-// ========== STATIC FALLBACK DATA (shown before API responds) ==========
-const grantsDataFallback = [
-  { id:1, title:'Erasmus+ دراسة — برشلونة', university_name:'Universitat de Barcelona', country:'🇪🇸 إسبانيا', type:'study', positions:5, deadline:'2025-04-30', duration:'فصل' },
-  { id:2, title:'Erasmus+ تدريب — روما',    university_name:'Sapienza University',       country:'🇮🇹 إيطاليا', type:'train', positions:3, deadline:'2025-05-15', duration:'شهرين' },
-  { id:3, title:'Erasmus+ دراسة — باريس',   university_name:'Université Paris-Saclay',   country:'🇫🇷 فرنسا',  type:'study', positions:4, deadline:'2025-05-01', duration:'سنة' },
-  { id:4, title:'Erasmus+ تدريس — ميونخ',   university_name:'TU Munich',                country:'🇩🇪 ألمانيا', type:'teach', positions:2, deadline:'2025-04-20', duration:'أسبوعان' },
-  { id:5, title:'Erasmus+ دراسة — مدريد',   university_name:'Universidad Complutense',  country:'🇪🇸 إسبانيا', type:'study', positions:6, deadline:'2025-05-10', duration:'فصل' },
-  { id:6, title:'Erasmus+ تدريب — برلين',   university_name:'FU Berlin',                country:'🇩🇪 ألمانيا', type:'train', positions:2, deadline:'2025-04-25', duration:'شهر' },
-];
+// ========== FALLBACK (empty — بيانات حقيقية فقط من قاعدة البيانات) ==========
+const grantsDataFallback = [];
 
 // ========== AUTH HELPERS ==========
 function getToken() { return localStorage.getItem('erasmus_token'); }
@@ -1554,8 +1606,8 @@ async function renderGrants() {
   const agt = document.getElementById('admin-grants-table');
 
   if (lg)  lg.innerHTML  = grants.map(g => makeGrantCard(g, "showPage('page-login')")).join('');
-  if (sg)  sg.innerHTML  = grants.slice(0, 3).map(g => makeGrantCard(g, "openApplyModal()")).join('');
-  if (sag) sag.innerHTML = grants.map(g => makeGrantCard(g, "openApplyModal()")).join('');
+  if (sg)  sg.innerHTML  = grants.slice(0, 3).map(g => makeGrantCard(g, `openApplyModal(${g.id})`)).join('');
+  if (sag) sag.innerHTML = grants.map(g => makeGrantCard(g, `openApplyModal(${g.id})`)).join('');
   if (agt) agt.innerHTML = grants.map(g => `
     <tr>
       <td><strong>${g.title}</strong></td>
@@ -1848,7 +1900,8 @@ async function doRegister() {
 
     setAuth(data.token, data.user);
     showPage('page-student');
-    renderGrants();
+    await renderGrants();
+    loadStudentDashboard();
   } catch { alert('تعذر الاتصال بالخادم'); }
 }
 
@@ -1875,8 +1928,9 @@ async function submitApplication() {
     });
     const data = await res.json();
     if (!res.ok) { alert(data.error || 'خطأ في إرسال الطلب'); return; }
-    alert('تم إرسال طلبك بنجاح! ستتلقى إشعاراً بالبريد الإلكتروني.');
     closeModal('apply-modal');
+    await loadStudentDashboard();
+    alert('✅ تم إرسال طلبك بنجاح! سيتم مراجعته من قبل الإدارة.');
   } catch { alert('تعذر الاتصال بالخادم'); }
 }
 
@@ -1996,17 +2050,107 @@ function switchView(dashboard, viewId, clickedEl) {
 
   // Load fresh data for data-driven views
   if (viewId === 'v-universities') renderUniversities();
+  else if (viewId === 'v-users') loadAdminUsers();
+  else if (viewId === 'v-applications') loadAdminDashboard();
   else renderGrants();
 }
 
 function showAppDetail() { switchView('student', 'v-appdetail', null); }
 
 // ========== MODALS ==========
-function openApplyModal() {
-  populateApplySelect(cachedGrants || grantsDataFallback);
+function openApplyModal(grantId) {
+  populateApplySelect(cachedGrants || []);
+  if (grantId) {
+    const sel = document.getElementById('apply-grant');
+    if (sel) sel.value = grantId;
+  }
   document.getElementById('apply-modal').classList.add('open');
 }
-function openGrantModal() { document.getElementById('grant-modal').classList.add('open'); }
+
+async function openGrantModal() {
+  // Load universities into dropdown from DB
+  const unis = cachedUniversities || await fetchUniversities();
+  const sel = document.getElementById('grant-university');
+  if (sel) {
+    sel.innerHTML = '<option value="">— اختر جامعة —</option>' +
+      unis.map(u => `<option value="${u.id}">${u.name}${u.country ? ' — ' + u.country : ''}</option>`).join('');
+  }
+  // Reset all fields
+  ['grant-title', 'grant-eligibility'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  ['grant-out-students','grant-in-students','grant-out-staff','grant-in-staff'].forEach(id => { const el = document.getElementById(id); if (el) el.value = '0'; });
+  ['grant-app-start','grant-app-end','grant-deadline'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('grant-modal').classList.add('open');
+}
+
+async function addGrant() {
+  const title             = document.getElementById('grant-title')?.value.trim();
+  const type              = document.getElementById('grant-type')?.value;
+  const university_id     = document.getElementById('grant-university')?.value || null;
+  const outgoing_students = parseInt(document.getElementById('grant-out-students')?.value) || 0;
+  const incoming_students = parseInt(document.getElementById('grant-in-students')?.value) || 0;
+  const outgoing_staff    = parseInt(document.getElementById('grant-out-staff')?.value)    || 0;
+  const incoming_staff    = parseInt(document.getElementById('grant-in-staff')?.value)     || 0;
+  const application_start = document.getElementById('grant-app-start')?.value   || null;
+  const application_end   = document.getElementById('grant-app-end')?.value     || null;
+  const deadline          = document.getElementById('grant-deadline')?.value    || null;
+  const duration          = document.getElementById('grant-duration')?.value;
+  const eligibility       = document.getElementById('grant-eligibility')?.value.trim() || null;
+  const positions         = outgoing_students + incoming_students + outgoing_staff + incoming_staff;
+
+  if (!title) { alert('يرجى إدخال عنوان المنحة'); return; }
+
+  try {
+    const res = await fetch('/api/grants', {
+      method: 'POST',
+      headers: authHeader(),
+      body: JSON.stringify({
+        title, type, university_id: university_id || null,
+        positions, deadline, application_start, application_end,
+        duration, eligibility,
+        outgoing_students, incoming_students, outgoing_staff, incoming_staff,
+        status: 'active'
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) { alert(data.error || 'خطأ في إضافة المنحة'); return; }
+    closeModal('grant-modal');
+    cachedGrants = null;
+    await renderGrants();
+    loadAdminDashboard();
+    alert(`✅ تم إضافة المنحة "${data.title}" بنجاح`);
+  } catch { alert('تعذر الاتصال بالخادم'); }
+}
+
+function openAdminModal() {
+  ['admin-new-name','admin-new-email','admin-new-pass'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  document.getElementById('admin-modal').classList.add('open');
+}
+
+async function addAdmin() {
+  const name     = document.getElementById('admin-new-name')?.value.trim();
+  const email    = document.getElementById('admin-new-email')?.value.trim();
+  const password = document.getElementById('admin-new-pass')?.value;
+  const role     = document.getElementById('admin-new-role')?.value;
+
+  if (!name || !email || !password) { alert('يرجى ملء جميع الحقول المطلوبة'); return; }
+  if (password.length < 8) { alert('كلمة المرور يجب أن تكون 8 أحرف على الأقل'); return; }
+
+  try {
+    const res = await fetch('/api/auth/create-admin', {
+      method: 'POST',
+      headers: authHeader(),
+      body: JSON.stringify({ name, email, password, role }),
+    });
+    const data = await res.json();
+    if (!res.ok) { alert(data.error || 'خطأ في إضافة المشرف'); return; }
+    closeModal('admin-modal');
+    await loadAdminUsers();
+    alert(`✅ تم إضافة المشرف "${data.name}" بنجاح`);
+  } catch { alert('تعذر الاتصال بالخادم'); }
+}
+
 function openUniModal()   { document.getElementById('uni-modal').classList.add('open'); }
 function closeModal(id)   { document.getElementById(id).classList.remove('open'); }
 

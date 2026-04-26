@@ -129,4 +129,52 @@ router.patch('/password', authMiddleware, async (req, res) => {
   }
 });
 
+// GET /api/auth/users  — list all users (admin + superadmin)
+router.get('/users', authMiddleware, requireRole('admin', 'superadmin'), async (req, res) => {
+  try {
+    const users = await sql`
+      SELECT id, name, email, role, faculty, phone, created_at
+      FROM users
+      ORDER BY created_at DESC
+    `;
+    res.json(users);
+  } catch (err) {
+    console.error('users list error:', err);
+    res.status(500).json({ error: 'خطأ في الخادم' });
+  }
+});
+
+// POST /api/auth/create-admin  — create admin/superadmin account (superadmin only)
+router.post('/create-admin', authMiddleware, requireRole('superadmin'), async (req, res) => {
+  const { name, email, password, role = 'admin' } = req.body;
+
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'الاسم والبريد وكلمة المرور مطلوبة' });
+  }
+  if (!['admin', 'superadmin'].includes(role)) {
+    return res.status(400).json({ error: 'الدور غير صالح' });
+  }
+  if (password.length < 8) {
+    return res.status(400).json({ error: 'كلمة المرور يجب أن تكون 8 أحرف على الأقل' });
+  }
+
+  try {
+    const existing = await sql`SELECT id FROM users WHERE email = ${email.toLowerCase()}`;
+    if (existing.length > 0) {
+      return res.status(409).json({ error: 'هذا البريد الإلكتروني مستخدم مسبقاً' });
+    }
+
+    const hash = await bcrypt.hash(password, 12);
+    const [user] = await sql`
+      INSERT INTO users (name, email, password_hash, role)
+      VALUES (${name}, ${email.toLowerCase()}, ${hash}, ${role})
+      RETURNING *
+    `;
+    res.status(201).json(safeUser(user));
+  } catch (err) {
+    console.error('create-admin error:', err);
+    res.status(500).json({ error: 'خطأ في الخادم' });
+  }
+});
+
 module.exports = router;
