@@ -63,7 +63,8 @@ router.get('/all', authMiddleware, requireRole('admin', 'superadmin'), async (re
              u2.name        AS university_name,
              usr.name       AS student_name,
              usr.email      AS student_email,
-             usr.faculty    AS student_faculty
+             usr.faculty    AS student_faculty,
+             usr.phone      AS student_phone
       FROM   applications a
       JOIN   grants g        ON a.grant_id  = g.id
       JOIN   users  usr      ON a.user_id   = usr.id

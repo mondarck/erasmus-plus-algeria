@@ -983,7 +983,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
 <div id="page-student" class="page">
   <div class="dashboard-layout">
     <aside class="sidebar">
-      <div class="sidebar-logo" onclick="showPage('page-landing')">
+      <div class="sidebar-logo" onclick="switchView('student','v-overview',null)" style="cursor:pointer;">
         <div class="sidebar-logo-icon">🎓</div>
         <div class="sidebar-logo-text">Erasmus<span>+ Algeria</span></div>
       </div>
@@ -1049,9 +1049,9 @@ textarea.form-input { resize:vertical; min-height:100px; }
           <div class="page-header"><h2>📄 طلباتي</h2><p>تتبع حالة جميع طلباتك</p></div>
           <div class="card">
             <table class="data-table">
-              <thead><tr><th>المنحة</th><th>الجامعة</th><th>تاريخ التقديم</th><th>الحالة</th><th>الإجراء</th></tr></thead>
+              <thead><tr><th>المنحة</th><th>الجامعة</th><th>التاريخ</th><th>الحالة</th><th>ملاحظة المشرف</th><th>الملفات</th></tr></thead>
               <tbody id="student-myapps-body">
-                <tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;">لم تتقدم على أي منحة بعد</td></tr>
+                <tr><td colspan="6" style="text-align:center;color:var(--gray-mid);padding:30px;">لم تتقدم على أي منحة بعد</td></tr>
               </tbody>
             </table>
           </div>
@@ -1148,7 +1148,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
 <div id="page-admin" class="page">
   <div class="dashboard-layout">
     <aside class="sidebar">
-      <div class="sidebar-logo" onclick="showPage('page-landing')">
+      <div class="sidebar-logo" onclick="switchView('admin','v-dashboard',null)" style="cursor:pointer;">
         <div class="sidebar-logo-icon">🎓</div>
         <div class="sidebar-logo-text">Erasmus<span>+ إدارة</span></div>
       </div>
@@ -1168,7 +1168,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
           <div class="user-avatar">م.م</div>
           <div><div class="user-name" id="admin-name">مدير المنح</div><div class="user-role" id="admin-role">مشرف</div></div>
         </div>
-        <div class="sidebar-item" onclick="showPage('page-landing')"><span class="icon">🚪</span> تسجيل الخروج</div>
+        <div class="sidebar-item" onclick="logout()"><span class="icon">🚪</span> تسجيل الخروج</div>
       </div>
     </aside>
     <main class="main-content">
@@ -1530,6 +1530,48 @@ textarea.form-input { resize:vertical; min-height:100px; }
   </div>
 </div>
 
+<!-- Student Docs Management Modal -->
+<div class="modal-overlay" id="docs-modal">
+  <div class="modal">
+    <div class="modal-title">📁 إدارة وثائق الطلب</div>
+    <p id="docs-modal-grant" style="color:var(--gray-mid);font-size:0.88rem;margin-bottom:14px;"></p>
+    <div id="docs-modal-existing" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;"></div>
+    <div class="divider"></div>
+    <p style="font-size:0.85rem;color:var(--gray-mid);margin-bottom:10px;">رفع أو استبدال وثيقة:</p>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="upload-row">
+        <label for="rdoc-transcripts">📊 كشوف النقاط<br><span class="file-none" id="rlbl-transcripts">لم يتم الاختيار</span></label>
+        <input type="file" id="rdoc-transcripts" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileLabel(this,'rlbl-transcripts')">
+        <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('rdoc-transcripts').click()">اختيار</button>
+      </div>
+      <div class="upload-row">
+        <label for="rdoc-language-cert">🌐 شهادة مستوى اللغة<br><span class="file-none" id="rlbl-language-cert">لم يتم الاختيار</span></label>
+        <input type="file" id="rdoc-language-cert" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileLabel(this,'rlbl-language-cert')">
+        <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('rdoc-language-cert').click()">اختيار</button>
+      </div>
+      <div class="upload-row">
+        <label for="rdoc-thesis-plan">📝 خطة عمل المذكرة<br><span class="file-none" id="rlbl-thesis-plan">لم يتم الاختيار</span></label>
+        <input type="file" id="rdoc-thesis-plan" accept=".pdf,.doc,.docx" onchange="updateFileLabel(this,'rlbl-thesis-plan')">
+        <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('rdoc-thesis-plan').click()">اختيار</button>
+      </div>
+      <div class="upload-row">
+        <label for="rdoc-supervisor-auth">✅ ترخيص الأستاذ المشرف<br><span class="file-none" id="rlbl-supervisor-auth">لم يتم الاختيار</span></label>
+        <input type="file" id="rdoc-supervisor-auth" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileLabel(this,'rlbl-supervisor-auth')">
+        <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('rdoc-supervisor-auth').click()">اختيار</button>
+      </div>
+      <div class="upload-row">
+        <label for="rdoc-invitation-letter">✉️ رسالة دعوة الجامعة<br><span class="file-none" id="rlbl-invitation-letter">لم يتم الاختيار</span></label>
+        <input type="file" id="rdoc-invitation-letter" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileLabel(this,'rlbl-invitation-letter')">
+        <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('rdoc-invitation-letter').click()">اختيار</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="action-btn ghost" onclick="closeModal('docs-modal')">إغلاق</button>
+      <button class="action-btn gold-btn" onclick="saveStudentDocs()">💾 حفظ الملفات</button>
+    </div>
+  </div>
+</div>
+
 <!-- Review Modal (Admin) -->
 <div class="modal-overlay" id="review-modal">
   <div class="modal" style="max-width:680px;">
@@ -1539,6 +1581,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
       <div><div style="font-size:0.75rem;color:var(--gray-mid);">البريد الإلكتروني</div><div id="rv-student-email" style="color:var(--blue-deep);font-size:0.9rem;"></div></div>
       <div><div style="font-size:0.75rem;color:var(--gray-mid);">الكلية</div><div id="rv-student-faculty" style="color:var(--blue-deep);"></div></div>
       <div><div style="font-size:0.75rem;color:var(--gray-mid);">المنحة</div><div id="rv-grant-title" style="font-weight:600;color:var(--blue-deep);font-size:0.9rem;"></div></div>
+      <div><div style="font-size:0.75rem;color:var(--gray-mid);">رقم الهاتف</div><div id="rv-student-phone" style="color:var(--blue-deep);direction:ltr;text-align:right;"></div></div>
       <div><div style="font-size:0.75rem;color:var(--gray-mid);">المستوى الدراسي</div><div id="rv-study-level" style="color:var(--blue-deep);"></div></div>
       <div><div style="font-size:0.75rem;color:var(--gray-mid);">مستوى اللغة</div><div id="rv-language" style="color:var(--blue-deep);"></div></div>
       <div><div style="font-size:0.75rem;color:var(--gray-mid);">تاريخ التقديم</div><div id="rv-date" style="color:var(--blue-deep);"></div></div>
@@ -1600,6 +1643,11 @@ textarea.form-input { resize:vertical; min-height:100px; }
 <script>
 // ========== FALLBACK (empty — بيانات حقيقية فقط من قاعدة البيانات) ==========
 const grantsDataFallback = [];
+
+// ========== EMAIL VALIDATION ==========
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
+}
 
 // ========== AUTH HELPERS ==========
 function getToken() { return localStorage.getItem('erasmus_token'); }
@@ -1775,6 +1823,7 @@ async function doLogin() {
   const password = document.getElementById('login-pass').value;
 
   if (!email || !password) { alert('يرجى إدخال البريد الإلكتروني وكلمة المرور'); return; }
+  if (!isValidEmail(email)) { alert('صيغة البريد الإلكتروني غير صحيحة'); return; }
 
   try {
     const res  = await fetch('/api/auth/login', {
@@ -1872,12 +1921,16 @@ async function loadStudentDashboard() {
       myappsBody.innerHTML = apps.length ? apps.map(a => {
         const [sc, sl] = STATUS[a.status] || ['status-review', a.status];
         const date = new Date(a.created_at).toLocaleDateString('ar-DZ');
+        const noteHtml = a.admin_note
+          ? `<span style="display:inline-block;background:#fff3cd;color:#856404;border-radius:6px;padding:3px 8px;font-size:0.8rem;max-width:200px;white-space:normal;">💬 ${a.admin_note}</span>`
+          : '<span style="color:var(--gray-mid);font-size:0.8rem;">—</span>';
         return `<tr>
           <td><strong>${a.grant_title}</strong></td>
           <td>${a.university_name || '—'}</td>
           <td>${date}</td>
           <td><span class="status ${sc}">${sl}</span></td>
-          <td>—</td>
+          <td>${noteHtml}</td>
+          <td><button class="action-btn ghost" style="font-size:0.78rem;" onclick="openDocsModal(${a.id},'${a.grant_title.replace(/'/g,"\\'")}')">📁 الملفات</button></td>
         </tr>`;
       }).join('') : empty5;
     }
@@ -1972,6 +2025,7 @@ async function openReviewModal(appId) {
   el('rv-student-name').textContent    = app.student_name    || '—';
   el('rv-student-email').textContent   = app.student_email   || '—';
   el('rv-student-faculty').textContent = app.student_faculty || '—';
+  el('rv-student-phone').textContent   = app.student_phone   || '—';
   el('rv-grant-title').textContent     = app.grant_title     || '—';
   el('rv-study-level').textContent     = LEVEL[app.study_level] || '—';
   el('rv-language').textContent        = app.language_level  || '—';
@@ -2028,6 +2082,74 @@ async function downloadDoc(docId, fileName) {
     link.click();
     document.body.removeChild(link);
   } catch { alert('تعذر الاتصال بالخادم'); }
+}
+
+// ========== STUDENT DOCS MANAGEMENT ==========
+let currentDocsAppId = null;
+
+async function openDocsModal(appId, grantTitle) {
+  currentDocsAppId = appId;
+  const grantEl = document.getElementById('docs-modal-grant');
+  if (grantEl) grantEl.textContent = `المنحة: ${grantTitle}`;
+
+  // Reset file inputs and labels
+  ['rdoc-transcripts','rdoc-language-cert','rdoc-thesis-plan','rdoc-supervisor-auth','rdoc-invitation-letter'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  ['rlbl-transcripts','rlbl-language-cert','rlbl-thesis-plan','rlbl-supervisor-auth','rlbl-invitation-letter'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.textContent = 'لم يتم الاختيار'; el.className = 'file-none'; }
+  });
+
+  // Show existing docs
+  const existingDiv = document.getElementById('docs-modal-existing');
+  existingDiv.innerHTML = '<div style="color:var(--gray-mid);font-size:0.85rem;">جاري تحميل الملفات...</div>';
+  try {
+    const res = await fetch(`/api/applications/${appId}/documents`, { headers: authHeader() });
+    if (res.ok) {
+      const docs = await res.json();
+      const LABELS = { transcripts:'كشوف النقاط', language_cert:'شهادة اللغة', thesis_plan:'خطة المذكرة', supervisor_auth:'ترخيص المشرف', invitation_letter:'رسالة الدعوة' };
+      existingDiv.innerHTML = docs.length
+        ? `<p style="font-size:0.82rem;color:var(--gray-mid);margin-bottom:6px;">الملفات الحالية:</p>` +
+          docs.map(d => `<div style="display:flex;justify-content:space-between;align-items:center;background:#e8f7ef;padding:7px 12px;border-radius:8px;">
+            <span style="font-size:0.85rem;color:var(--blue-deep);">✅ ${LABELS[d.doc_type]||d.doc_type} — <small>${d.file_name}</small></span>
+          </div>`).join('')
+        : '<p style="font-size:0.85rem;color:var(--gray-mid);">لا توجد ملفات مرفوعة بعد.</p>';
+    }
+  } catch(e) { existingDiv.innerHTML = ''; }
+
+  document.getElementById('docs-modal').classList.add('open');
+}
+
+async function saveStudentDocs() {
+  if (!currentDocsAppId) return;
+  const docInputs = [
+    { id: 'rdoc-transcripts',       type: 'transcripts'       },
+    { id: 'rdoc-language-cert',     type: 'language_cert'     },
+    { id: 'rdoc-thesis-plan',       type: 'thesis_plan'       },
+    { id: 'rdoc-supervisor-auth',   type: 'supervisor_auth'   },
+    { id: 'rdoc-invitation-letter', type: 'invitation_letter' },
+  ];
+  let uploaded = 0;
+  for (const { id, type } of docInputs) {
+    const input = document.getElementById(id);
+    if (!input || !input.files || !input.files[0]) continue;
+    const file = input.files[0];
+    try {
+      const file_data = await readFileAsBase64(file);
+      const res = await fetch(`/api/applications/${currentDocsAppId}/documents`, {
+        method: 'POST', headers: authHeader(),
+        body: JSON.stringify({ doc_type: type, file_name: file.name, file_size: file.size, file_data }),
+      });
+      if (res.ok) uploaded++;
+    } catch(e) { console.error('upload error', type, e); }
+  }
+  if (uploaded > 0) {
+    alert(`✅ تم رفع ${uploaded} ملف بنجاح`);
+    await openDocsModal(currentDocsAppId, document.getElementById('docs-modal-grant').textContent.replace('المنحة: ',''));
+  } else {
+    alert('لم يتم اختيار أي ملف جديد');
+  }
 }
 
 // ========== ADMIN USERS LOADER ==========
@@ -2093,6 +2215,7 @@ async function doRegister() {
   const confirmPass  = document.getElementById('reg-confirm').value;
 
   if (!name || !email || !password) { alert('يرجى ملء جميع الحقول المطلوبة'); return; }
+  if (!isValidEmail(email))          { alert('صيغة البريد الإلكتروني غير صحيحة'); return; }
   if (password !== confirmPass)      { alert('كلمتا المرور غير متطابقتين'); return; }
   if (password.length < 8)           { alert('كلمة المرور يجب أن تكون 8 أحرف على الأقل'); return; }
 
@@ -2434,6 +2557,7 @@ async function addAdmin() {
   const role     = document.getElementById('admin-new-role')?.value;
 
   if (!name || !email || !password) { alert('يرجى ملء جميع الحقول المطلوبة'); return; }
+  if (!isValidEmail(email))         { alert('صيغة البريد الإلكتروني غير صحيحة'); return; }
   if (password.length < 8) { alert('كلمة المرور يجب أن تكون 8 أحرف على الأقل'); return; }
 
   try {
