@@ -94,6 +94,34 @@ body {
 .logo-text { font-family:'Tajawal',sans-serif; font-weight:800; font-size:1.3rem; }
 .logo-text span { color:var(--gold); }
 
+/* University of El Oued logo */
+.uni-logo-wrap {
+  width: 48px; height: 48px;
+  background: white;
+  border-radius: 10px;
+  display: flex; align-items:center; justify-content:center;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  flex-shrink: 0;
+}
+.uni-logo-wrap img { width: 44px; height: 44px; object-fit: contain; }
+.logo-name { display:flex; flex-direction:column; line-height:1.2; }
+.logo-name .en { font-family:'Tajawal',sans-serif; font-weight:800; font-size:1.15rem; }
+.logo-name .en span { color:var(--gold); }
+.logo-name .ar { font-family:'Tajawal',sans-serif; font-size:0.7rem; color:var(--gray-mid); font-weight:400; }
+
+/* Sidebar university logo */
+.sidebar-uni-wrap {
+  width: 40px; height: 40px;
+  background: white;
+  border-radius: 8px;
+  display: flex; align-items:center; justify-content:center;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  flex-shrink: 0;
+}
+.sidebar-uni-wrap img { width: 36px; height: 36px; object-fit: contain; }
+
 .nav-links { display:flex; gap:8px; align-items:center; }
 .nav-btn {
   padding: 10px 22px;
@@ -302,6 +330,17 @@ body {
 .auth-logo { text-align:center; margin-bottom:30px; }
 .auth-title { font-family:'Tajawal',sans-serif; font-size:1.7rem; font-weight:700; text-align:center; margin-bottom:6px; }
 .auth-sub { color:var(--gray-mid); text-align:center; font-size:0.9rem; margin-bottom:30px; }
+
+/* Account type selection cards */
+.type-card {
+  background: rgba(255,255,255,0.06);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 12px; padding: 14px 10px;
+  text-align: center; cursor: pointer;
+  transition: all 0.2s; color: var(--white);
+}
+.type-card:hover { background:rgba(255,255,255,0.1); border-color:rgba(201,168,76,0.4); }
+.type-card.selected { background:rgba(201,168,76,0.15); border-color:var(--gold); }
 
 .form-group { margin-bottom: 18px; }
 .form-label { display:block; font-size:0.88rem; font-weight:600; margin-bottom:8px; color:var(--gray-light); }
@@ -638,6 +677,57 @@ select.form-input option { background: var(--blue-mid); color: var(--white); }
 .tl-title { font-weight:600; font-size:0.9rem; color:var(--blue-deep); }
 .tl-date { font-size:0.78rem; color:var(--gray-mid); margin-top:2px; }
 
+/* 9-Stage Workflow Progress */
+.stage-pip {
+  width:28px; height:28px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.72rem; font-weight:700; flex-shrink:0;
+  background:var(--gray-light); color:var(--gray-mid);
+  border:2px solid var(--gray-light);
+  transition:all 0.2s; cursor:default;
+}
+.stage-pip.done { background:var(--green); color:white; border-color:var(--green); }
+.stage-pip.current { background:var(--gold); color:var(--blue-deep); border-color:var(--gold); box-shadow:0 0 0 3px rgba(201,168,76,0.3); }
+.stage-connector { flex:1; height:2px; background:var(--gray-light); min-width:4px; }
+.stage-connector.done { background:var(--green); }
+
+/* Student 9-stage timeline */
+.workflow-timeline {
+  display:flex; flex-direction:column; gap:0;
+  position:relative; padding-right:24px;
+}
+.workflow-timeline::before {
+  content:''; position:absolute; right:11px; top:8px; bottom:8px;
+  width:2px; background:var(--gray-light);
+}
+.wf-item {
+  display:flex; align-items:flex-start; gap:12px;
+  padding-bottom:14px; position:relative;
+}
+.wf-dot {
+  width:22px; height:22px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.7rem; font-weight:700;
+  background:var(--gray-light); color:var(--gray-mid);
+  border:2px solid white;
+  position:absolute; right:-11px; top:2px;
+  box-shadow:0 0 0 3px var(--gray-light);
+}
+.wf-dot.done { background:var(--green); color:white; box-shadow:0 0 0 3px rgba(26,122,74,0.2); }
+.wf-dot.current { background:var(--gold); color:var(--blue-deep); box-shadow:0 0 0 3px rgba(201,168,76,0.3); animation:pulse 2s infinite; }
+.wf-dot.rejected { background:var(--red); color:white; box-shadow:0 0 0 3px rgba(155,35,53,0.2); }
+.wf-content { padding-right:14px; }
+.wf-stage-num { font-size:0.68rem; color:var(--gray-mid); margin-bottom:1px; }
+.wf-stage-title { font-weight:700; font-size:0.88rem; color:var(--blue-deep); }
+.wf-stage-sub { font-size:0.78rem; color:var(--gray-mid); margin-top:2px; }
+.wf-stage-badge {
+  display:inline-block; border-radius:6px; padding:2px 8px;
+  font-size:0.73rem; font-weight:600; margin-top:4px;
+}
+.wf-badge-done { background:#e8f7ef; color:var(--green); }
+.wf-badge-current { background:#fff8e6; color:var(--orange); }
+.wf-badge-pending { background:var(--gray-light); color:var(--gray-mid); }
+
 /* Filter bar */
 .filter-bar {
   display:flex;
@@ -854,8 +944,13 @@ textarea.form-input { resize:vertical; min-height:100px; }
 <div id="page-landing" class="page active">
   <nav class="nav-landing">
     <div class="logo" onclick="showPage('page-landing')">
-      <div class="logo-icon">🎓</div>
-      <div class="logo-text">Erasmus<span>+</span> Algeria</div>
+      <div class="uni-logo-wrap">
+        <img src="logoue.webp" alt="University of El Oued" onerror="this.parentElement.innerHTML='🎓'">
+      </div>
+      <div class="logo-name">
+        <div class="en">Erasmus<span>+</span> Algeria</div>
+        <div class="ar">جامعة الشهيد حمّه لخضر — الوادي</div>
+      </div>
     </div>
     <div class="nav-links">
       <button class="nav-btn ghost" id="nav-link-grants" onclick="scrollToGrants()">Available grants</button>
@@ -886,9 +981,15 @@ textarea.form-input { resize:vertical; min-height:100px; }
 <div id="page-login" class="page">
   <nav class="nav-landing">
     <div class="logo" onclick="showPage('page-landing')">
-      <div class="logo-icon">🎓</div>
-      <div class="logo-text">Erasmus<span>+</span> Algeria</div>
+      <div class="uni-logo-wrap">
+        <img src="logoue.webp" alt="University of El Oued" onerror="this.parentElement.innerHTML='🎓'">
+      </div>
+      <div class="logo-name">
+        <div class="en">Erasmus<span>+</span> Algeria</div>
+        <div class="ar">جامعة الشهيد حمّه لخضر — الوادي</div>
+      </div>
     </div>
+    <button class="nav-btn ghost" onclick="toggleLanguage()" id="login-lang-btn">العربية</button>
   </nav>
   <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
   <div class="auth-card">
@@ -920,63 +1021,143 @@ textarea.form-input { resize:vertical; min-height:100px; }
 <div id="page-register" class="page">
   <nav class="nav-landing">
     <div class="logo" onclick="showPage('page-landing')">
-      <div class="logo-icon">🎓</div>
-      <div class="logo-text">Erasmus<span>+</span> Algeria</div>
+      <div class="uni-logo-wrap">
+        <img src="logoue.webp" alt="University of El Oued" onerror="this.parentElement.innerHTML='🎓'">
+      </div>
+      <div class="logo-name">
+        <div class="en">Erasmus<span>+</span> Algeria</div>
+        <div class="ar">جامعة الشهيد حمّه لخضر — الوادي</div>
+      </div>
     </div>
+    <button class="nav-btn ghost" onclick="toggleLanguage()" style="margin-right:10px;" id="reg-lang-btn">العربية</button>
   </nav>
-  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
-  <div class="auth-card" style="max-width:580px;">
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;overflow-y:auto;">
+  <div class="auth-card" style="max-width:620px;width:100%;">
     <div class="auth-logo" style="font-size:2.5rem;">✍️</div>
     <div class="auth-title" id="register-title">Create a new account</div>
     <div class="auth-sub" id="register-sub">Join Erasmus+ and track your mobility status professionally</div>
 
+    <!-- Step 1: Account Type -->
+    <div style="margin-bottom:18px;">
+      <label class="form-label" id="register-type-label" style="margin-bottom:8px;display:block;">Account type <span style="color:#e74c3c">*</span></label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;" id="type-cards">
+        <div class="type-card" data-value="master_student" onclick="selectAccountType('master_student')">
+          <div style="font-size:1.4rem;margin-bottom:4px;">🎓</div>
+          <div style="font-weight:700;font-size:0.88rem;">Master Student</div>
+          <div style="font-size:0.75rem;color:var(--gray-mid);">طالب ماستر</div>
+        </div>
+        <div class="type-card" data-value="phd_student" onclick="selectAccountType('phd_student')">
+          <div style="font-size:1.4rem;margin-bottom:4px;">🔬</div>
+          <div style="font-weight:700;font-size:0.88rem;">PhD Student</div>
+          <div style="font-size:0.75rem;color:var(--gray-mid);">طالب دكتوراه</div>
+        </div>
+        <div class="type-card" data-value="administrative_staff" onclick="selectAccountType('administrative_staff')">
+          <div style="font-size:1.4rem;margin-bottom:4px;">🏢</div>
+          <div style="font-weight:700;font-size:0.88rem;">Administrative Staff</div>
+          <div style="font-size:0.75rem;color:var(--gray-mid);">موظف إداري</div>
+        </div>
+        <div class="type-card" data-value="academic_professor" onclick="selectAccountType('academic_professor')">
+          <div style="font-size:1.4rem;margin-bottom:4px;">👨‍🏫</div>
+          <div style="font-weight:700;font-size:0.88rem;">Academic Professor</div>
+          <div style="font-size:0.75rem;color:var(--gray-mid);">موظف أستاذ</div>
+        </div>
+      </div>
+      <input type="hidden" id="reg-type" value="">
+    </div>
+
+    <!-- Basic info -->
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label" id="register-name-label">Full name</label>
+        <label class="form-label" id="register-name-label">Full name (as on passport) <span style="color:#e74c3c">*</span></label>
         <input type="text" id="reg-name" class="form-input" placeholder="John Doe">
       </div>
       <div class="form-group">
-        <label class="form-label" id="register-phone-label">Phone number</label>
+        <label class="form-label" id="register-phone-label">Phone number <span style="color:#e74c3c">*</span></label>
         <input type="tel" id="reg-phone" class="form-input" placeholder="+213 XXX XXX XXX">
       </div>
     </div>
+
+    <!-- Email with live validation -->
     <div class="form-group">
-      <label class="form-label" id="register-email-label">Email address</label>
-      <input type="email" id="reg-email" class="form-input" placeholder="example@univ-eloued.dz">
+      <label class="form-label" id="register-email-label">Institutional email <span style="color:#e74c3c">*</span></label>
+      <input type="email" id="reg-email" class="form-input" placeholder="yourname@univ-eloued.dz" oninput="checkEmailDomain(this)">
+      <div id="reg-email-hint" style="margin-top:5px;font-size:0.82rem;padding:6px 10px;border-radius:6px;display:none;"></div>
     </div>
-    <div class="form-row">
+
+    <!-- Dynamic fields per type -->
+    <!-- Staff position (admin + professor) -->
+    <div id="reg-group-position" style="display:none;">
       <div class="form-group">
-        <label class="form-label" id="register-type-label">Applicant type</label>
-        <select id="reg-type" class="form-input">
-          <option value="master_student">Master Student</option>
-          <option value="phd_student">PhD Student</option>
-          <option value="administrative_staff">Administrative Staff</option>
-          <option value="academic_professor">Academic Professor</option>
-        </select>
+        <label class="form-label">Position / Academic Rank <span style="color:#e74c3c">*</span></label>
+        <input type="text" id="reg-position" class="form-input" placeholder="e.g. Associate Professor / Administrative Officer">
       </div>
+    </div>
+
+    <!-- Faculty (students + professor, NOT admin) -->
+    <div id="reg-group-faculty" style="display:none;">
       <div class="form-group">
-        <label class="form-label" id="register-faculty-label">Faculty / Department</label>
+        <label class="form-label" id="register-faculty-label">Faculty <span style="color:#e74c3c">*</span></label>
         <select id="reg-faculty" class="form-input">
-          <option>Faculty of Science</option>
-          <option>Faculty of Engineering</option>
-          <option>Faculty of Arts</option>
-          <option>Faculty of Medicine</option>
-          <option>Faculty of Economics</option>
+          <option value="">— Select faculty —</option>
+          <option value="Faculty of Exact Sciences">Faculty of Exact Sciences</option>
+          <option value="Faculty of Natural Sciences & Life">Faculty of Natural Sciences &amp; Life</option>
+          <option value="Faculty of Technology">Faculty of Technology</option>
+          <option value="Faculty of Economics, Commerce & Management">Faculty of Economics, Commerce &amp; Management</option>
+          <option value="Faculty of Social Sciences & Humanities">Faculty of Social Sciences &amp; Humanities</option>
+          <option value="Faculty of Law & Political Science">Faculty of Law &amp; Political Science</option>
+          <option value="Faculty of Letters & Languages">Faculty of Letters &amp; Languages</option>
+          <option value="Faculty of Islamic Sciences">Faculty of Islamic Sciences</option>
+          <option value="Institute of Science & Physical Activities">Institute of Science &amp; Physical Activities</option>
         </select>
       </div>
     </div>
+
+    <!-- Department & Speciality (all types) -->
+    <div id="reg-group-dept" style="display:none;">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Department / Administrative Unit <span style="color:#e74c3c">*</span></label>
+          <input type="text" id="reg-department" class="form-input" placeholder="e.g. Computer Science">
+        </div>
+        <div class="form-group" id="reg-group-speciality-inner">
+          <label class="form-label">Speciality / Field</label>
+          <input type="text" id="reg-speciality" class="form-input" placeholder="e.g. Machine Learning">
+        </div>
+      </div>
+    </div>
+
+    <!-- Academic year (students only) -->
+    <div id="reg-group-year" style="display:none;">
+      <div class="form-group">
+        <label class="form-label">Current Academic Year <span style="color:#e74c3c">*</span></label>
+        <select id="reg-academic-year" class="form-input">
+          <option value="">— Select year —</option>
+          <option value="M1">Master 1 (M1)</option>
+          <option value="M2">Master 2 (M2)</option>
+          <option value="PhD1">PhD Year 1</option>
+          <option value="PhD2">PhD Year 2</option>
+          <option value="PhD3">PhD Year 3</option>
+          <option value="PhD4">PhD Year 4+</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Password -->
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label" id="register-pass-label">Password</label>
-        <input type="password" id="reg-pass" class="form-input" placeholder="••••••••">
+        <label class="form-label" id="register-pass-label">Password <span style="color:#e74c3c">*</span></label>
+        <input type="password" id="reg-pass" class="form-input" placeholder="••••••••  (min. 8 characters)">
       </div>
       <div class="form-group">
-        <label class="form-label" id="register-confirm-label">Confirm password</label>
+        <label class="form-label" id="register-confirm-label">Confirm password <span style="color:#e74c3c">*</span></label>
         <input type="password" id="reg-confirm" class="form-input" placeholder="••••••••">
       </div>
     </div>
-    <div style="margin-bottom:16px;color:var(--gray-mid);font-size:0.9rem;" id="register-note">
-      Please use your university email if available. Accounts with a @univ-eloued.dz address are activated immediately. Other emails will be approved by an administrator.
+
+    <div style="margin-bottom:16px;" id="register-note">
+      <div style="background:#f0f4ff;border-radius:8px;padding:10px 14px;font-size:0.82rem;color:#2d5aa0;border-left:3px solid var(--blue-royal);">
+        ℹ️ Accounts with a <strong>@univ-eloued.dz</strong> email are activated immediately. Other emails require administrator approval before you can log in.
+      </div>
     </div>
     <button class="btn-full" id="register-button" onclick="doRegister()">Create account</button>
     <div class="auth-switch" id="register-switch">Already have an account? <a onclick="showPage('page-login')">Login</a></div>
@@ -989,7 +1170,9 @@ textarea.form-input { resize:vertical; min-height:100px; }
   <div class="dashboard-layout">
     <aside class="sidebar">
       <div class="sidebar-logo" onclick="switchView('student','v-overview',null)" style="cursor:pointer;">
-        <div class="sidebar-logo-icon">🎓</div>
+        <div class="sidebar-uni-wrap">
+          <img src="logoue.webp" alt="University of El Oued" onerror="this.parentElement.innerHTML='🎓'">
+        </div>
         <div class="sidebar-logo-text">Erasmus<span>+ Algeria</span></div>
       </div>
       <div class="sidebar-section">القائمة الرئيسية</div>
@@ -1010,6 +1193,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
       <div class="top-bar">
         <div class="top-bar-title" id="student-page-title">لوحة التحكم</div>
         <div class="top-bar-right">
+          <button class="action-btn" onclick="toggleLanguage()" id="student-lang-btn" style="background:transparent;border:1px solid var(--gray-light);color:var(--gray-text);font-size:0.85rem;padding:6px 12px;">العربية</button>
           <button class="notif-btn" onclick="switchView('student','v-notifs',null)">🔔<span class="notif-dot"></span></button>
           <button class="action-btn gold-btn" onclick="openApplyModal()">+ تقديم طلب جديد</button>
         </div>
@@ -1101,47 +1285,45 @@ textarea.form-input { resize:vertical; min-height:100px; }
           </div>
         </div>
 
-        <!-- APP DETAIL (hidden by default) -->
+        <!-- APP DETAIL (dynamic, filled by openAppDetail) -->
         <div class="dash-view" id="student-v-appdetail">
           <div class="detail-back" onclick="switchView('student','v-myapps',null)">← رجوع إلى طلباتي</div>
           <div class="row-3col">
             <div>
               <div class="card" style="margin-bottom:20px;">
                 <div class="card-title">📋 تفاصيل المنحة</div>
-                <div class="info-grid">
-                  <div class="info-item"><label>عنوان المنحة</label><span>Erasmus+ دراسة — برشلونة</span></div>
-                  <div class="info-item"><label>الجامعة الشريكة</label><span>Universitat de Barcelona</span></div>
-                  <div class="info-item"><label>الدولة</label><span>🇪🇸 إسبانيا</span></div>
-                  <div class="info-item"><label>نوع الحركة</label><span>دراسة أكاديمية</span></div>
-                  <div class="info-item"><label>المدة</label><span>فصل دراسي (5 أشهر)</span></div>
-                  <div class="info-item"><label>تاريخ التقديم</label><span>01 مارس 2025</span></div>
+                <div class="info-grid" id="ad-grant-info">
+                  <div class="info-item"><label>عنوان المنحة</label><span id="ad-grant-title">—</span></div>
+                  <div class="info-item"><label>الجامعة الشريكة</label><span id="ad-uni-name">—</span></div>
+                  <div class="info-item"><label>الدولة</label><span id="ad-uni-country">—</span></div>
+                  <div class="info-item"><label>نوع الحركة</label><span id="ad-grant-type">—</span></div>
+                  <div class="info-item"><label>المدة</label><span id="ad-duration">—</span></div>
+                  <div class="info-item"><label>تاريخ التقديم</label><span id="ad-apply-date">—</span></div>
                 </div>
               </div>
-              <div class="card">
+              <div class="card" style="margin-bottom:20px;">
                 <div class="card-title">📁 الوثائق المرفقة</div>
-                <ul class="doc-list">
-                  <li class="doc-item"><div class="doc-name"><span class="doc-check">✅</span> السيرة الذاتية</div><button class="action-btn ghost" style="font-size:0.78rem;">تحميل</button></li>
-                  <li class="doc-item"><div class="doc-name"><span class="doc-check">✅</span> خطاب النية</div><button class="action-btn ghost" style="font-size:0.78rem;">تحميل</button></li>
-                  <li class="doc-item"><div class="doc-name"><span class="doc-check">✅</span> كشف العلامات</div><button class="action-btn ghost" style="font-size:0.78rem;">تحميل</button></li>
-                  <li class="doc-item"><div class="doc-name"><span class="doc-check">✅</span> إثبات مستوى اللغة</div><button class="action-btn ghost" style="font-size:0.78rem;">تحميل</button></li>
-                </ul>
+                <div id="ad-docs-list" style="display:flex;flex-direction:column;gap:6px;">
+                  <div style="color:var(--gray-mid);font-size:0.85rem;">جاري التحميل...</div>
+                </div>
+                <button class="action-btn ghost" style="margin-top:10px;width:100%;font-size:0.85rem;" id="ad-upload-btn">📤 رفع أو تحديث الوثائق</button>
+              </div>
+              <!-- Admin note -->
+              <div class="card" id="ad-note-card" style="display:none;">
+                <div class="card-title">💬 ملاحظة من المشرف</div>
+                <div id="ad-admin-note" style="background:#fff8e6;border-radius:8px;padding:10px 14px;color:#856404;font-size:0.88rem;"></div>
               </div>
             </div>
             <div>
+              <!-- 9-Stage Workflow Timeline -->
               <div class="card" style="margin-bottom:20px;">
-                <div class="card-title">📊 مراحل الطلب</div>
-                <div class="timeline">
-                  <div class="tl-item"><div class="tl-dot done"></div><div class="tl-title">✅ تم إرسال الطلب</div><div class="tl-date">01 مارس 2025</div></div>
-                  <div class="tl-item"><div class="tl-dot done"></div><div class="tl-title">✅ قيد المراجعة</div><div class="tl-date">10 مارس 2025</div></div>
-                  <div class="tl-item"><div class="tl-dot done"></div><div class="tl-title">✅ مقابلة</div><div class="tl-date">20 مارس 2025</div></div>
-                  <div class="tl-item"><div class="tl-dot current"></div><div class="tl-title">⭐ مقبول</div><div class="tl-date">01 أبريل 2025</div></div>
-                </div>
+                <div class="card-title">📊 مسار الحركية Erasmus+ ICM</div>
+                <div id="ad-workflow-timeline" class="workflow-timeline" style="margin-top:8px;"></div>
               </div>
-              <div class="card">
-                <div class="card-title">💬 ملاحظة من المشرف</div>
-                <div class="alert alert-success" style="font-size:0.88rem;">ملفك ممتاز، تهانينا! يرجى تأكيد قبولك قبل نهاية أبريل.</div>
-                <div class="alert alert-warning" style="font-size:0.83rem;">⏰ الموعد النهائي للتأكيد: 30 أبريل 2025</div>
-                <button class="action-btn success" style="width:100%;" onclick="alert('تم تأكيد القبول!')">✅ تأكيد القبول الآن</button>
+              <!-- Visa info (shown if available) -->
+              <div class="card" id="ad-visa-card" style="display:none;">
+                <div class="card-title">🛂 معلومات التأشيرة</div>
+                <div class="info-grid" id="ad-visa-info"></div>
               </div>
             </div>
           </div>
@@ -1156,7 +1338,9 @@ textarea.form-input { resize:vertical; min-height:100px; }
   <div class="dashboard-layout">
     <aside class="sidebar">
       <div class="sidebar-logo" onclick="switchView('admin','v-dashboard',null)" style="cursor:pointer;">
-        <div class="sidebar-logo-icon">🎓</div>
+        <div class="sidebar-uni-wrap">
+          <img src="logoue.webp" alt="University of El Oued" onerror="this.parentElement.innerHTML='🎓'">
+        </div>
         <div class="sidebar-logo-text">Erasmus<span>+ إدارة</span></div>
       </div>
       <div class="sidebar-section">الإدارة</div>
@@ -1182,6 +1366,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
       <div class="top-bar">
         <div class="top-bar-title" id="admin-page-title">لوحة التحكم</div>
         <div class="top-bar-right">
+          <button class="action-btn" onclick="toggleLanguage()" id="admin-lang-btn" style="background:transparent;border:1px solid var(--gray-light);color:var(--gray-text);font-size:0.85rem;padding:6px 12px;">العربية</button>
           <button class="notif-btn">🔔<span class="notif-dot"></span></button>
           <button class="action-btn gold-btn" onclick="openGrantModal()">+ إضافة منحة</button>
         </div>
@@ -1200,7 +1385,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
           <div class="card">
             <div class="card-title">⏳ آخر الطلبات الواردة <span class="card-link" onclick="switchView('admin','v-applications',null)">عرض الكل</span></div>
             <table class="data-table">
-              <thead><tr><th>المتقدم</th><th>المنحة</th><th>تاريخ التقديم</th><th>الحالة</th><th>الإجراء</th></tr></thead>
+              <thead><tr><th>المتقدم</th><th>المنحة</th><th>تاريخ التقديم</th><th>الحالة</th><th>مرحلة الحراك</th><th>الإجراء</th></tr></thead>
               <tbody id="admin-recent-apps">
                 <tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد طلبات بعد</td></tr>
               </tbody>
@@ -1234,10 +1419,11 @@ textarea.form-input { resize:vertical; min-height:100px; }
             <input class="filter-input" id="apps-filter-search" placeholder="🔍 بحث بالاسم أو البريد..." style="flex:1;" oninput="filterAdminApps()">
             <select class="filter-select" id="apps-filter-status" onchange="filterAdminApps()">
               <option value="">كل الحالات</option>
-              <option value="pending">قيد الانتظار</option>
-              <option value="review">قيد المراجعة</option>
-              <option value="accepted">مقبول</option>
-              <option value="rejected">مرفوض</option>
+              <option value="pending">⏳ قيد الانتظار</option>
+              <option value="review">🔍 قيد المراجعة</option>
+              <option value="accepted">✅ مقبول</option>
+              <option value="reserve_list">📋 قائمة الاحتياط</option>
+              <option value="rejected">❌ مرفوض</option>
             </select>
             <select class="filter-select" id="apps-filter-grant" onchange="filterAdminApps()">
               <option value="">كل المنح</option>
@@ -1245,7 +1431,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
           </div>
           <div class="card">
             <table class="data-table">
-              <thead><tr><th>المتقدم</th><th>المنحة</th><th>التاريخ</th><th>الحالة</th><th>إجراء</th></tr></thead>
+              <thead><tr><th>المتقدم</th><th>المنحة</th><th>التاريخ</th><th>الحالة</th><th>مرحلة الحراك</th><th>إجراء</th></tr></thead>
               <tbody id="admin-all-apps">
                 <tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد طلبات بعد</td></tr>
               </tbody>
@@ -1385,80 +1571,264 @@ textarea.form-input { resize:vertical; min-height:100px; }
 
 <!-- ==================== MODALS ==================== -->
 
-<!-- Apply Modal -->
+<!-- Apply Modal — Dynamic per applicant type -->
 <div class="modal-overlay" id="apply-modal">
-  <div class="modal">
-    <div class="modal-title">🎓 تقديم طلب منحة جديد</div>
-    <div class="stepper">
-      <div class="step active">1. اختيار المنحة</div>
-      <div class="step">2. البيانات</div>
-      <div class="step">3. الوثائق</div>
-      <div class="step">4. مراجعة</div>
+  <div class="modal" style="max-width:720px;max-height:90vh;overflow-y:auto;">
+    <div class="modal-title">🎓 Erasmus+ Mobility Application</div>
+    <div style="background:#f0f4ff;border-radius:8px;padding:8px 14px;font-size:0.8rem;color:#2d5aa0;margin-bottom:14px;">
+      ⚠️ <strong>Important:</strong> All fields and uploaded documents must be in <strong>English</strong>.
     </div>
+
+    <!-- Grant selection -->
     <div class="form-group">
-      <label class="form-label-dark">اختر المنحة</label>
+      <label class="form-label-dark">Select Grant / Call <span style="color:#e74c3c">*</span></label>
       <select id="apply-grant" class="form-input-white">
-        <option value="">— اختر منحة —</option>
+        <option value="">— Choose a grant —</option>
       </select>
     </div>
-    <div class="form-group">
-      <label class="form-label-dark">دافع التقديم</label>
-      <textarea id="apply-motivation" class="form-input-white" style="min-height:100px;" placeholder="اشرح سبب رغبتك في هذه المنحة وكيف ستستفيد منها..."></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label-dark">الخبرات السابقة</label>
-      <textarea id="apply-experience" class="form-input-white" style="min-height:70px;" placeholder="أي خبرات أو مشاريع بحثية سابقة..."></textarea>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-      <div class="form-group">
-        <label class="form-label-dark">مستوى اللغة الإنجليزية</label>
-        <select id="apply-language" class="form-input-white">
-          <option value="A1">A1 — مبتدئ</option><option value="A2">A2</option><option value="B1">B1</option><option value="B2">B2 — متوسط-متقدم</option><option value="C1">C1</option><option value="C2">C2 — متقدم</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label-dark">المستوى الدراسي <span style="color:#e74c3c">*</span></label>
-        <select id="apply-study-level" class="form-input-white">
-          <option value="">— اختر المستوى —</option>
-          <option value="master2">ماستر 2</option>
-          <option value="doctorate">دكتوراه</option>
-        </select>
-      </div>
-    </div>
-    <div class="divider"></div>
-    <div class="form-group">
-      <label class="form-label-dark">📁 الوثائق المطلوبة <small style="color:var(--gray-mid)">(PDF أو صورة)</small></label>
-      <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px;">
-        <div class="upload-row">
-          <label for="doc-transcripts">📊 <span>كشوف النقاط</span><br><span class="file-none" id="lbl-transcripts">لم يتم الاختيار بعد</span></label>
-          <input type="file" id="doc-transcripts" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileLabel(this,'lbl-transcripts')">
-          <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('doc-transcripts').click()">اختيار</button>
+
+    <!-- ===== STUDENT SECTION (master + phd) ===== -->
+    <div id="apply-section-student" style="display:none;">
+      <div style="font-weight:700;font-size:0.85rem;color:var(--blue-deep);border-bottom:2px solid var(--gray-light);padding-bottom:6px;margin-bottom:14px;">📚 Academic Information</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark">Faculty <span style="color:#e74c3c">*</span></label>
+          <input type="text" id="s-faculty" class="form-input-white" placeholder="e.g. Faculty of Technology">
         </div>
-        <div class="upload-row">
-          <label for="doc-language-cert">🌐 <span>شهادة مستوى اللغة الإنجليزية</span><br><span class="file-none" id="lbl-language-cert">لم يتم الاختيار بعد</span></label>
-          <input type="file" id="doc-language-cert" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileLabel(this,'lbl-language-cert')">
-          <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('doc-language-cert').click()">اختيار</button>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark">Department <span style="color:#e74c3c">*</span></label>
+          <input type="text" id="s-department" class="form-input-white" placeholder="e.g. Computer Science">
         </div>
-        <div class="upload-row">
-          <label for="doc-thesis-plan">📝 <span>خطة عمل المذكرة</span><br><span class="file-none" id="lbl-thesis-plan">لم يتم الاختيار بعد</span></label>
-          <input type="file" id="doc-thesis-plan" accept=".pdf,.doc,.docx" onchange="updateFileLabel(this,'lbl-thesis-plan')">
-          <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('doc-thesis-plan').click()">اختيار</button>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark">Speciality <span style="color:#e74c3c">*</span></label>
+          <input type="text" id="s-speciality" class="form-input-white" placeholder="e.g. Machine Learning">
         </div>
-        <div class="upload-row">
-          <label for="doc-supervisor-auth">✅ <span>ترخيص من الأستاذ المشرف</span><br><span class="file-none" id="lbl-supervisor-auth">لم يتم الاختيار بعد</span></label>
-          <input type="file" id="doc-supervisor-auth" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileLabel(this,'lbl-supervisor-auth')">
-          <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('doc-supervisor-auth').click()">اختيار</button>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark">Level of Study <span style="color:#e74c3c">*</span></label>
+          <select id="apply-study-level" class="form-input-white">
+            <option value="">— Select level —</option>
+            <option value="master2">Master 2 (M2)</option>
+            <option value="doctorate">PhD / Doctorate</option>
+          </select>
         </div>
-        <div class="upload-row">
-          <label for="doc-invitation-letter">✉️ <span>رسالة دعوة من الجامعة المستقبلة</span><br><span class="file-none" id="lbl-invitation-letter">لم يتم الاختيار بعد</span></label>
-          <input type="file" id="doc-invitation-letter" accept=".pdf,.jpg,.jpeg,.png" onchange="updateFileLabel(this,'lbl-invitation-letter')">
-          <button class="action-btn ghost" style="font-size:0.78rem;" onclick="document.getElementById('doc-invitation-letter').click()">اختيار</button>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark">Current Academic Year <span style="color:#e74c3c">*</span></label>
+          <select id="s-academic-year" class="form-input-white">
+            <option value="">— Select year —</option>
+            <option value="M1">M1</option><option value="M2">M2</option>
+            <option value="PhD1">PhD Y1</option><option value="PhD2">PhD Y2</option>
+            <option value="PhD3">PhD Y3</option><option value="PhD4">PhD Y4+</option>
+          </select>
         </div>
       </div>
+
+      <!-- PhD-only -->
+      <div id="apply-phd-fields" style="display:none;margin-top:12px;padding:12px;background:#f0f4ff;border-radius:10px;">
+        <div style="font-weight:700;font-size:0.82rem;color:#2d5aa0;margin-bottom:8px;">🔬 PhD Students Only</div>
+        <div class="upload-row" style="margin-bottom:6px;">
+          <label>📝 Work plan (signed by thesis supervisor)<br><span class="file-none" id="lbl-work-plan">Not selected</span></label>
+          <input type="file" id="doc-work-plan" accept=".pdf" onchange="updateFileLabel(this,'lbl-work-plan')">
+          <button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-work-plan').click()">Select</button>
+        </div>
+        <div class="upload-row">
+          <label>✅ Authorization letter (supervisor + dept. head)<br><span class="file-none" id="lbl-supervisor-auth">Not selected</span></label>
+          <input type="file" id="doc-supervisor-auth" accept=".pdf" onchange="updateFileLabel(this,'lbl-supervisor-auth')">
+          <button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-supervisor-auth').click()">Select</button>
+        </div>
+      </div>
+
+      <!-- Previous Erasmus -->
+      <div style="margin-top:12px;">
+        <label class="form-label-dark">Previously participated in Erasmus+? <span style="color:#e74c3c">*</span></label>
+        <div style="display:flex;gap:16px;margin-top:6px;">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--blue-deep);"><input type="radio" name="prev-erasmus" value="yes" onchange="togglePrevErasmusDoc(true)"> Yes</label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--blue-deep);"><input type="radio" name="prev-erasmus" value="no" checked onchange="togglePrevErasmusDoc(false)"> No</label>
+        </div>
+        <div id="prev-erasmus-doc" style="display:none;margin-top:8px;" class="upload-row">
+          <label>📄 Previous Erasmus+ experience details<br><span class="file-none" id="lbl-previous-erasmus">Not selected</span></label>
+          <input type="file" id="doc-previous-erasmus" accept=".pdf" onchange="updateFileLabel(this,'lbl-previous-erasmus')">
+          <button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-previous-erasmus').click()">Select</button>
+        </div>
+      </div>
+
+      <!-- Invitation letter -->
+      <div style="margin-top:10px;">
+        <label class="form-label-dark">Do you have an invitation letter from the host university?</label>
+        <div style="display:flex;gap:16px;margin-top:6px;">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--blue-deep);"><input type="radio" name="has-invite" value="yes" onchange="toggleInviteDoc(true)"> Yes</label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--blue-deep);"><input type="radio" name="has-invite" value="no" checked onchange="toggleInviteDoc(false)"> No</label>
+        </div>
+        <div id="invite-doc" style="display:none;margin-top:8px;" class="upload-row">
+          <label>✉️ Invitation letter from host university<br><span class="file-none" id="lbl-invitation-letter">Not selected</span></label>
+          <input type="file" id="doc-invitation-letter" accept=".pdf" onchange="updateFileLabel(this,'lbl-invitation-letter')">
+          <button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-invitation-letter').click()">Select</button>
+        </div>
+      </div>
+
+      <!-- Student required documents -->
+      <div style="margin-top:14px;">
+        <div style="font-weight:700;font-size:0.85rem;color:var(--blue-deep);border-bottom:2px solid var(--gray-light);padding-bottom:6px;margin-bottom:10px;">📁 Required Documents (PDF only, max 10 MB)</div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <div class="upload-row"><label>🪪 Passport scan (valid 1+ year)<br><span class="file-none" id="lbl-passport">Not selected</span></label><input type="file" id="doc-passport" accept=".pdf" onchange="updateFileLabel(this,'lbl-passport')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-passport').click()">Select</button></div>
+          <div class="upload-row"><label>📜 Enrollment certificate (current year)<br><span class="file-none" id="lbl-enrollment-cert">Not selected</span></label><input type="file" id="doc-enrollment-cert" accept=".pdf" onchange="updateFileLabel(this,'lbl-enrollment-cert')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-enrollment-cert').click()">Select</button></div>
+          <div class="upload-row"><label>📊 Transcripts (current + previous years)<br><span class="file-none" id="lbl-transcripts">Not selected</span></label><input type="file" id="doc-transcripts" accept=".pdf" onchange="updateFileLabel(this,'lbl-transcripts')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-transcripts').click()">Select</button></div>
+          <div class="upload-row"><label>🏆 Class ranking certificate<br><span class="file-none" id="lbl-class-ranking">Not selected</span></label><input type="file" id="doc-class-ranking" accept=".pdf" onchange="updateFileLabel(this,'lbl-class-ranking')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-class-ranking').click()">Select</button></div>
+          <div class="upload-row"><label>📝 Motivation letter (in English)<br><span class="file-none" id="lbl-motivation-letter">Not selected</span></label><input type="file" id="doc-motivation-letter" accept=".pdf" onchange="updateFileLabel(this,'lbl-motivation-letter')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-motivation-letter').click()">Select</button></div>
+          <div class="upload-row"><label>📋 CV in English (max 2 pages)<br><span class="file-none" id="lbl-cv">Not selected</span></label><input type="file" id="doc-cv" accept=".pdf" onchange="updateFileLabel(this,'lbl-cv')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-cv').click()">Select</button></div>
+          <div class="upload-row"><label>🌐 English certificate (min. B2 — IELTS/TOEFL/etc.)<br><span class="file-none" id="lbl-language-cert">Not selected</span></label><input type="file" id="doc-language-cert" accept=".pdf" onchange="updateFileLabel(this,'lbl-language-cert')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-language-cert').click()">Select</button></div>
+        </div>
+        <details style="margin-top:8px;">
+          <summary style="font-size:0.82rem;color:var(--gray-mid);cursor:pointer;">Optional documents</summary>
+          <div style="display:flex;flex-direction:column;gap:7px;margin-top:8px;">
+            <div class="upload-row"><label>📋 Good conduct certificate<br><span class="file-none" id="lbl-good-conduct">Not selected</span></label><input type="file" id="doc-good-conduct" accept=".pdf" onchange="updateFileLabel(this,'lbl-good-conduct')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-good-conduct').click()">Select</button></div>
+          </div>
+        </details>
+      </div>
     </div>
-    <div class="modal-footer">
-      <button class="action-btn ghost" onclick="closeModal('apply-modal')">إلغاء</button>
-      <button class="action-btn gold-btn" onclick="submitApplication()">إرسال الطلب ✅</button>
+
+    <!-- ===== ADMINISTRATIVE STAFF SECTION ===== -->
+    <div id="apply-section-staff" style="display:none;">
+      <div style="font-weight:700;font-size:0.85rem;color:var(--blue-deep);border-bottom:2px solid var(--gray-light);padding-bottom:6px;margin-bottom:14px;">🏢 Professional Information</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark">Position / Job Title <span style="color:#e74c3c">*</span></label>
+          <input type="text" id="st-position" class="form-input-white" placeholder="e.g. Administrative Officer">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark">Department / Unit <span style="color:#e74c3c">*</span></label>
+          <input type="text" id="st-department" class="form-input-white" placeholder="e.g. International Relations">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark">Professional Email <span style="color:#e74c3c">*</span></label>
+          <input type="email" id="st-prof-email" class="form-input-white" placeholder="official@univ-eloued.dz">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark">Type of Mobility <span style="color:#e74c3c">*</span></label>
+          <select id="st-mobility-type" class="form-input-white">
+            <option value="">— Select —</option>
+            <option value="job_shadowing">Job Shadowing</option>
+            <option value="training">Training</option>
+            <option value="staff_exchange">Staff Exchange</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-top:14px;">
+        <div style="font-weight:700;font-size:0.85rem;color:var(--blue-deep);border-bottom:2px solid var(--gray-light);padding-bottom:6px;margin-bottom:10px;">📁 Required Documents (PDF only)</div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <div class="upload-row"><label>🪪 Copy of passport<br><span class="file-none" id="lbl-st-passport">Not selected</span></label><input type="file" id="doc-st-passport" accept=".pdf" onchange="updateFileLabel(this,'lbl-st-passport')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-st-passport').click()">Select</button></div>
+          <div class="upload-row"><label>📝 Motivation letter (English)<br><span class="file-none" id="lbl-st-motivation">Not selected</span></label><input type="file" id="doc-st-motivation" accept=".pdf" onchange="updateFileLabel(this,'lbl-st-motivation')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-st-motivation').click()">Select</button></div>
+          <div class="upload-row"><label>📋 CV (max 2-3 pages)<br><span class="file-none" id="lbl-st-cv">Not selected</span></label><input type="file" id="doc-st-cv" accept=".pdf" onchange="updateFileLabel(this,'lbl-st-cv')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-st-cv').click()">Select</button></div>
+          <div class="upload-row"><label>🌐 English certificate (min. B2)<br><span class="file-none" id="lbl-st-lang">Not selected</span></label><input type="file" id="doc-st-lang" accept=".pdf" onchange="updateFileLabel(this,'lbl-st-lang')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-st-lang').click()">Select</button></div>
+          <div class="upload-row"><label>🗓️ Proposed mobility plan<br><span class="file-none" id="lbl-st-mob-plan">Not selected</span></label><input type="file" id="doc-st-mob-plan" accept=".pdf" onchange="updateFileLabel(this,'lbl-st-mob-plan')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-st-mob-plan').click()">Select</button></div>
+        </div>
+        <details style="margin-top:8px;">
+          <summary style="font-size:0.82rem;color:var(--gray-mid);cursor:pointer;">Optional documents</summary>
+          <div style="display:flex;flex-direction:column;gap:7px;margin-top:8px;">
+            <div class="upload-row"><label>🏛️ Institutional support letter<br><span class="file-none" id="lbl-st-support">Not selected</span></label><input type="file" id="doc-st-support" accept=".pdf" onchange="updateFileLabel(this,'lbl-st-support')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-st-support').click()">Select</button></div>
+            <div class="upload-row"><label>💳 Euro bank account (IBAN/BIC)<br><span class="file-none" id="lbl-st-bank">Not selected</span></label><input type="file" id="doc-st-bank" accept=".pdf" onchange="updateFileLabel(this,'lbl-st-bank')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-st-bank').click()">Select</button></div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- ===== ACADEMIC PROFESSOR SECTION ===== -->
+    <div id="apply-section-professor" style="display:none;">
+      <div style="font-weight:700;font-size:0.85rem;color:var(--blue-deep);border-bottom:2px solid var(--gray-light);padding-bottom:6px;margin-bottom:14px;">👨‍🏫 Academic Information</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark">Academic Rank <span style="color:#e74c3c">*</span></label>
+          <select id="pr-position" class="form-input-white">
+            <option value="">— Select —</option>
+            <option value="Professor">Professor</option>
+            <option value="Associate Professor">Associate Professor</option>
+            <option value="Assistant Professor">Assistant Professor</option>
+            <option value="Senior Lecturer">Senior Lecturer</option>
+            <option value="Lecturer">Lecturer</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark">Faculty <span style="color:#e74c3c">*</span></label>
+          <input type="text" id="pr-faculty" class="form-input-white" placeholder="e.g. Faculty of Technology">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark">Department <span style="color:#e74c3c">*</span></label>
+          <input type="text" id="pr-department" class="form-input-white" placeholder="e.g. Electrical Engineering">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark">Speciality <span style="color:#e74c3c">*</span></label>
+          <input type="text" id="pr-speciality" class="form-input-white" placeholder="e.g. Power Systems">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark">Professional Email <span style="color:#e74c3c">*</span></label>
+          <input type="email" id="pr-prof-email" class="form-input-white" placeholder="prof@univ-eloued.dz">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark">Type of Mobility <span style="color:#e74c3c">*</span></label>
+          <select id="pr-mobility-type" class="form-input-white" onchange="toggleTeachingFields()">
+            <option value="">— Select —</option>
+            <option value="teaching">Teaching</option>
+            <option value="training">Training</option>
+            <option value="combined">Combined (Teaching + Training)</option>
+          </select>
+        </div>
+      </div>
+      <!-- Teaching-specific fields -->
+      <div id="pr-teaching-fields" style="display:none;margin-top:12px;padding:12px;background:#fff8e6;border-radius:10px;">
+        <div style="font-weight:700;font-size:0.82rem;color:#856404;margin-bottom:8px;">🎤 Teaching Mobility Details</div>
+        <div class="form-group" style="margin-bottom:10px;">
+          <label class="form-label-dark">Title of Proposed Lecture <span style="color:#e74c3c">*</span></label>
+          <input type="text" id="pr-lecture-title" class="form-input-white" placeholder="e.g. Recent Advances in Renewable Energy Systems">
+        </div>
+        <div class="upload-row">
+          <label>📄 Lecture content (PDF — with abstract, outline, objectives)<br><span class="file-none" id="lbl-lecture-content">Not selected</span></label>
+          <input type="file" id="doc-lecture-content" accept=".pdf" onchange="updateFileLabel(this,'lbl-lecture-content')">
+          <button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-lecture-content').click()">Select</button>
+        </div>
+      </div>
+      <div style="margin-top:14px;">
+        <div style="font-weight:700;font-size:0.85rem;color:var(--blue-deep);border-bottom:2px solid var(--gray-light);padding-bottom:6px;margin-bottom:10px;">📁 Required Documents (PDF only)</div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <div class="upload-row"><label>🪪 Copy of passport<br><span class="file-none" id="lbl-pr-passport">Not selected</span></label><input type="file" id="doc-pr-passport" accept=".pdf" onchange="updateFileLabel(this,'lbl-pr-passport')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-pr-passport').click()">Select</button></div>
+          <div class="upload-row"><label>📝 Motivation letter (English)<br><span class="file-none" id="lbl-pr-motivation">Not selected</span></label><input type="file" id="doc-pr-motivation" accept=".pdf" onchange="updateFileLabel(this,'lbl-pr-motivation')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-pr-motivation').click()">Select</button></div>
+          <div class="upload-row"><label>📋 CV (max 3-4 pages)<br><span class="file-none" id="lbl-pr-cv">Not selected</span></label><input type="file" id="doc-pr-cv" accept=".pdf" onchange="updateFileLabel(this,'lbl-pr-cv')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-pr-cv').click()">Select</button></div>
+          <div class="upload-row"><label>🌐 English certificate (min. B2)<br><span class="file-none" id="lbl-pr-lang">Not selected</span></label><input type="file" id="doc-pr-lang" accept=".pdf" onchange="updateFileLabel(this,'lbl-pr-lang')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-pr-lang').click()">Select</button></div>
+          <div class="upload-row"><label>🗓️ Proposed mobility plan<br><span class="file-none" id="lbl-pr-mob-plan">Not selected</span></label><input type="file" id="doc-pr-mob-plan" accept=".pdf" onchange="updateFileLabel(this,'lbl-pr-mob-plan')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-pr-mob-plan').click()">Select</button></div>
+          <div class="upload-row"><label>✉️ Invitation letter from host university<br><span class="file-none" id="lbl-pr-invite">Not selected</span></label><input type="file" id="doc-pr-invite" accept=".pdf" onchange="updateFileLabel(this,'lbl-pr-invite')"><button class="action-btn ghost" style="font-size:0.75rem;" onclick="document.getElementById('doc-pr-invite').click()">Select</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== COMMON FIELDS (all types) ===== -->
+    <div class="divider" style="margin:16px 0;"></div>
+    <div style="font-weight:700;font-size:0.85rem;color:var(--blue-deep);margin-bottom:10px;">💬 Motivation & Experience</div>
+    <div class="form-group">
+      <label class="form-label-dark">Motivation / Why do you apply? <span style="color:#e74c3c">*</span></label>
+      <textarea id="apply-motivation" class="form-input-white" style="min-height:90px;" placeholder="Explain your motivation for this mobility and the expected benefits..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label-dark">English Proficiency Level <span style="color:#e74c3c">*</span></label>
+      <select id="apply-language" class="form-input-white">
+        <option value="B1">B1 — Intermediate</option>
+        <option value="B2" selected>B2 — Upper-Intermediate (minimum required)</option>
+        <option value="C1">C1 — Advanced</option>
+        <option value="C2">C2 — Mastery</option>
+      </select>
+    </div>
+    <!-- Confirmations -->
+    <div style="background:#f0fff4;border-radius:8px;padding:10px 14px;margin-top:4px;">
+      <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;margin-bottom:8px;">
+        <input type="checkbox" id="apply-eligibility" style="margin-top:3px;">
+        <span style="font-size:0.82rem;color:var(--blue-deep);">I confirm that I am eligible to apply (PhD candidates starting from 2nd year, or as defined by my home institution's criteria).</span>
+      </label>
+      <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;">
+        <input type="checkbox" id="apply-english-confirm" style="margin-top:3px;">
+        <span style="font-size:0.82rem;color:var(--blue-deep);">I confirm that all my responses and uploaded documents are in <strong>English language only</strong>.</span>
+      </label>
+    </div>
+
+    <div class="modal-footer" style="margin-top:16px;">
+      <button class="action-btn ghost" onclick="closeModal('apply-modal')">Cancel</button>
+      <button class="action-btn gold-btn" onclick="submitApplication()">Submit Application ✅</button>
     </div>
   </div>
 </div>
@@ -1623,26 +1993,145 @@ textarea.form-input { resize:vertical; min-height:100px; }
     <div style="border-top:1px solid var(--gray-light);padding-top:14px;margin-top:4px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
       <div class="form-group"><label class="form-label-dark">القرار</label>
         <select id="rv-status" class="form-input-white" onchange="toggleMobilitySection()">
-          <option value="pending">قيد الانتظار</option>
-          <option value="review">قيد المراجعة</option>
+          <option value="pending">⏳ قيد الانتظار</option>
+          <option value="review">🔍 قيد المراجعة</option>
           <option value="accepted">✅ مقبول</option>
+          <option value="reserve_list">📋 قائمة الاحتياط</option>
           <option value="rejected">❌ مرفوض</option>
         </select></div>
       <div class="form-group"><label class="form-label-dark">ملاحظة للمتقدم</label>
         <textarea id="rv-note" class="form-input-white" style="min-height:60px;" placeholder="ملاحظة اختيارية..."></textarea></div>
     </div>
-    <!-- Mobility tracking section — visible only when status = accepted -->
-    <div id="rv-mobility-section" style="display:none;margin-top:10px;background:#e8f7ef;border-radius:10px;padding:12px;">
-      <div style="font-weight:700;font-size:0.88rem;color:var(--blue-deep);margin-bottom:8px;">🗺️ مرحلة الحراك الأكاديمي</div>
-      <select id="rv-mobility-stage" class="form-input-white">
-        <option value="la_pending">📝 إعداد Learning Agreement</option>
-        <option value="la_approved">✅ تمت الموافقة على LA</option>
-        <option value="departed">✈️ المتقدم غادر للخارج</option>
-        <option value="abroad">🌍 في الخارج حالياً</option>
-        <option value="returned">🏠 عاد من الحراك</option>
-        <option value="complete">🎓 انتهت الحراكية بنجاح</option>
-      </select>
-      <button class="action-btn primary" style="margin-top:8px;width:100%;" onclick="saveMobilityStage()">🔄 تحديث مرحلة الحراك</button>
+
+    <!-- ===== 9-STAGE MOBILITY TRACKER (visible when accepted/reserve_list) ===== -->
+    <div id="rv-mobility-section" style="display:none;margin-top:14px;">
+
+      <!-- Stage progress bar -->
+      <div style="background:var(--gray-light);border-radius:12px;padding:14px 16px;margin-bottom:12px;">
+        <div style="font-weight:700;font-size:0.85rem;color:var(--blue-deep);margin-bottom:10px;">📊 مسار الحركية — المرحلة الحالية: <span id="rv-stage-label" style="color:var(--gold);">—</span></div>
+        <div style="display:flex;gap:4px;align-items:center;" id="rv-stage-bar">
+          <div class="stage-pip" data-stage="1" title="نشر الإعلان">1</div>
+          <div class="stage-connector"></div>
+          <div class="stage-pip" data-stage="2" title="التسجيل">2</div>
+          <div class="stage-connector"></div>
+          <div class="stage-pip" data-stage="3" title="التقييم">3</div>
+          <div class="stage-connector"></div>
+          <div class="stage-pip" data-stage="4" title="الترشيح">4</div>
+          <div class="stage-connector"></div>
+          <div class="stage-pip" data-stage="5" title="التوثيق">5</div>
+          <div class="stage-connector"></div>
+          <div class="stage-pip" data-stage="6" title="التأشيرة">6</div>
+          <div class="stage-connector"></div>
+          <div class="stage-pip" data-stage="7" title="ما قبل المغادرة">7</div>
+          <div class="stage-connector"></div>
+          <div class="stage-pip" data-stage="8" title="الحراك النشط">8</div>
+          <div class="stage-connector"></div>
+          <div class="stage-pip" data-stage="9" title="الإتمام">9</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--gray-mid);margin-top:4px;padding:0 2px;">
+          <span>الإعلان</span><span>التسجيل</span><span>التقييم</span><span>الترشيح</span><span>التوثيق</span><span>التأشيرة</span><span>السفر</span><span>الحراك</span><span>الإتمام</span>
+        </div>
+      </div>
+
+      <!-- Stage selector -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div class="form-group" style="margin:0;">
+          <label class="form-label-dark" style="font-size:0.8rem;">مرحلة الحراك</label>
+          <select id="rv-mobility-stage" class="form-input-white" onchange="onMobilityStageChange()">
+            <optgroup label="المرحلة 4 — الترشيح">
+              <option value="nominated">🎯 تم الترشيح</option>
+              <option value="awaiting_host">⏳ بانتظار رد الجامعة المضيفة</option>
+              <option value="accepted_by_host">✅ قُبل من الجامعة المضيفة</option>
+              <option value="rejected_by_host">❌ رُفض من الجامعة المضيفة</option>
+            </optgroup>
+            <optgroup label="المرحلة 5 — التوثيق">
+              <option value="pending_signatures">✍️ بانتظار التوقيعات</option>
+              <option value="docs_approved">📂 الوثائق معتمدة</option>
+              <option value="missing_docs">⚠️ وثائق ناقصة</option>
+            </optgroup>
+            <optgroup label="المرحلة 6 — التأشيرة">
+              <option value="preparing_visa">🛂 إعداد ملف التأشيرة</option>
+              <option value="visa_submitted">📬 تم تقديم طلب التأشيرة</option>
+              <option value="visa_approved">✈️ التأشيرة مقبولة</option>
+              <option value="visa_rejected">❌ التأشيرة مرفوضة</option>
+            </optgroup>
+            <optgroup label="المرحلة 7 — ما قبل المغادرة">
+              <option value="ready_for_departure">🎒 جاهز للسفر</option>
+              <option value="pending_requirements">📋 متطلبات معلقة</option>
+            </optgroup>
+            <optgroup label="المرحلة 8 — الحراك النشط">
+              <option value="active_mobility">🌍 الحراك جارٍ</option>
+              <option value="extended_mobility">📅 الحراك مُمدَّد</option>
+              <option value="interrupted_mobility">⏸️ الحراك متوقف مؤقتاً</option>
+            </optgroup>
+            <optgroup label="المرحلة 9 — الإتمام">
+              <option value="completed">🎓 اكتمل الحراك</option>
+              <option value="financially_closed">💰 مغلق مالياً</option>
+              <option value="archived">📦 أُرشِف</option>
+            </optgroup>
+          </select>
+        </div>
+        <div style="display:flex;align-items:flex-end;">
+          <button class="action-btn primary" style="width:100%;" onclick="saveMobilityStage()">🔄 تحديث المرحلة</button>
+        </div>
+      </div>
+
+      <!-- Visa fields (Stage 6) -->
+      <div id="rv-visa-fields" style="display:none;background:#f0f4ff;border-radius:10px;padding:12px;margin-bottom:10px;">
+        <div style="font-weight:700;font-size:0.82rem;color:var(--blue-royal);margin-bottom:8px;">🛂 تفاصيل التأشيرة</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div class="form-group" style="margin:0;">
+            <label class="form-label-dark" style="font-size:0.75rem;">موعد المقابلة</label>
+            <input type="date" id="rv-visa-date" class="form-input-white" style="font-size:0.85rem;">
+          </div>
+          <div class="form-group" style="margin:0;">
+            <label class="form-label-dark" style="font-size:0.75rem;">السفارة</label>
+            <input type="text" id="rv-embassy" class="form-input-white" placeholder="مثال: سفارة فرنسا" style="font-size:0.85rem;">
+          </div>
+          <div class="form-group" style="margin:0;">
+            <label class="form-label-dark" style="font-size:0.75rem;">نتيجة التأشيرة</label>
+            <select id="rv-visa-result" class="form-input-white" style="font-size:0.85rem;">
+              <option value="">— اختر —</option>
+              <option value="approved">✅ مقبولة</option>
+              <option value="rejected">❌ مرفوضة</option>
+              <option value="pending">⏳ قيد الانتظار</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin:0;">
+            <label class="form-label-dark" style="font-size:0.75rem;">تاريخ السفر</label>
+            <input type="date" id="rv-travel-date" class="form-input-white" style="font-size:0.85rem;">
+          </div>
+        </div>
+        <button class="action-btn primary" style="margin-top:8px;width:100%;font-size:0.82rem;" onclick="saveVisaDetails()">💾 حفظ تفاصيل التأشيرة</button>
+      </div>
+
+      <!-- Travel/Completion fields (Stages 7-9) -->
+      <div id="rv-travel-fields" style="display:none;background:#f0fff4;border-radius:10px;padding:12px;margin-bottom:10px;">
+        <div style="font-weight:700;font-size:0.82rem;color:var(--green);margin-bottom:8px;">✈️ تفاصيل السفر والحراك</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div class="form-group" style="margin:0;">
+            <label class="form-label-dark" style="font-size:0.75rem;">تاريخ المغادرة</label>
+            <input type="date" id="rv-departure-date" class="form-input-white" style="font-size:0.85rem;">
+          </div>
+          <div class="form-group" style="margin:0;">
+            <label class="form-label-dark" style="font-size:0.75rem;">تاريخ العودة</label>
+            <input type="date" id="rv-return-date" class="form-input-white" style="font-size:0.85rem;">
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;margin-top:8px;font-size:0.82rem;">
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--blue-deep);">
+            <input type="checkbox" id="rv-arrival-confirmed"> تأكيد الوصول
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--blue-deep);">
+            <input type="checkbox" id="rv-final-report"> تقرير نهائي مقدّم
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--blue-deep);">
+            <input type="checkbox" id="rv-fin-closed"> مغلق مالياً
+          </label>
+        </div>
+        <button class="action-btn success" style="margin-top:8px;width:100%;font-size:0.82rem;" onclick="saveTravelDetails()">💾 حفظ تفاصيل السفر</button>
+      </div>
+
     </div>
     <div class="modal-footer">
       <button class="action-btn ghost" onclick="closeModal('review-modal')">إغلاق</button>
@@ -1779,7 +2268,10 @@ function setLanguage(lang) {
   document.getElementById('nav-link-grants').textContent = map.navGrants;
   document.getElementById('nav-link-login').textContent = map.navLogin;
   document.getElementById('nav-link-register').textContent = map.navRegister;
-  document.getElementById('lang-toggle').textContent = map.langToggle;
+  ['lang-toggle', 'login-lang-btn', 'reg-lang-btn', 'student-lang-btn', 'admin-lang-btn'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = map.langToggle;
+  });
   document.getElementById('hero-badge').textContent = map.heroBadge;
   document.getElementById('hero-heading').innerHTML = map.heroHeading + '<br><span>Erasmus+</span>';
   document.getElementById('hero-text').textContent = map.heroText;
@@ -1823,17 +2315,21 @@ function setLanguage(lang) {
   const facultySelect = document.getElementById('reg-faculty');
   if (facultySelect) {
     const faculties = [
-      { en: 'Faculty of Science', ar: 'كلية العلوم' },
-      { en: 'Faculty of Engineering', ar: 'كلية الهندسة' },
-      { en: 'Faculty of Arts', ar: 'كلية الآداب' },
-      { en: 'Faculty of Medicine', ar: 'كلية الطب' },
-      { en: 'Faculty of Economics', ar: 'كلية الاقتصاد' }
+      { en: 'Faculty of Exact Sciences',              ar: 'كلية العلوم الدقيقة' },
+      { en: 'Faculty of Natural Sciences & Life',     ar: 'كلية العلوم الطبيعية والحياة' },
+      { en: 'Faculty of Technology',                  ar: 'كلية التكنولوجيا' },
+      { en: 'Faculty of Economics, Commerce & Management', ar: 'كلية العلوم الاقتصادية والتجارية وعلوم التسيير' },
+      { en: 'Faculty of Social Sciences & Humanities',ar: 'كلية العلوم الاجتماعية والإنسانية' },
+      { en: 'Faculty of Law & Political Science',     ar: 'كلية الحقوق والعلوم السياسية' },
+      { en: 'Faculty of Letters & Languages',         ar: 'كلية الآداب واللغات' },
+      { en: 'Faculty of Islamic Sciences',            ar: 'كلية العلوم الإسلامية' },
+      { en: 'Institute of Science & Physical Activities', ar: 'معهد علوم وتقنيات النشاطات البدنية' },
     ];
-    const currentValue = facultySelect.value;
-    facultySelect.innerHTML = faculties.map(o => `<option>${lang === 'ar' ? o.ar : o.en}</option>`).join('');
-    if (faculties.some(o => o.en === currentValue || o.ar === currentValue)) {
-      facultySelect.value = currentValue;
-    }
+    const currentVal = facultySelect.value;
+    const placeholder = lang === 'ar' ? '— اختر الكلية —' : '— Select faculty —';
+    facultySelect.innerHTML = `<option value="">${placeholder}</option>` +
+      faculties.map(o => `<option value="${o.en}">${lang === 'ar' ? o.ar : o.en}</option>`).join('');
+    facultySelect.value = currentVal;
   }
 
   document.getElementById('users-col-name').textContent = map.usersName;
@@ -2124,12 +2620,7 @@ async function loadStudentDashboard() {
     // Render notifications view
     const notifsBody = el('notifs-body');
     if (notifsBody) {
-      const MOBILITY_LABELS = {
-        la_pending:'📝 إعداد Learning Agreement', la_approved:'✅ تمت الموافقة على LA',
-        departed:'✈️ غادر للخارج', abroad:'🌍 في الخارج حالياً',
-        returned:'🏠 عاد من الحراك', complete:'🎓 انتهت الحراكية بنجاح'
-      };
-      const STATUS_LABELS = { pending:'قيد الانتظار', review:'قيد المراجعة', accepted:'مقبول', rejected:'مرفوض' };
+        const STATUS_LABELS = { pending:'قيد الانتظار', review:'قيد المراجعة', accepted:'مقبول', reserve_list:'📋 احتياط', rejected:'مرفوض' };
       const notifItems = apps.filter(a => a.admin_note || a.status === 'accepted' || a.status === 'rejected');
       notifsBody.innerHTML = notifItems.length
         ? notifItems.map(a => `
@@ -2139,21 +2630,20 @@ async function loadStudentDashboard() {
                 <span class="status ${a.status==='accepted'?'status-accepted':a.status==='rejected'?'status-rejected':'status-review'}">${STATUS_LABELS[a.status]||a.status}</span>
               </div>
               ${a.admin_note ? `<div style="background:#fff3cd;color:#856404;border-radius:8px;padding:8px 12px;font-size:0.85rem;">💬 ${a.admin_note}</div>` : ''}
-              ${a.status==='accepted' && a.mobility_stage ? `<div style="background:#e8f7ef;color:var(--green);border-radius:8px;padding:8px 12px;font-size:0.85rem;margin-top:6px;">🗺️ ${MOBILITY_LABELS[a.mobility_stage]||a.mobility_stage}</div>` : ''}
+              ${(a.status==='accepted'||a.status==='reserve_list') && a.mobility_stage && MOBILITY_STAGE_MAP[a.mobility_stage] ? `<div style="background:#e8f7ef;color:var(--green);border-radius:8px;padding:8px 12px;font-size:0.85rem;margin-top:6px;">🗺️ ${MOBILITY_STAGE_MAP[a.mobility_stage].icon} ${MOBILITY_STAGE_MAP[a.mobility_stage].label}</div>` : ''}
             </div>`).join('')
         : '<div style="text-align:center;color:var(--gray-mid);padding:40px 20px;"><div style="font-size:2rem;margin-bottom:10px;">🔔</div><div>لا توجد إشعارات حالياً</div></div>';
     }
 
+    // Cache apps for openAppDetail
+    window._studentApps = apps;
+
     const STATUS = {
-      pending:  ['status-review',   'قيد الانتظار'],
-      review:   ['status-review',   'قيد المراجعة'],
-      accepted: ['status-accepted', 'مقبول'],
-      rejected: ['status-rejected', 'مرفوض'],
-    };
-    const MOBILITY_LABELS_S = {
-      la_pending:'📝 إعداد LA', la_approved:'✅ LA موافق',
-      departed:'✈️ غادر', abroad:'🌍 في الخارج',
-      returned:'🏠 عاد', complete:'🎓 مكتمل'
+      pending:      ['status-review',   '⏳ قيد الانتظار'],
+      review:       ['status-review',   '🔍 قيد المراجعة'],
+      accepted:     ['status-accepted', '✅ مقبول'],
+      reserve_list: ['status-review',   '📋 احتياط'],
+      rejected:     ['status-rejected', '❌ مرفوض'],
     };
     const empty4 = '<tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:24px;">لا توجد طلبات بعد</td></tr>';
     const empty5 = '<tr><td colspan="7" style="text-align:center;color:var(--gray-mid);padding:30px;">لم تتقدم على أي منحة بعد</td></tr>';
@@ -2164,11 +2654,12 @@ async function loadStudentDashboard() {
     if (recentBody) {
       recentBody.innerHTML = apps.length ? apps.slice(0,3).map(a => {
         const [sc, sl] = STATUS[a.status] || ['status-review', a.status];
+        const stageNum = getWorkflowStageFromApp(a);
         return `<tr>
           <td><strong>${a.grant_title}</strong></td>
           <td>${a.university_name || '—'}</td>
           <td><span class="status ${sc}">${sl}</span></td>
-          <td>—</td>
+          <td><button class="action-btn ghost" style="font-size:0.75rem;" onclick="openAppDetail(${a.id})">📊 التفاصيل</button></td>
         </tr>`;
       }).join('') : empty4;
     }
@@ -2179,9 +2670,11 @@ async function loadStudentDashboard() {
         const noteHtml = a.admin_note
           ? `<span style="display:inline-block;background:#fff3cd;color:#856404;border-radius:6px;padding:3px 8px;font-size:0.8rem;max-width:200px;white-space:normal;">💬 ${a.admin_note}</span>`
           : '<span style="color:var(--gray-mid);font-size:0.8rem;">—</span>';
-        const mobilityHtml = (a.status === 'accepted' && a.mobility_stage)
-          ? `<span style="display:inline-block;background:#e8f7ef;color:var(--green);border-radius:6px;padding:3px 8px;font-size:0.78rem;">${MOBILITY_LABELS_S[a.mobility_stage]||a.mobility_stage}</span>`
-          : (a.status === 'accepted' ? '<span style="color:var(--gold);font-size:0.78rem;">⏳ بانتظار الخطوة التالية</span>' : '<span style="color:var(--gray-mid);font-size:0.78rem;">—</span>');
+        const mobInfo = a.mobility_stage && MOBILITY_STAGE_MAP[a.mobility_stage];
+        const stageNum = getWorkflowStageFromApp(a);
+        const mobilityHtml = mobInfo
+          ? `<span style="display:inline-flex;align-items:center;gap:3px;background:#e8f7ef;color:var(--green);border-radius:6px;padding:3px 8px;font-size:0.76rem;">M${mobInfo.stage} ${mobInfo.icon} ${mobInfo.label}</span>`
+          : (a.status === 'accepted' ? `<span style="color:var(--gold);font-size:0.76rem;">⏳ مرحلة 3 — مقبول</span>` : '<span style="color:var(--gray-mid);font-size:0.76rem;">—</span>');
         return `<tr>
           <td><strong>${a.grant_title}</strong></td>
           <td>${a.university_name || '—'}</td>
@@ -2189,7 +2682,10 @@ async function loadStudentDashboard() {
           <td><span class="status ${sc}">${sl}</span></td>
           <td>${mobilityHtml}</td>
           <td>${noteHtml}</td>
-          <td><button class="action-btn ghost" style="font-size:0.78rem;" onclick="openDocsModal(${a.id},'${a.grant_title.replace(/'/g,"\\'")}')">📁 الملفات</button></td>
+          <td style="white-space:nowrap;">
+            <button class="action-btn ghost" style="font-size:0.75rem;margin-left:4px;" onclick="openDocsModal(${a.id},'${a.grant_title.replace(/'/g,"\\'")}')">📁</button>
+            <button class="action-btn primary" style="font-size:0.75rem;" onclick="openAppDetail(${a.id})">📊</button>
+          </td>
         </tr>`;
       }).join('') : empty5;
     }
@@ -2263,21 +2759,27 @@ async function loadAdminDashboard() {
 
 function renderAdminAppsTable(apps) {
   const STATUS = {
-    pending:  ['status-review',   'قيد الانتظار'],
-    review:   ['status-review',   'قيد المراجعة'],
-    accepted: ['status-accepted', 'مقبول'],
-    rejected: ['status-rejected', 'مرفوض'],
+    pending:      ['status-review',   'قيد الانتظار'],
+    review:       ['status-review',   'قيد المراجعة'],
+    accepted:     ['status-accepted', 'مقبول'],
+    reserve_list: ['status-review',   '📋 احتياط'],
+    rejected:     ['status-rejected', 'مرفوض'],
   };
-  const empty = '<tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد طلبات بعد</td></tr>';
+  const empty = '<tr><td colspan="6" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد طلبات بعد</td></tr>';
   const makeRow = a => {
     const [sc, sl] = STATUS[a.status] || ['status-review', a.status];
     const date = new Date(a.created_at).toLocaleDateString('ar-DZ');
     const level = a.study_level === 'doctorate' ? 'دكتوراه' : a.study_level === 'master2' ? 'ماستر 2' : '';
+    const mobInfo = a.mobility_stage && MOBILITY_STAGE_MAP[a.mobility_stage];
+    const stageHtml = mobInfo
+      ? `<span style="display:inline-flex;align-items:center;gap:4px;background:#e8f7ef;color:var(--green);border-radius:6px;padding:2px 7px;font-size:0.75rem;">M${mobInfo.stage} ${mobInfo.icon} ${mobInfo.label}</span>`
+      : (a.status==='accepted' ? '<span style="color:var(--gold);font-size:0.75rem;">⏳ مرحلة 3 — مقبول</span>' : '<span style="color:var(--gray-mid);font-size:0.75rem;">—</span>');
     return `<tr>
       <td><strong>${a.student_name}</strong><br><small style="color:var(--gray-mid)">${a.student_faculty||''}${level ? ' · '+level : ''}</small></td>
       <td>${a.grant_title}</td>
       <td>${date}</td>
       <td><span class="status ${sc}">${sl}</span></td>
+      <td>${stageHtml}</td>
       <td><button class="action-btn primary" onclick="openReviewModal(${a.id})">مراجعة</button></td>
     </tr>`;
   };
@@ -2324,12 +2826,30 @@ async function openReviewModal(appId) {
   el('rv-status').value                = app.status;
   el('rv-note').value                  = app.admin_note  || '';
 
-  // Mobility section — show only for accepted
+  // Mobility section — show for accepted or reserve_list
+  const showMob = (app.status === 'accepted' || app.status === 'reserve_list');
   const mobSection = el('rv-mobility-section');
   if (mobSection) {
-    mobSection.style.display = app.status === 'accepted' ? '' : 'none';
-    const mobSel = el('rv-mobility-stage');
-    if (mobSel && app.mobility_stage) mobSel.value = app.mobility_stage;
+    mobSection.style.display = showMob ? '' : 'none';
+    if (showMob) {
+      const mobSel = el('rv-mobility-stage');
+      if (mobSel && app.mobility_stage) mobSel.value = app.mobility_stage;
+      // Populate visa/travel fields
+      if (app.visa_appointment_date) el('rv-visa-date').value = app.visa_appointment_date.split('T')[0];
+      if (app.embassy) el('rv-embassy').value = app.embassy;
+      if (app.visa_result) el('rv-visa-result').value = app.visa_result;
+      if (app.travel_date) el('rv-travel-date').value = app.travel_date.split('T')[0];
+      if (app.departure_date) el('rv-departure-date').value = app.departure_date.split('T')[0];
+      if (app.return_date) el('rv-return-date').value = app.return_date.split('T')[0];
+      if (el('rv-arrival-confirmed')) el('rv-arrival-confirmed').checked = !!app.arrival_confirmed;
+      if (el('rv-final-report')) el('rv-final-report').checked = !!app.final_report_submitted;
+      if (el('rv-fin-closed')) el('rv-fin-closed').checked = !!app.financially_closed;
+      // Update stage pips
+      const stageNum = getWorkflowStageFromApp(app);
+      updateStagePips(stageNum, app.status === 'rejected');
+      // Show/hide conditional fields
+      onMobilityStageChange();
+    }
   }
 
   const docsDiv = el('rv-documents');
@@ -2351,10 +2871,90 @@ async function openReviewModal(appId) {
   document.getElementById('review-modal').classList.add('open');
 }
 
+// ===== MOBILITY STAGE DEFINITIONS =====
+const MOBILITY_STAGE_MAP = {
+  // Stage 4 — Nomination
+  nominated:         { stage:4, label:'تم الترشيح',                    icon:'🎯' },
+  awaiting_host:     { stage:4, label:'بانتظار رد الجامعة المضيفة',     icon:'⏳' },
+  accepted_by_host:  { stage:4, label:'قُبل من الجامعة المضيفة',        icon:'✅' },
+  rejected_by_host:  { stage:4, label:'رُفض من الجامعة المضيفة',        icon:'❌' },
+  // Stage 5 — Documentation
+  pending_signatures:{ stage:5, label:'بانتظار التوقيعات',              icon:'✍️' },
+  docs_approved:     { stage:5, label:'الوثائق معتمدة',                 icon:'📂' },
+  missing_docs:      { stage:5, label:'وثائق ناقصة',                    icon:'⚠️' },
+  // Stage 6 — Visa
+  preparing_visa:    { stage:6, label:'إعداد ملف التأشيرة',             icon:'🛂' },
+  visa_submitted:    { stage:6, label:'تم تقديم طلب التأشيرة',          icon:'📬' },
+  visa_approved:     { stage:6, label:'التأشيرة مقبولة',                icon:'✈️' },
+  visa_rejected:     { stage:6, label:'التأشيرة مرفوضة',                icon:'❌' },
+  // Stage 7 — Pre-departure
+  ready_for_departure:  { stage:7, label:'جاهز للسفر',                  icon:'🎒' },
+  pending_requirements: { stage:7, label:'متطلبات معلقة',               icon:'📋' },
+  // Stage 8 — Active Mobility
+  active_mobility:      { stage:8, label:'الحراك جارٍ',                 icon:'🌍' },
+  extended_mobility:    { stage:8, label:'الحراك مُمدَّد',               icon:'📅' },
+  interrupted_mobility: { stage:8, label:'الحراك متوقف مؤقتاً',         icon:'⏸️' },
+  // Stage 9 — Completion
+  completed:         { stage:9, label:'اكتمل الحراك',                   icon:'🎓' },
+  financially_closed:{ stage:9, label:'مغلق مالياً',                    icon:'💰' },
+  archived:          { stage:9, label:'أُرشِف',                         icon:'📦' },
+  // Legacy values
+  la_pending:  { stage:5, label:'إعداد اتفاقية التعلم',     icon:'📝' },
+  la_approved: { stage:5, label:'تمت الموافقة على LA',       icon:'✅' },
+  departed:    { stage:7, label:'المتقدم غادر للخارج',       icon:'✈️' },
+  abroad:      { stage:8, label:'في الخارج حالياً',          icon:'🌍' },
+  returned:    { stage:9, label:'عاد من الحراك',             icon:'🏠' },
+  complete:    { stage:9, label:'انتهت الحراكية بنجاح',      icon:'🎓' },
+};
+
+const STAGE_NAMES = ['','نشر الإعلان','تسجيل الطلب','التقييم والاختيار','الترشيح','التوثيق','التأشيرة','ما قبل المغادرة','الحراك النشط','إتمام الحراك'];
+
+function getWorkflowStageFromApp(app) {
+  if (!app) return 1;
+  if (app.mobility_stage && MOBILITY_STAGE_MAP[app.mobility_stage]) {
+    return MOBILITY_STAGE_MAP[app.mobility_stage].stage;
+  }
+  if (app.status === 'accepted' || app.status === 'reserve_list') return 3;
+  if (app.status === 'review') return 2;
+  if (app.status === 'rejected') return 3;
+  return 2;
+}
+
+function updateStagePips(currentStage, isRejected) {
+  const pips = document.querySelectorAll('#rv-stage-bar .stage-pip');
+  const connectors = document.querySelectorAll('#rv-stage-bar .stage-connector');
+  pips.forEach(pip => {
+    const s = parseInt(pip.dataset.stage);
+    pip.className = 'stage-pip';
+    if (s < currentStage) pip.classList.add('done');
+    else if (s === currentStage) pip.classList.add(isRejected ? 'rejected' : 'current');
+    // others stay default
+  });
+  connectors.forEach((con, i) => {
+    con.className = 'stage-connector';
+    if (i + 1 < currentStage) con.classList.add('done');
+  });
+  const lbl = document.getElementById('rv-stage-label');
+  if (lbl) lbl.textContent = STAGE_NAMES[currentStage] || '—';
+}
+
 function toggleMobilitySection() {
   const status = document.getElementById('rv-status')?.value;
   const mobSection = document.getElementById('rv-mobility-section');
-  if (mobSection) mobSection.style.display = status === 'accepted' ? '' : 'none';
+  const showMob = (status === 'accepted' || status === 'reserve_list');
+  if (mobSection) mobSection.style.display = showMob ? '' : 'none';
+  if (showMob) onMobilityStageChange();
+}
+
+function onMobilityStageChange() {
+  const stage = document.getElementById('rv-mobility-stage')?.value;
+  const info = MOBILITY_STAGE_MAP[stage] || {};
+  const stageNum = info.stage || 3;
+  updateStagePips(stageNum, false);
+  const visaFields = document.getElementById('rv-visa-fields');
+  const travelFields = document.getElementById('rv-travel-fields');
+  if (visaFields) visaFields.style.display = stageNum === 6 ? '' : 'none';
+  if (travelFields) travelFields.style.display = stageNum >= 7 ? '' : 'none';
 }
 
 async function saveMobilityStage() {
@@ -2367,10 +2967,44 @@ async function saveMobilityStage() {
     });
     const data = await res.json();
     if (!res.ok) { alert(data.error || 'خطأ في تحديث مرحلة الحراك'); return; }
-    // Update local cache
     const idx = allAdminApps.findIndex(a => a.id === currentReviewAppId);
-    if (idx !== -1) allAdminApps[idx].mobility_stage = mobility_stage;
+    if (idx !== -1) { allAdminApps[idx].mobility_stage = mobility_stage; allAdminApps[idx].workflow_stage = data.workflow_stage; }
     alert('✅ تم تحديث مرحلة الحراك بنجاح');
+  } catch { alert('تعذر الاتصال بالخادم'); }
+}
+
+async function saveVisaDetails() {
+  if (!currentReviewAppId) return;
+  const body = {
+    visa_appointment_date: document.getElementById('rv-visa-date')?.value || null,
+    embassy: document.getElementById('rv-embassy')?.value || null,
+    visa_result: document.getElementById('rv-visa-result')?.value || null,
+    travel_date: document.getElementById('rv-travel-date')?.value || null,
+  };
+  try {
+    const res = await fetch(`/api/applications/${currentReviewAppId}/mobility-details`, {
+      method:'PATCH', headers:authHeader(), body:JSON.stringify(body),
+    });
+    if (!res.ok) { alert('خطأ في حفظ تفاصيل التأشيرة'); return; }
+    alert('✅ تم حفظ تفاصيل التأشيرة');
+  } catch { alert('تعذر الاتصال بالخادم'); }
+}
+
+async function saveTravelDetails() {
+  if (!currentReviewAppId) return;
+  const body = {
+    departure_date: document.getElementById('rv-departure-date')?.value || null,
+    return_date: document.getElementById('rv-return-date')?.value || null,
+    arrival_confirmed: document.getElementById('rv-arrival-confirmed')?.checked,
+    final_report_submitted: document.getElementById('rv-final-report')?.checked,
+    financially_closed: document.getElementById('rv-fin-closed')?.checked,
+  };
+  try {
+    const res = await fetch(`/api/applications/${currentReviewAppId}/mobility-details`, {
+      method:'PATCH', headers:authHeader(), body:JSON.stringify(body),
+    });
+    if (!res.ok) { alert('خطأ في حفظ تفاصيل السفر'); return; }
+    alert('✅ تم حفظ تفاصيل السفر');
   } catch { alert('تعذر الاتصال بالخادم'); }
 }
 
@@ -2552,35 +3186,95 @@ async function resetAllData() {
   } catch { alert('تعذر الاتصال بالخادم'); }
 }
 
-// ========== REGISTER ==========
-async function doRegister() {
-  const name          = document.getElementById('reg-name').value.trim();
-  const phone         = document.getElementById('reg-phone').value.trim();
-  const email         = document.getElementById('reg-email').value.trim();
-  const applicant_type = document.getElementById('reg-type').value;
-  const faculty       = document.getElementById('reg-faculty').value;
-  const password      = document.getElementById('reg-pass').value;
-  const confirmPass   = document.getElementById('reg-confirm').value;
+// ========== REGISTER — Dynamic Form ==========
 
-  if (!name || !email || !password) { alert(currentLang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة' : 'Please fill all required fields'); return; }
-  if (!isValidEmail(email))          { alert(currentLang === 'ar' ? 'صيغة البريد الإلكتروني غير صحيحة' : 'Invalid email format'); return; }
-  if (password !== confirmPass)      { alert(currentLang === 'ar' ? 'كلمتا المرور غير متطابقتين' : 'Passwords do not match'); return; }
-  if (password.length < 8)           { alert(currentLang === 'ar' ? 'كلمة المرور يجب أن تكون 8 أحرف على الأقل' : 'Password must be at least 8 characters'); return; }
+function selectAccountType(value) {
+  document.getElementById('reg-type').value = value;
+  document.querySelectorAll('.type-card').forEach(c => c.classList.toggle('selected', c.dataset.value === value));
+
+  const isStudent = value === 'master_student' || value === 'phd_student';
+  const isStaff   = value === 'administrative_staff';
+  const isProf    = value === 'academic_professor';
+
+  const show = id => { const el = document.getElementById(id); if (el) el.style.display = ''; };
+  const hide = id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; };
+
+  // Position: staff + professor
+  isStaff || isProf ? show('reg-group-position') : hide('reg-group-position');
+  // Faculty: students + professor (NOT admin)
+  isStudent || isProf ? show('reg-group-faculty') : hide('reg-group-faculty');
+  // Department + speciality: all types
+  show('reg-group-dept');
+  // Academic year: students only
+  isStudent ? show('reg-group-year') : hide('reg-group-year');
+
+  // For admin, hide speciality
+  const specInner = document.getElementById('reg-group-speciality-inner');
+  if (specInner) specInner.style.display = isStaff ? 'none' : '';
+
+  // Update year options for PhD vs Master
+  const yearSel = document.getElementById('reg-academic-year');
+  if (yearSel && isStudent) {
+    const isPHD = value === 'phd_student';
+    yearSel.innerHTML = isPHD
+      ? '<option value="">— Select year —</option><option value="PhD1">PhD Year 1</option><option value="PhD2">PhD Year 2</option><option value="PhD3">PhD Year 3</option><option value="PhD4">PhD Year 4+</option>'
+      : '<option value="">— Select year —</option><option value="M1">Master 1 (M1)</option><option value="M2">Master 2 (M2)</option>';
+  }
+}
+
+function checkEmailDomain(input) {
+  const email = input.value.trim().toLowerCase();
+  const hint = document.getElementById('reg-email-hint');
+  if (!hint || !email) { hint.style.display = 'none'; return; }
+  hint.style.display = '';
+  if (email.endsWith('@univ-eloued.dz')) {
+    hint.style.background = '#e8f7ef'; hint.style.color = '#1a7a4a';
+    hint.textContent = '✅ University email — your account will be activated immediately.';
+  } else if (email.includes('@')) {
+    hint.style.background = '#fff8e6'; hint.style.color = '#856404';
+    hint.textContent = '⚠️ Non-university email — your account will require admin approval before login.';
+  } else {
+    hint.style.display = 'none';
+  }
+}
+
+async function doRegister() {
+  const name           = document.getElementById('reg-name').value.trim();
+  const phone          = document.getElementById('reg-phone').value.trim();
+  const email          = document.getElementById('reg-email').value.trim();
+  const applicant_type = document.getElementById('reg-type').value;
+  const password       = document.getElementById('reg-pass').value;
+  const confirmPass    = document.getElementById('reg-confirm').value;
+  const faculty        = document.getElementById('reg-faculty')?.value || '';
+  const department     = document.getElementById('reg-department')?.value.trim() || '';
+  const speciality     = document.getElementById('reg-speciality')?.value.trim() || '';
+  const position_title = document.getElementById('reg-position')?.value.trim() || '';
+  const academic_year  = document.getElementById('reg-academic-year')?.value || '';
+
+  const err = currentLang === 'ar';
+  if (!applicant_type) { alert(err ? 'يرجى اختيار نوع الحساب' : 'Please select your account type'); return; }
+  if (!name || !email || !password) { alert(err ? 'يرجى ملء جميع الحقول المطلوبة' : 'Please fill all required fields'); return; }
+  if (!isValidEmail(email))  { alert(err ? 'صيغة البريد الإلكتروني غير صحيحة' : 'Invalid email format'); return; }
+  if (password !== confirmPass) { alert(err ? 'كلمتا المرور غير متطابقتين' : 'Passwords do not match'); return; }
+  if (password.length < 8)   { alert(err ? 'كلمة المرور يجب أن تكون 8 أحرف على الأقل' : 'Password must be at least 8 characters'); return; }
 
   try {
-    const res  = await fetch('/api/auth/register', {
+    const res = await fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, phone, email, password, applicant_type, faculty, preferred_language: currentLang }),
+      body: JSON.stringify({
+        name, phone, email, password, applicant_type,
+        faculty, department, speciality, position_title, academic_year,
+        preferred_language: currentLang,
+      }),
     });
     const data = await res.json();
-    if (!res.ok) {
-      alert(data.error || (currentLang === 'ar' ? 'خطأ في إنشاء الحساب' : 'Error creating account'));
-      return;
-    }
+    if (!res.ok) { alert(data.error || (err ? 'خطأ في إنشاء الحساب' : 'Error creating account')); return; }
 
     if (data.pending) {
-      alert(data.message || (currentLang === 'ar' ? 'تم إنشاء الحساب وهو الآن قيد المراجعة' : 'Your account is pending approval'));
+      alert(err
+        ? '✅ تم إنشاء حسابك. بما أن بريدك الإلكتروني غير مؤسسي، يجب أن يوافق عليه المسؤول قبل تسجيل الدخول.'
+        : '✅ Account created. Since your email is not institutional (@univ-eloued.dz), an administrator must approve it before you can log in.');
       showPage('page-login');
       return;
     }
@@ -2590,7 +3284,7 @@ async function doRegister() {
     await renderGrants();
     loadStudentDashboard();
   } catch {
-    alert(currentLang === 'ar' ? 'تعذر الاتصال بالخادم' : 'Unable to connect to the server');
+    alert(err ? 'تعذر الاتصال بالخادم' : 'Unable to connect to the server');
   }
 }
 
@@ -2616,14 +3310,7 @@ function readFileAsBase64(file) {
   });
 }
 
-async function uploadDocuments(appId) {
-  const docInputs = [
-    { id: 'doc-transcripts',      type: 'transcripts'       },
-    { id: 'doc-language-cert',    type: 'language_cert'     },
-    { id: 'doc-thesis-plan',      type: 'thesis_plan'       },
-    { id: 'doc-supervisor-auth',  type: 'supervisor_auth'   },
-    { id: 'doc-invitation-letter',type: 'invitation_letter' },
-  ];
+async function uploadDocuments(appId, docInputs) {
   for (const { id, type } of docInputs) {
     const input = document.getElementById(id);
     if (!input || !input.files || !input.files[0]) continue;
@@ -2631,8 +3318,7 @@ async function uploadDocuments(appId) {
     try {
       const file_data = await readFileAsBase64(file);
       await fetch(`/api/applications/${appId}/documents`, {
-        method: 'POST',
-        headers: authHeader(),
+        method: 'POST', headers: authHeader(),
         body: JSON.stringify({ doc_type: type, file_name: file.name, file_size: file.size, file_data }),
       });
     } catch(e) { console.error('Error uploading', type, e); }
@@ -2642,36 +3328,105 @@ async function uploadDocuments(appId) {
 // ========== SUBMIT APPLICATION ==========
 async function submitApplication() {
   const grant_id       = document.getElementById('apply-grant')?.value;
-  const motivation     = document.getElementById('apply-motivation')?.value;
-  const experience     = document.getElementById('apply-experience')?.value;
+  const motivation     = document.getElementById('apply-motivation')?.value?.trim();
   const language_level = document.getElementById('apply-language')?.value;
-  const study_level    = document.getElementById('apply-study-level')?.value;
+  const eligibility    = document.getElementById('apply-eligibility')?.checked;
+  const all_english    = document.getElementById('apply-english-confirm')?.checked;
 
-  if (!getToken()) {
-    alert('يرجى تسجيل الدخول أولاً');
-    closeModal('apply-modal');
-    showPage('page-login');
-    return;
+  if (!getToken()) { alert('Please log in first'); closeModal('apply-modal'); showPage('page-login'); return; }
+  if (!grant_id)   { alert('Please select a grant'); return; }
+  if (!motivation) { alert('Please fill in your motivation'); return; }
+  if (!all_english){ alert('Please confirm that all your documents are in English'); return; }
+
+  const user = getUser();
+  const type = user?.applicant_type || 'master_student';
+  const isStudent = type === 'master_student' || type === 'phd_student';
+  const isStaff   = type === 'administrative_staff';
+  const isProf    = type === 'academic_professor';
+
+  // Build body based on type
+  const body = {
+    grant_id: parseInt(grant_id), motivation, language_level,
+    eligibility_confirmed: eligibility, all_english_confirmed: all_english,
+  };
+
+  let docInputs = [];
+
+  if (isStudent) {
+    body.faculty         = document.getElementById('s-faculty')?.value.trim();
+    body.department      = document.getElementById('s-department')?.value.trim();
+    body.speciality      = document.getElementById('s-speciality')?.value.trim();
+    body.study_level     = document.getElementById('apply-study-level')?.value;
+    body.academic_year_detail = document.getElementById('s-academic-year')?.value;
+    body.has_previous_erasmus = document.querySelector('input[name="prev-erasmus"]:checked')?.value === 'yes';
+    body.has_invitation_letter = document.querySelector('input[name="has-invite"]:checked')?.value === 'yes';
+    if (!body.study_level) { alert('Please select your level of study'); return; }
+    docInputs = [
+      { id:'doc-passport',          type:'passport' },
+      { id:'doc-enrollment-cert',   type:'enrollment_cert' },
+      { id:'doc-transcripts',       type:'transcripts' },
+      { id:'doc-class-ranking',     type:'class_ranking' },
+      { id:'doc-motivation-letter', type:'motivation_letter' },
+      { id:'doc-cv',                type:'cv' },
+      { id:'doc-language-cert',     type:'language_cert' },
+      { id:'doc-good-conduct',      type:'good_conduct' },
+      { id:'doc-previous-erasmus',  type:'previous_erasmus' },
+      { id:'doc-invitation-letter', type:'invitation_letter' },
+      { id:'doc-work-plan',         type:'work_plan' },
+      { id:'doc-supervisor-auth',   type:'supervisor_auth' },
+    ];
+  } else if (isStaff) {
+    body.position_title    = document.getElementById('st-position')?.value.trim();
+    body.department        = document.getElementById('st-department')?.value.trim();
+    body.professional_email= document.getElementById('st-prof-email')?.value.trim();
+    body.mobility_type     = document.getElementById('st-mobility-type')?.value;
+    if (!body.mobility_type) { alert('Please select the type of mobility'); return; }
+    docInputs = [
+      { id:'doc-st-passport',   type:'passport' },
+      { id:'doc-st-motivation', type:'motivation_letter' },
+      { id:'doc-st-cv',         type:'cv' },
+      { id:'doc-st-lang',       type:'language_cert' },
+      { id:'doc-st-mob-plan',   type:'mobility_plan' },
+      { id:'doc-st-support',    type:'institutional_support' },
+      { id:'doc-st-bank',       type:'bank_account' },
+    ];
+  } else if (isProf) {
+    body.position_title    = document.getElementById('pr-position')?.value;
+    body.faculty           = document.getElementById('pr-faculty')?.value.trim();
+    body.department        = document.getElementById('pr-department')?.value.trim();
+    body.speciality        = document.getElementById('pr-speciality')?.value.trim();
+    body.professional_email= document.getElementById('pr-prof-email')?.value.trim();
+    body.mobility_type     = document.getElementById('pr-mobility-type')?.value;
+    body.lecture_title     = document.getElementById('pr-lecture-title')?.value.trim() || null;
+    if (!body.mobility_type) { alert('Please select the type of mobility'); return; }
+    if ((body.mobility_type === 'teaching' || body.mobility_type === 'combined') && !body.lecture_title) {
+      alert('Please provide the title of your proposed lecture'); return;
+    }
+    docInputs = [
+      { id:'doc-pr-passport',   type:'passport' },
+      { id:'doc-pr-motivation', type:'motivation_letter' },
+      { id:'doc-pr-cv',         type:'cv' },
+      { id:'doc-pr-lang',       type:'language_cert' },
+      { id:'doc-pr-mob-plan',   type:'mobility_plan' },
+      { id:'doc-pr-invite',     type:'invitation_letter' },
+      { id:'doc-lecture-content',type:'lecture_content' },
+    ];
   }
-  if (!grant_id)    { alert('يرجى اختيار المنحة'); return; }
-  if (!study_level) { alert('يرجى اختيار المستوى الدراسي (ماستر 2 أو دكتوراه)'); return; }
 
   try {
     const res = await fetch('/api/applications', {
-      method: 'POST',
-      headers: authHeader(),
-      body: JSON.stringify({ grant_id: parseInt(grant_id), motivation, experience, language_level, study_level }),
+      method: 'POST', headers: authHeader(),
+      body: JSON.stringify(body),
     });
     const data = await res.json();
-    if (!res.ok) { alert(data.error || 'خطأ في إرسال الطلب'); return; }
+    if (!res.ok) { alert(data.error || 'Error submitting application'); return; }
 
-    // Upload documents if any were selected
-    await uploadDocuments(data.id);
+    await uploadDocuments(data.id, docInputs);
 
     closeModal('apply-modal');
     await loadStudentDashboard();
-    alert('✅ تم إرسال طلبك بنجاح! سيتم مراجعته من قبل الإدارة.');
-  } catch { alert('تعذر الاتصال بالخادم'); }
+    alert('✅ Your application has been submitted successfully! It will be reviewed by the coordinator.');
+  } catch { alert('Unable to connect to the server'); }
 }
 
 // ========== PROFILE & PASSWORD ==========
@@ -2871,6 +3626,132 @@ function switchView(dashboard, viewId, clickedEl) {
 
 function showAppDetail() { switchView('student', 'v-appdetail', null); }
 
+// ===== STUDENT APP DETAIL =====
+const GRANT_TYPE_LABELS = { study:'دراسة أكاديمية', train:'تدريب', teach:'تدريس', staff:'طاقم عمل' };
+
+const WORKFLOW_STAGES_DEF = [
+  { num:1, icon:'📢', title:'نشر الإعلان',        sub:'Call Publication' },
+  { num:2, icon:'📝', title:'تسجيل الطلب',        sub:'Applicant Registration' },
+  { num:3, icon:'📊', title:'التقييم والاختيار',   sub:'Evaluation & Selection' },
+  { num:4, icon:'🎯', title:'الترشيح',             sub:'Nomination' },
+  { num:5, icon:'📂', title:'التوثيق',             sub:'Mobility Documentation' },
+  { num:6, icon:'🛂', title:'التأشيرة',            sub:'Visa Preparation' },
+  { num:7, icon:'✈️', title:'ما قبل المغادرة',    sub:'Travel & Pre-Departure' },
+  { num:8, icon:'🌍', title:'الحراك النشط',        sub:'Active Mobility' },
+  { num:9, icon:'🏆', title:'إتمام الحراك',        sub:'Mobility Completion' },
+];
+
+function buildWorkflowTimeline(app) {
+  const el = id => document.getElementById(id);
+
+  // Determine current stage and sub-status
+  let currentStage = 1;
+  let subStatus = '';
+  let isRejected = false;
+
+  if (app.status === 'rejected') { currentStage = 3; isRejected = true; subStatus = '❌ مرفوض'; }
+  else if (app.status === 'reserve_list') { currentStage = 3; subStatus = '📋 قائمة الاحتياط'; }
+  else if (app.status === 'review') { currentStage = 2; subStatus = '🔍 قيد المراجعة'; }
+  else if (app.status === 'pending') { currentStage = 2; subStatus = '⏳ بانتظار المراجعة'; }
+  else if (app.status === 'accepted') {
+    if (app.mobility_stage && MOBILITY_STAGE_MAP[app.mobility_stage]) {
+      const info = MOBILITY_STAGE_MAP[app.mobility_stage];
+      currentStage = info.stage;
+      subStatus = `${info.icon} ${info.label}`;
+    } else {
+      currentStage = 3;
+      subStatus = '✅ مقبول — في انتظار الترشيح';
+    }
+  }
+
+  const tlDiv = el('ad-workflow-timeline');
+  if (!tlDiv) return;
+
+  tlDiv.innerHTML = WORKFLOW_STAGES_DEF.map(s => {
+    let dotClass = 'wf-dot';
+    let badgeHtml = '';
+    if (s.num < currentStage) {
+      dotClass += ' done';
+      badgeHtml = `<span class="wf-stage-badge wf-badge-done">✅ مكتمل</span>`;
+    } else if (s.num === currentStage) {
+      dotClass += isRejected ? ' rejected' : ' current';
+      const badgeClass = isRejected ? 'wf-badge-pending' : 'wf-badge-current';
+      badgeHtml = `<span class="wf-stage-badge ${badgeClass}">${subStatus || 'جارٍ...'}</span>`;
+    } else {
+      badgeHtml = `<span class="wf-stage-badge wf-badge-pending">⏳ قادم</span>`;
+    }
+    return `<div class="wf-item">
+      <div class="${dotClass}">${s.num}</div>
+      <div class="wf-content">
+        <div class="wf-stage-num">المرحلة ${s.num} · ${s.sub}</div>
+        <div class="wf-stage-title">${s.icon} ${s.title}</div>
+        ${badgeHtml}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function openAppDetail(appId) {
+  const app = (window._studentApps || []).find(a => a.id === appId);
+  if (!app) return;
+  const el = id => document.getElementById(id);
+
+  el('ad-grant-title').textContent   = app.grant_title       || '—';
+  el('ad-uni-name').textContent      = app.university_name   || '—';
+  el('ad-uni-country').textContent   = app.university_country|| '—';
+  el('ad-grant-type').textContent    = GRANT_TYPE_LABELS[app.grant_type] || app.grant_type || '—';
+  el('ad-duration').textContent      = app.grant_duration    || '—';
+  el('ad-apply-date').textContent    = new Date(app.created_at).toLocaleDateString('ar-DZ');
+
+  // Admin note
+  const noteCard = el('ad-note-card');
+  if (app.admin_note) {
+    el('ad-admin-note').textContent = app.admin_note;
+    if (noteCard) noteCard.style.display = '';
+  } else { if (noteCard) noteCard.style.display = 'none'; }
+
+  // 9-stage timeline
+  buildWorkflowTimeline(app);
+
+  // Visa card
+  const visaCard = el('ad-visa-card');
+  if (visaCard && app.status === 'accepted' && (app.visa_appointment_date || app.embassy || app.visa_result)) {
+    const vi = el('ad-visa-info');
+    vi.innerHTML = [
+      app.visa_appointment_date ? `<div class="info-item"><label>موعد المقابلة</label><span>${new Date(app.visa_appointment_date).toLocaleDateString('ar-DZ')}</span></div>` : '',
+      app.embassy ? `<div class="info-item"><label>السفارة</label><span>${app.embassy}</span></div>` : '',
+      app.visa_result ? `<div class="info-item"><label>نتيجة التأشيرة</label><span>${app.visa_result==='approved'?'✅ مقبولة':app.visa_result==='rejected'?'❌ مرفوضة':'⏳ قيد الانتظار'}</span></div>` : '',
+      app.travel_date ? `<div class="info-item"><label>تاريخ السفر</label><span>${new Date(app.travel_date).toLocaleDateString('ar-DZ')}</span></div>` : '',
+    ].join('');
+    visaCard.style.display = '';
+  } else if (visaCard) { visaCard.style.display = 'none'; }
+
+  // Docs
+  const docsList = el('ad-docs-list');
+  if (docsList) {
+    docsList.innerHTML = '<div style="color:var(--gray-mid);font-size:0.85rem;">جاري تحميل الوثائق...</div>';
+    try {
+      const res = await fetch(`/api/applications/${appId}/documents`, { headers: authHeader() });
+      const DOC_LABELS = { transcripts:'كشوف النقاط', language_cert:'شهادة اللغة', thesis_plan:'خطة المذكرة', supervisor_auth:'ترخيص المشرف', invitation_letter:'رسالة الدعوة' };
+      if (res.ok) {
+        const docs = await res.json();
+        docsList.innerHTML = docs.length
+          ? docs.map(d => `<div style="display:flex;justify-content:space-between;align-items:center;background:#e8f7ef;padding:7px 12px;border-radius:8px;">
+              <span style="color:var(--blue-deep);font-size:0.85rem;">✅ ${DOC_LABELS[d.doc_type]||d.doc_type}<br><small style="color:var(--gray-mid);">${d.file_name}</small></span>
+              <button class="action-btn ghost" style="font-size:0.75rem;" onclick="downloadDoc(${d.id},'${d.file_name}')">⬇️</button>
+            </div>`).join('')
+          : '<div style="color:var(--gray-mid);font-size:0.85rem;">لم يتم رفع أي وثائق بعد</div>';
+      }
+    } catch(e) { docsList.innerHTML = '<div style="color:var(--gray-mid);">خطأ في تحميل الوثائق</div>'; }
+  }
+
+  // Upload button
+  const uploadBtn = el('ad-upload-btn');
+  if (uploadBtn) uploadBtn.onclick = () => openDocsModal(appId, app.grant_title);
+
+  switchView('student', 'v-appdetail', null);
+}
+
 // ========== MODALS ==========
 function openApplyModal(grantId) {
   populateApplySelect(cachedGrants || []);
@@ -2878,7 +3759,40 @@ function openApplyModal(grantId) {
     const sel = document.getElementById('apply-grant');
     if (sel) sel.value = grantId;
   }
+  // Show the right section based on user type
+  const user = getUser();
+  const type = user?.applicant_type || 'master_student';
+  showApplySectionForType(type);
   document.getElementById('apply-modal').classList.add('open');
+}
+
+function showApplySectionForType(type) {
+  const sections = ['student','staff','professor'];
+  const map = { master_student:'student', phd_student:'student', administrative_staff:'staff', academic_professor:'professor' };
+  const active = map[type] || 'student';
+  sections.forEach(s => {
+    const el = document.getElementById(`apply-section-${s}`);
+    if (el) el.style.display = s === active ? '' : 'none';
+  });
+  // For PhD students, show PhD-only fields
+  const phdFields = document.getElementById('apply-phd-fields');
+  if (phdFields) phdFields.style.display = type === 'phd_student' ? '' : 'none';
+}
+
+function togglePrevErasmusDoc(show) {
+  const el = document.getElementById('prev-erasmus-doc');
+  if (el) el.style.display = show ? '' : 'none';
+}
+
+function toggleInviteDoc(show) {
+  const el = document.getElementById('invite-doc');
+  if (el) el.style.display = show ? '' : 'none';
+}
+
+function toggleTeachingFields() {
+  const type = document.getElementById('pr-mobility-type')?.value;
+  const el = document.getElementById('pr-teaching-fields');
+  if (el) el.style.display = (type === 'teaching' || type === 'combined') ? '' : 'none';
 }
 
 async function openGrantModal() {

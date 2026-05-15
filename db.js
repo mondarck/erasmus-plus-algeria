@@ -85,12 +85,58 @@ async function initSchema() {
 
   // Migrations for existing tables
   await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS study_level      VARCHAR(20)`;
-  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS mobility_stage   VARCHAR(30)`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS mobility_stage   VARCHAR(50)`;
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS is_active          BOOLEAN       NOT NULL DEFAULT false`;
   await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS preferred_language VARCHAR(10)   NOT NULL DEFAULT 'en'`;
 
   await sql`UPDATE users SET is_active = true WHERE role IN ('admin','superadmin')`;
   await sql`UPDATE users SET is_active = true WHERE lower(email) LIKE '%@univ-eloued.dz'`;
+
+  // Expand status CHECK to include reserve_list
+  await sql`
+    DO $$
+    BEGIN
+      ALTER TABLE applications DROP CONSTRAINT IF EXISTS applications_status_check;
+    EXCEPTION WHEN others THEN NULL;
+    END $$
+  `;
+  await sql`
+    ALTER TABLE applications
+      ADD CONSTRAINT applications_status_check
+      CHECK (status IN ('pending','review','accepted','rejected','reserve_list'))
+  `.catch(() => null);
+
+  // Extended mobility tracking fields (Stage 6: Visa, Stage 7-9: Travel & Completion)
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS workflow_stage         INTEGER DEFAULT 2`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS visa_appointment_date  DATE`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS embassy                VARCHAR(255)`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS visa_result            VARCHAR(50)`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS travel_date            DATE`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS arrival_confirmed      BOOLEAN DEFAULT false`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS departure_date         DATE`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS return_date            DATE`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS final_report_submitted BOOLEAN DEFAULT false`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS financially_closed     BOOLEAN DEFAULT false`;
+
+  // Phase 2 — User profile extra fields
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS department     VARCHAR(255)`;
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS speciality     VARCHAR(255)`;
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS position_title VARCHAR(255)`;
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS academic_year  VARCHAR(20)`;
+
+  // Phase 2 — Application detailed fields
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS faculty               VARCHAR(255)`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS department            VARCHAR(255)`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS speciality            VARCHAR(255)`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS academic_year_detail  VARCHAR(50)`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS has_previous_erasmus  BOOLEAN DEFAULT false`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS has_invitation_letter BOOLEAN DEFAULT false`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS eligibility_confirmed BOOLEAN DEFAULT false`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS all_english_confirmed BOOLEAN DEFAULT false`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS professional_email    VARCHAR(255)`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS position_title        VARCHAR(255)`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS mobility_type         VARCHAR(50)`;
+  await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS lecture_title         VARCHAR(500)`;
 
   await sql`ALTER TABLE universities  ADD COLUMN IF NOT EXISTS agreement_file       TEXT`;
   await sql`ALTER TABLE universities  ADD COLUMN IF NOT EXISTS agreement_file_name  VARCHAR(255)`;

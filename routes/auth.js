@@ -42,13 +42,20 @@ function safeUser(u) {
     phone: u.phone,
     applicant_type: u.applicant_type,
     is_active: u.is_active,
-    preferred_language: u.preferred_language || 'en'
+    preferred_language: u.preferred_language || 'en',
+    department: u.department || null,
+    speciality: u.speciality || null,
+    position_title: u.position_title || null,
+    academic_year: u.academic_year || null,
   };
 }
 
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
-  const { name, phone, email, password, faculty, applicant_type, preferred_language } = req.body;
+  const {
+    name, phone, email, password, faculty, applicant_type, preferred_language,
+    department, speciality, position_title, academic_year,
+  } = req.body;
   const normalizedType = normalizeApplicantType(applicant_type);
 
   if (!name || !email || !password || !normalizedType) {
@@ -68,8 +75,15 @@ router.post('/register', async (req, res) => {
     const isActive = emailLower.endsWith('@univ-eloued.dz');
     const hash = await bcrypt.hash(password, 12);
     const [user] = await sql`
-      INSERT INTO users (name, phone, email, password_hash, role, faculty, applicant_type, is_active, preferred_language)
-      VALUES (${name}, ${phone || null}, ${emailLower}, ${hash}, 'student', ${faculty || null}, ${normalizedType}, ${isActive}, ${preferred_language || 'en'})
+      INSERT INTO users (
+        name, phone, email, password_hash, role, faculty, applicant_type,
+        is_active, preferred_language, department, speciality, position_title, academic_year
+      )
+      VALUES (
+        ${name}, ${phone || null}, ${emailLower}, ${hash}, 'student',
+        ${faculty || null}, ${normalizedType}, ${isActive}, ${preferred_language || 'en'},
+        ${department || null}, ${speciality || null}, ${position_title || null}, ${academic_year || null}
+      )
       RETURNING *
     `;
 
