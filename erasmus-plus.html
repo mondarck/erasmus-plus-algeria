@@ -1343,12 +1343,12 @@ textarea.form-input { resize:vertical; min-height:100px; }
         </div>
         <div class="sidebar-logo-text">Erasmus<span>+ إدارة</span></div>
       </div>
-      <div class="sidebar-section">الإدارة</div>
-      <div class="sidebar-item active" onclick="switchView('admin','v-dashboard',this)"><span class="icon">📊</span> لوحة التحكم</div>
-      <div class="sidebar-item" onclick="switchView('admin','v-grants',this)"><span class="icon">🎓</span> المنح</div>
-      <div class="sidebar-item" onclick="switchView('admin','v-applications',this)"><span class="icon">📋</span> الطلبات <span class="sidebar-badge" id="badge-admin-apps" style="display:none;">0</span></div>
-      <div class="sidebar-item" onclick="switchView('admin','v-universities',this)"><span class="icon">🏛️</span> الجامعات</div>
-      <div class="sidebar-item" onclick="switchView('admin','v-reports',this)"><span class="icon">📈</span> التقارير</div>
+      <div class="sidebar-section" id="admin-section-label">الإدارة</div>
+      <div class="sidebar-item active" onclick="switchView('admin','v-dashboard',this)"><span class="icon">📊</span> <span id="admin-sidebar-dashboard">لوحة التحكم</span></div>
+      <div class="sidebar-item" onclick="switchView('admin','v-grants',this)"><span class="icon">🎓</span> <span id="admin-sidebar-grants">المنح</span></div>
+      <div class="sidebar-item" onclick="switchView('admin','v-applications',this)"><span class="icon">📋</span> <span id="admin-sidebar-apps">الطلبات</span> <span class="sidebar-badge" id="badge-admin-apps" style="display:none;">0</span></div>
+      <div class="sidebar-item" onclick="switchView('admin','v-universities',this)"><span class="icon">🏛️</span> <span id="admin-sidebar-unis">الجامعات</span></div>
+      <div class="sidebar-item" onclick="switchView('admin','v-reports',this)"><span class="icon">📈</span> <span id="admin-sidebar-reports">التقارير</span></div>
       <div id="superadmin-menu" style="display:none;">
         <div class="sidebar-section">مدير النظام</div>
         <div class="sidebar-item" onclick="switchView('admin','v-users',this)"><span class="icon">👥</span> المستخدمون</div>
@@ -1359,7 +1359,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
           <div class="user-avatar">م.م</div>
           <div><div class="user-name" id="admin-name">مدير المنح</div><div class="user-role" id="admin-role">مشرف</div></div>
         </div>
-        <div class="sidebar-item" onclick="logout()"><span class="icon">🚪</span> تسجيل الخروج</div>
+          <div class="sidebar-item" onclick="logout()"><span class="icon">🚪</span> <span id="admin-sidebar-logout">تسجيل الخروج</span></div>
       </div>
     </aside>
     <main class="main-content">
@@ -1376,16 +1376,16 @@ textarea.form-input { resize:vertical; min-height:100px; }
         <!-- DASHBOARD -->
         <div class="dash-view active" id="admin-v-dashboard">
           <div class="kpi-grid">
-            <div class="kpi-card"><div class="kpi-icon blue">🎓</div><div><div class="kpi-num" id="a-kpi-grants">—</div><div class="kpi-label">المنح النشطة</div></div></div>
-            <div class="kpi-card"><div class="kpi-icon gold">📋</div><div><div class="kpi-num" id="a-kpi-total">—</div><div class="kpi-label">إجمالي الطلبات</div></div></div>
-            <div class="kpi-card"><div class="kpi-icon green">✅</div><div><div class="kpi-num" id="a-kpi-accepted">—</div><div class="kpi-label">مقبول</div></div></div>
-            <div class="kpi-card"><div class="kpi-icon red">❌</div><div><div class="kpi-num" id="a-kpi-rejected">—</div><div class="kpi-label">مرفوض</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon blue">🎓</div><div><div class="kpi-num" id="a-kpi-grants">—</div><div class="kpi-label" id="a-kpi-grants-label">المنح النشطة</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon gold">📋</div><div><div class="kpi-num" id="a-kpi-total">—</div><div class="kpi-label" id="a-kpi-total-label">إجمالي الطلبات</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon green">✅</div><div><div class="kpi-num" id="a-kpi-accepted">—</div><div class="kpi-label" id="a-kpi-accepted-label">مقبول</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon red">❌</div><div><div class="kpi-num" id="a-kpi-rejected">—</div><div class="kpi-label" id="a-kpi-rejected-label">مرفوض</div></div></div>
           </div>
 
           <div class="card">
-            <div class="card-title">⏳ آخر الطلبات الواردة <span class="card-link" onclick="switchView('admin','v-applications',null)">عرض الكل</span></div>
+            <div class="card-title"><span id="admin-latest-title">⏳ آخر الطلبات الواردة</span> <span class="card-link" onclick="switchView('admin','v-applications',null)" id="admin-view-all-apps">عرض الكل</span></div>
             <table class="data-table">
-              <thead><tr><th>المتقدم</th><th>المنحة</th><th>تاريخ التقديم</th><th>الحالة</th><th>مرحلة الحراك</th><th>الإجراء</th></tr></thead>
+              <thead><tr><th id="admin-th-applicant">المتقدم</th><th id="admin-th-grant">المنحة</th><th id="admin-th-date">تاريخ التقديم</th><th id="admin-th-status">الحالة</th><th id="admin-th-stage">مرحلة الحراك</th><th id="admin-th-action">الإجراء</th></tr></thead>
               <tbody id="admin-recent-apps">
                 <tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد طلبات بعد</td></tr>
               </tbody>
@@ -2248,6 +2248,28 @@ const TRANSLATIONS = {
     soonExpiring: 'Expiring soon',
     noNotifs: 'No notifications currently',
     backToApps: 'Back to my applications'
+    ,adminSection: 'Administration',
+    adminDashboard: 'Dashboard',
+    adminGrants: 'Grants',
+    adminApplications: 'Applications',
+    adminUniversities: 'Universities',
+    adminReports: 'Reports',
+    superadminSection: 'Superadmin',
+    adminUsers: 'Users',
+    adminLogs: 'Activity logs',
+    adminLogout: 'Logout',
+    adminKpiGrants: 'Active grants',
+    adminKpiTotal: 'Total applications',
+    adminKpiAccepted: 'Accepted',
+    adminKpiRejected: 'Rejected',
+    adminLatestApps: 'Latest incoming applications',
+    adminViewAll: 'View all'
+    ,adminThApplicant: 'Applicant',
+    adminThGrant: 'Grant',
+    adminThDate: 'Date',
+    adminThStatus: 'Status',
+    adminThStage: 'Mobility Stage',
+    adminThAction: 'Action'
   },
   ar: {
     navGrants: 'المنح المتاحة',
@@ -2316,6 +2338,28 @@ const TRANSLATIONS = {
     soonExpiring: 'تنتهي قريباً',
     noNotifs: 'لا توجد إشعارات حالياً',
     backToApps: 'رجوع إلى طلباتي'
+    ,adminSection: 'الإدارة',
+    adminDashboard: 'لوحة التحكم',
+    adminGrants: 'المنح',
+    adminApplications: 'الطلبات',
+    adminUniversities: 'الجامعات',
+    adminReports: 'التقارير',
+    superadminSection: 'مدير النظام',
+    adminUsers: 'المستخدمون',
+    adminLogs: 'سجل العمليات',
+    adminLogout: 'تسجيل الخروج',
+    adminKpiGrants: 'المنح النشطة',
+    adminKpiTotal: 'إجمالي الطلبات',
+    adminKpiAccepted: 'مقبول',
+    adminKpiRejected: 'مرفوض',
+    adminLatestApps: 'آخر الطلبات الواردة',
+    adminViewAll: 'عرض الكل'
+    ,adminThApplicant: 'المتقدم',
+    adminThGrant: 'المنحة',
+    adminThDate: 'تاريخ التقديم',
+    adminThStatus: 'الحالة',
+    adminThStage: 'مرحلة الحراك',
+    adminThAction: 'الإجراء'
   }
 };
 
@@ -2464,6 +2508,38 @@ function setLanguage(lang) {
   if (document.getElementById('no-recent-msg')) document.getElementById('no-recent-msg').textContent = map.noApps;
   if (document.getElementById('no-notifs-msg')) document.getElementById('no-notifs-msg').textContent = map.noNotifs;
   if (document.getElementById('back-to-apps')) document.getElementById('back-to-apps').textContent = `← ${map.backToApps}`;
+
+  // ===== Admin dashboard translations =====
+  if (document.getElementById('admin-section-label')) document.getElementById('admin-section-label').textContent = map.adminSection;
+  const adminSidebarMap = {
+    'admin-sidebar-dashboard': map.adminDashboard,
+    'admin-sidebar-grants': map.adminGrants,
+    'admin-sidebar-apps': map.adminApplications,
+    'admin-sidebar-unis': map.adminUniversities,
+    'admin-sidebar-reports': map.adminReports,
+    'admin-sidebar-logout': map.adminLogout
+  };
+  Object.entries(adminSidebarMap).forEach(([id, text]) => { const el = document.getElementById(id); if (el) el.textContent = text; });
+
+  if (document.getElementById('admin-page-title')) document.getElementById('admin-page-title').textContent = map.adminDashboard;
+
+  // Admin KPI labels
+  if (document.getElementById('a-kpi-grants-label')) document.getElementById('a-kpi-grants-label').textContent = map.adminKpiGrants;
+  if (document.getElementById('a-kpi-total-label')) document.getElementById('a-kpi-total-label').textContent = map.adminKpiTotal;
+  if (document.getElementById('a-kpi-accepted-label')) document.getElementById('a-kpi-accepted-label').textContent = map.adminKpiAccepted;
+  if (document.getElementById('a-kpi-rejected-label')) document.getElementById('a-kpi-rejected-label').textContent = map.adminKpiRejected;
+
+  // Admin latest / view all
+  if (document.getElementById('admin-latest-title')) document.getElementById('admin-latest-title').textContent = map.adminLatestApps;
+  if (document.getElementById('admin-view-all-apps')) document.getElementById('admin-view-all-apps').textContent = map.adminViewAll;
+
+  // Admin table headers
+  if (document.getElementById('admin-th-applicant')) document.getElementById('admin-th-applicant').textContent = map.adminThApplicant;
+  if (document.getElementById('admin-th-grant')) document.getElementById('admin-th-grant').textContent = map.adminThGrant;
+  if (document.getElementById('admin-th-date')) document.getElementById('admin-th-date').textContent = map.adminThDate;
+  if (document.getElementById('admin-th-status')) document.getElementById('admin-th-status').textContent = map.adminThStatus;
+  if (document.getElementById('admin-th-stage')) document.getElementById('admin-th-stage').textContent = map.adminThStage;
+  if (document.getElementById('admin-th-action')) document.getElementById('admin-th-action').textContent = map.adminThAction;
 }
 
 function toggleLanguage() {
