@@ -2843,7 +2843,7 @@ async function loadStudentDashboard() {
               ${a.admin_note ? `<div style="background:#fff3cd;color:#856404;border-radius:8px;padding:8px 12px;font-size:0.85rem;">💬 ${a.admin_note}</div>` : ''}
               ${(a.status==='accepted'||a.status==='reserve_list') && a.mobility_stage && MOBILITY_STAGE_MAP[a.mobility_stage] ? `<div style="background:#e8f7ef;color:var(--green);border-radius:8px;padding:8px 12px;font-size:0.85rem;margin-top:6px;">🗺️ ${MOBILITY_STAGE_MAP[a.mobility_stage].icon} ${MOBILITY_STAGE_MAP[a.mobility_stage].label}</div>` : ''}
             </div>`).join('')
-        : '<div style="text-align:center;color:var(--gray-mid);padding:40px 20px;"><div style="font-size:2rem;margin-bottom:10px;">🔔</div><div>لا توجد إشعارات حالياً</div></div>';
+        : `<div style="text-align:center;color:var(--gray-mid);padding:40px 20px;"><div style="font-size:2rem;margin-bottom:10px;">🔔</div><div>${(TRANSLATIONS[currentLang]||TRANSLATIONS.en).noNotifs}</div></div>`;
     }
 
     // Cache apps for openAppDetail
@@ -2856,8 +2856,8 @@ async function loadStudentDashboard() {
       reserve_list: ['status-review',   '📋 احتياط'],
       rejected:     ['status-rejected', '❌ مرفوض'],
     };
-    const empty4 = '<tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:24px;">لا توجد طلبات بعد</td></tr>';
-    const empty5 = '<tr><td colspan="7" style="text-align:center;color:var(--gray-mid);padding:30px;">لم تتقدم على أي منحة بعد</td></tr>';
+    const empty4 = `<tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:24px;">${(TRANSLATIONS[currentLang]||TRANSLATIONS.en).noApps}</td></tr>`;
+    const empty5 = `<tr><td colspan="7" style="text-align:center;color:var(--gray-mid);padding:30px;">${(TRANSLATIONS[currentLang]||TRANSLATIONS.en).noApps}</td></tr>`;
 
     const recentBody = el('student-recent-apps');
     const myappsBody = el('student-myapps-body');
@@ -2976,7 +2976,7 @@ function renderAdminAppsTable(apps) {
     reserve_list: ['status-review',   '📋 احتياط'],
     rejected:     ['status-rejected', 'مرفوض'],
   };
-  const empty = '<tr><td colspan="6" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد طلبات بعد</td></tr>';
+  const empty = `<tr><td colspan="6" style="text-align:center;color:var(--gray-mid);padding:30px;">${(TRANSLATIONS[currentLang]||TRANSLATIONS.en).noApps}</td></tr>`;
   const makeRow = a => {
     const [sc, sl] = STATUS[a.status] || ['status-review', a.status];
     const date = new Date(a.created_at).toLocaleDateString('ar-DZ');
