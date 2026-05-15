@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Erasmus+ | منصة إدارة المنح الأكاديمية</title>
+<title>Erasmus+ | Academic Mobility Management</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -858,25 +858,26 @@ textarea.form-input { resize:vertical; min-height:100px; }
       <div class="logo-text">Erasmus<span>+</span> Algeria</div>
     </div>
     <div class="nav-links">
-      <button class="nav-btn ghost" onclick="scrollToGrants()">المنح المتاحة</button>
-      <button class="nav-btn ghost" onclick="showPage('page-login')">تسجيل الدخول</button>
-      <button class="nav-btn gold" onclick="showPage('page-register')">سجّل الآن</button>
+      <button class="nav-btn ghost" id="nav-link-grants" onclick="scrollToGrants()">Available grants</button>
+      <button class="nav-btn ghost" id="nav-link-login" onclick="showPage('page-login')">Login</button>
+      <button class="nav-btn gold" id="nav-link-register" onclick="showPage('page-register')">Register</button>
+      <button class="nav-btn ghost" id="lang-toggle" onclick="toggleLanguage()">العربية</button>
     </div>
   </nav>
 
   <div class="hero">
-    <div class="hero-badge">🌍 برنامج الحراك الأكاديمي الأوروبي</div>
-    <h1>اكتشف فرصتك مع<br><span>Erasmus+</span></h1>
-    <p>منصة رقمية متكاملة لإدارة منح الحراك الأكاديمي — تقديم سهل، متابعة شفافة، ونتائج واضحة.</p>
+    <div class="hero-badge" id="hero-badge">🌍 Erasmus+ ICM Mobility</div>
+    <h1 id="hero-heading">Find your Erasmus+ mobility opportunity<br><span>Erasmus+</span></h1>
+    <p id="hero-text">A modern platform to manage academic mobility applications, follow your progress, and stay connected with your university.</p>
     <div class="hero-btns">
-      <button class="btn-primary" onclick="showPage('page-register')">ابدأ التقديم الآن</button>
-      <button class="btn-outline" onclick="scrollToGrants()">استعرض المنح</button>
+      <button class="btn-primary" id="hero-btn-start" onclick="showPage('page-register')">Start your application</button>
+      <button class="btn-outline" id="hero-btn-grants" onclick="scrollToGrants()">Browse grants</button>
     </div>
   </div>
 
   <div class="section" id="grants-section">
-    <div class="section-title">🎓 أحدث المنح المتاحة</div>
-    <div class="section-sub">اضغط على أي منحة لعرض التفاصيل والتقديم</div>
+    <div class="section-title" id="landing-section-title">🎓 Latest available grants</div>
+    <div class="section-sub" id="landing-section-sub">Click any grant to view details and apply</div>
     <div class="grants-grid" id="landing-grants"></div>
   </div>
 </div>
@@ -892,25 +893,25 @@ textarea.form-input { resize:vertical; min-height:100px; }
   <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
   <div class="auth-card">
     <div class="auth-logo" style="font-size:2.5rem;">🔐</div>
-    <div class="auth-title">تسجيل الدخول</div>
-    <div class="auth-sub">مرحباً بك مجدداً في منصة Erasmus+</div>
+    <div class="auth-title" id="login-title">Login</div>
+    <div class="auth-sub" id="login-sub">Welcome back to Erasmus+ platform</div>
 
     <div class="form-group">
-      <label class="form-label">البريد الإلكتروني</label>
+      <label class="form-label" id="login-email-label">Email Address</label>
       <input type="email" class="form-input" placeholder="example@university.dz" id="login-email" autocomplete="off">
     </div>
     <div class="form-group">
-      <label class="form-label">كلمة المرور</label>
+      <label class="form-label" id="login-pass-label">Password</label>
       <input type="password" class="form-input" placeholder="••••••••" id="login-pass" autocomplete="new-password">
     </div>
 
     <div style="text-align:left;margin-bottom:20px;">
-      <a style="font-size:0.85rem;color:var(--gold-light);cursor:pointer;">نسيت كلمة المرور؟</a>
+      <a id="login-forgot" style="font-size:0.85rem;color:var(--gold-light);cursor:pointer;">Forgot password?</a>
     </div>
 
-    <button class="btn-full" onclick="doLogin()">تسجيل الدخول</button>
+    <button class="btn-full" id="login-button" onclick="doLogin()">Login</button>
 
-    <div class="auth-switch">ليس لديك حساب؟ <a onclick="showPage('page-register')">سجّل الآن</a></div>
+    <div class="auth-switch" id="login-switch">No account yet? <a onclick="showPage('page-register')">Register now</a></div>
   </div>
   </div>
 </div>
@@ -926,55 +927,59 @@ textarea.form-input { resize:vertical; min-height:100px; }
   <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:40px 20px;">
   <div class="auth-card" style="max-width:580px;">
     <div class="auth-logo" style="font-size:2.5rem;">✍️</div>
-    <div class="auth-title">إنشاء حساب جديد</div>
-    <div class="auth-sub">انضم إلى منصة Erasmus+ وابدأ رحلتك الأكاديمية</div>
+    <div class="auth-title" id="register-title">Create a new account</div>
+    <div class="auth-sub" id="register-sub">Join Erasmus+ and track your mobility status professionally</div>
 
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">الاسم الكامل</label>
-        <input type="text" id="reg-name" class="form-input" placeholder="محمد أحمد">
+        <label class="form-label" id="register-name-label">Full name</label>
+        <input type="text" id="reg-name" class="form-input" placeholder="John Doe">
       </div>
       <div class="form-group">
-        <label class="form-label">رقم الهاتف</label>
+        <label class="form-label" id="register-phone-label">Phone number</label>
         <input type="tel" id="reg-phone" class="form-input" placeholder="+213 XXX XXX XXX">
       </div>
     </div>
     <div class="form-group">
-      <label class="form-label">البريد الإلكتروني</label>
-      <input type="email" id="reg-email" class="form-input" placeholder="example@univ.dz">
+      <label class="form-label" id="register-email-label">Email address</label>
+      <input type="email" id="reg-email" class="form-input" placeholder="example@univ-eloued.dz">
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">نوع المتقدم</label>
+        <label class="form-label" id="register-type-label">Applicant type</label>
         <select id="reg-type" class="form-input">
-          <option>طالب</option>
-          <option>أستاذ</option>
-          <option>موظف إداري</option>
+          <option value="master_student">Master Student</option>
+          <option value="phd_student">PhD Student</option>
+          <option value="administrative_staff">Administrative Staff</option>
+          <option value="academic_professor">Academic Professor</option>
         </select>
       </div>
       <div class="form-group">
-        <label class="form-label">الكلية / القسم</label>
+        <label class="form-label" id="register-faculty-label">Faculty / Department</label>
         <select id="reg-faculty" class="form-input">
-          <option>كلية العلوم</option>
-          <option>كلية الهندسة</option>
-          <option>كلية الآداب</option>
-          <option>كلية الطب</option>
-          <option>كلية الاقتصاد</option>
+          <option>Faculty of Science</option>
+          <option>Faculty of Engineering</option>
+          <option>Faculty of Arts</option>
+          <option>Faculty of Medicine</option>
+          <option>Faculty of Economics</option>
         </select>
       </div>
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label class="form-label">كلمة المرور</label>
+        <label class="form-label" id="register-pass-label">Password</label>
         <input type="password" id="reg-pass" class="form-input" placeholder="••••••••">
       </div>
       <div class="form-group">
-        <label class="form-label">تأكيد كلمة المرور</label>
+        <label class="form-label" id="register-confirm-label">Confirm password</label>
         <input type="password" id="reg-confirm" class="form-input" placeholder="••••••••">
       </div>
     </div>
-    <button class="btn-full" onclick="doRegister()">إنشاء الحساب</button>
-    <div class="auth-switch">لديك حساب؟ <a onclick="showPage('page-login')">تسجيل الدخول</a></div>
+    <div style="margin-bottom:16px;color:var(--gray-mid);font-size:0.9rem;" id="register-note">
+      Please use your university email if available. Accounts with a @univ-eloued.dz address are activated immediately. Other emails will be approved by an administrator.
+    </div>
+    <button class="btn-full" id="register-button" onclick="doRegister()">Create account</button>
+    <div class="auth-switch" id="register-switch">Already have an account? <a onclick="showPage('page-login')">Login</a></div>
   </div>
   </div>
 </div>
@@ -1342,9 +1347,9 @@ textarea.form-input { resize:vertical; min-height:100px; }
           </div>
           <div class="card">
             <table class="data-table">
-              <thead><tr><th>الاسم</th><th>البريد</th><th>الدور</th><th>تاريخ الإنشاء</th></tr></thead>
+              <thead><tr><th id="users-col-name">Name</th><th id="users-col-email">Email</th><th id="users-col-type">Applicant Type</th><th id="users-col-status">Status</th><th id="users-col-created">Created</th><th id="users-col-action">Action</th></tr></thead>
               <tbody id="admin-users-body">
-                <tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:30px;">جاري التحميل...</td></tr>
+                <tr><td colspan="6" style="text-align:center;color:var(--gray-mid);padding:30px;">Loading users...</td></tr>
               </tbody>
             </table>
           </div>
@@ -1685,6 +1690,167 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
 }
 
+let currentLang = 'en';
+const TRANSLATIONS = {
+  en: {
+    navGrants: 'Available grants',
+    navLogin: 'Login',
+    navRegister: 'Register',
+    langToggle: 'العربية',
+    heroBadge: '🌍 Erasmus+ ICM Mobility',
+    heroHeading: 'Find your Erasmus+ mobility opportunity',
+    heroText: 'A modern platform to manage academic mobility applications, follow your progress, and stay connected with your university.',
+    heroBtnStart: 'Start your application',
+    heroBtnGrants: 'Browse grants',
+    loginTitle: 'Login',
+    loginSub: 'Welcome back to Erasmus+ platform',
+    loginEmailLabel: 'Email Address',
+    loginPassLabel: 'Password',
+    loginForgot: 'Forgot password?',
+    loginButton: 'Login',
+    loginSwitch: 'No account yet? <a onclick="showPage(\'page-register\')">Register now</a>',
+    registerTitle: 'Create a new account',
+    registerSub: 'Join Erasmus+ and track your mobility status professionally',
+    registerNameLabel: 'Full name',
+    registerPhoneLabel: 'Phone number',
+    registerEmailLabel: 'Email address',
+    registerTypeLabel: 'Applicant type',
+    registerFacultyLabel: 'Faculty / Department',
+    registerPassLabel: 'Password',
+    registerConfirmLabel: 'Confirm password',
+    registerNote: 'Please use your university email if available. Accounts with a @univ-eloued.dz address are activated immediately. Other emails will be approved by an administrator.',
+    registerButton: 'Create account',
+    registerSwitch: 'Already have an account? <a onclick="showPage(\'page-login\')">Login</a>',
+    landingTitle: '🎓 Latest available grants',
+    landingSub: 'Click any grant to view details and apply',
+    usersName: 'Name',
+    usersEmail: 'Email',
+    usersType: 'Applicant Type',
+    usersStatus: 'Status',
+    usersCreated: 'Created',
+    usersAction: 'Action'
+  },
+  ar: {
+    navGrants: 'المنح المتاحة',
+    navLogin: 'تسجيل الدخول',
+    navRegister: 'سجّل الآن',
+    langToggle: 'English',
+    heroBadge: '🌍 برنامج الحراك الأكاديمي الأوروبي',
+    heroHeading: 'اكتشف فرصتك مع Erasmus+',
+    heroText: 'منصة متكاملة لإدارة طلبات الحراك الأكاديمي، تتبع التقدم، والبقاء على اتصال مع جامعتك.',
+    heroBtnStart: 'ابدأ التقديم الآن',
+    heroBtnGrants: 'استعرض المنح',
+    loginTitle: 'تسجيل الدخول',
+    loginSub: 'مرحباً بك مجدداً في منصة Erasmus+',
+    loginEmailLabel: 'البريد الإلكتروني',
+    loginPassLabel: 'كلمة المرور',
+    loginForgot: 'نسيت كلمة المرور؟',
+    loginButton: 'تسجيل الدخول',
+    loginSwitch: 'ليس لديك حساب؟ <a onclick="showPage(\'page-register\')">سجّل الآن</a>',
+    registerTitle: 'إنشاء حساب جديد',
+    registerSub: 'انضم إلى منصة Erasmus+ وابدأ رحلتك الأكاديمية',
+    registerNameLabel: 'الاسم الكامل',
+    registerPhoneLabel: 'رقم الهاتف',
+    registerEmailLabel: 'البريد الإلكتروني',
+    registerTypeLabel: 'نوع المتقدم',
+    registerFacultyLabel: 'الكلية / القسم',
+    registerPassLabel: 'كلمة المرور',
+    registerConfirmLabel: 'تأكيد كلمة المرور',
+    registerNote: 'يرجى استخدام البريد الإلكتروني المؤسسي إذا كان متاحاً. الحسابات ذات @univ-eloued.dz تُفعل تلقائياً. البريد الشخصي يحتاج موافقة المشرف.',
+    registerButton: 'إنشاء الحساب',
+    registerSwitch: 'لديك حساب؟ <a onclick="showPage(\'page-login\')">تسجيل الدخول</a>',
+    landingTitle: '🎓 أحدث المنح المتاحة',
+    landingSub: 'اضغط على أي منحة لعرض التفاصيل والتقديم',
+    usersName: 'الاسم',
+    usersEmail: 'البريد',
+    usersType: 'نوع المتقدم',
+    usersStatus: 'الحالة',
+    usersCreated: 'تاريخ الإنشاء',
+    usersAction: 'الإجراء'
+  }
+};
+
+function setLanguage(lang) {
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+  const map = TRANSLATIONS[lang] || TRANSLATIONS.en;
+  document.getElementById('nav-link-grants').textContent = map.navGrants;
+  document.getElementById('nav-link-login').textContent = map.navLogin;
+  document.getElementById('nav-link-register').textContent = map.navRegister;
+  document.getElementById('lang-toggle').textContent = map.langToggle;
+  document.getElementById('hero-badge').textContent = map.heroBadge;
+  document.getElementById('hero-heading').innerHTML = map.heroHeading + '<br><span>Erasmus+</span>';
+  document.getElementById('hero-text').textContent = map.heroText;
+  document.getElementById('hero-btn-start').textContent = map.heroBtnStart;
+  document.getElementById('hero-btn-grants').textContent = map.heroBtnGrants;
+  document.getElementById('landing-section-title').textContent = map.landingTitle;
+  document.getElementById('landing-section-sub').textContent = map.landingSub;
+  document.getElementById('login-title').textContent = map.loginTitle;
+  document.getElementById('login-sub').textContent = map.loginSub;
+  document.getElementById('login-email-label').textContent = map.loginEmailLabel;
+  document.getElementById('login-pass-label').textContent = map.loginPassLabel;
+  document.getElementById('login-forgot').textContent = map.loginForgot;
+  document.getElementById('login-button').textContent = map.loginButton;
+  document.getElementById('login-switch').innerHTML = map.loginSwitch;
+  document.getElementById('register-title').textContent = map.registerTitle;
+  document.getElementById('register-sub').textContent = map.registerSub;
+  document.getElementById('register-name-label').textContent = map.registerNameLabel;
+  document.getElementById('register-phone-label').textContent = map.registerPhoneLabel;
+  document.getElementById('register-email-label').textContent = map.registerEmailLabel;
+  document.getElementById('register-type-label').textContent = map.registerTypeLabel;
+  document.getElementById('register-faculty-label').textContent = map.registerFacultyLabel;
+  document.getElementById('register-pass-label').textContent = map.registerPassLabel;
+  document.getElementById('register-confirm-label').textContent = map.registerConfirmLabel;
+  document.getElementById('register-note').textContent = map.registerNote;
+  document.getElementById('register-button').textContent = map.registerButton;
+  document.getElementById('register-switch').innerHTML = map.registerSwitch;
+
+  const typeSelect = document.getElementById('reg-type');
+  if (typeSelect) {
+    const types = [
+      { value: 'master_student', en: 'Master Student', ar: 'طالب ماستر' },
+      { value: 'phd_student', en: 'PhD Student', ar: 'طالب دكتوراه' },
+      { value: 'administrative_staff', en: 'Administrative Staff', ar: 'موظف إداري' },
+      { value: 'academic_professor', en: 'Academic Professor', ar: 'موظف أستاذ' }
+    ];
+    const currentValue = typeSelect.value;
+    typeSelect.innerHTML = types.map(o => `<option value="${o.value}">${lang === 'ar' ? o.ar : o.en}</option>`).join('');
+    if (types.some(o => o.value === currentValue)) typeSelect.value = currentValue;
+  }
+
+  const facultySelect = document.getElementById('reg-faculty');
+  if (facultySelect) {
+    const faculties = [
+      { en: 'Faculty of Science', ar: 'كلية العلوم' },
+      { en: 'Faculty of Engineering', ar: 'كلية الهندسة' },
+      { en: 'Faculty of Arts', ar: 'كلية الآداب' },
+      { en: 'Faculty of Medicine', ar: 'كلية الطب' },
+      { en: 'Faculty of Economics', ar: 'كلية الاقتصاد' }
+    ];
+    const currentValue = facultySelect.value;
+    facultySelect.innerHTML = faculties.map(o => `<option>${lang === 'ar' ? o.ar : o.en}</option>`).join('');
+    if (faculties.some(o => o.en === currentValue || o.ar === currentValue)) {
+      facultySelect.value = currentValue;
+    }
+  }
+
+  document.getElementById('users-col-name').textContent = map.usersName;
+  document.getElementById('users-col-email').textContent = map.usersEmail;
+  document.getElementById('users-col-type').textContent = map.usersType;
+  document.getElementById('users-col-status').textContent = map.usersStatus;
+  document.getElementById('users-col-created').textContent = map.usersCreated;
+  document.getElementById('users-col-action').textContent = map.usersAction;
+}
+
+function toggleLanguage() {
+  setLanguage(currentLang === 'en' ? 'ar' : 'en');
+}
+
+// Initialize default language
+setLanguage(currentLang);
+
 // ========== AUTH HELPERS ==========
 function getToken() { return localStorage.getItem('erasmus_token'); }
 function getUser()  { const u = localStorage.getItem('erasmus_user'); return u ? JSON.parse(u) : null; }
@@ -1870,8 +2036,8 @@ async function doLogin() {
   const email    = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-pass').value;
 
-  if (!email || !password) { alert('يرجى إدخال البريد الإلكتروني وكلمة المرور'); return; }
-  if (!isValidEmail(email)) { alert('صيغة البريد الإلكتروني غير صحيحة'); return; }
+  if (!email || !password) { alert(currentLang === 'ar' ? 'يرجى إدخال البريد الإلكتروني وكلمة المرور' : 'Please enter email and password'); return; }
+  if (!isValidEmail(email)) { alert(currentLang === 'ar' ? 'صيغة البريد الإلكتروني غير صحيحة' : 'Invalid email format'); return; }
 
   try {
     const res  = await fetch('/api/auth/login', {
@@ -1880,11 +2046,11 @@ async function doLogin() {
       body: JSON.stringify({ email, password }),
     });
     const data = await res.json();
-    if (!res.ok) { alert(data.error || 'خطأ في تسجيل الدخول'); return; }
+    if (!res.ok) { alert(data.error || (currentLang === 'ar' ? 'خطأ في تسجيل الدخول' : 'Login failed')); return; }
 
     setAuth(data.token, data.user);
     enterDashboard(data.user);
-  } catch { alert('تعذر الاتصال بالخادم'); }
+  } catch { alert(currentLang === 'ar' ? 'تعذر الاتصال بالخادم' : 'Unable to connect to the server'); }
 }
 
 function enterDashboard(user) {
@@ -2312,20 +2478,48 @@ async function loadAdminUsers() {
   if (!tbody) return;
   try {
     const res = await fetch('/api/auth/users', { headers: authHeader() });
-    if (!res.ok) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:30px;">تعذر تحميل المستخدمين</td></tr>'; return; }
+    if (!res.ok) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--gray-mid);padding:30px;">Unable to load users</td></tr>'; return; }
     const users = await res.json();
-    const roleMap = { superadmin: ['status-active','مدير النظام'], admin: ['status-review','مشرف'], student: ['','طالب'] };
+    const applicantTypeLabels = {
+      master_student: currentLang === 'ar' ? 'طالب ماستر' : 'Master Student',
+      phd_student: currentLang === 'ar' ? 'طالب دكتوراه' : 'PhD Student',
+      administrative_staff: currentLang === 'ar' ? 'موظف إداري' : 'Administrative Staff',
+      academic_professor: currentLang === 'ar' ? 'موظف أستاذ' : 'Academic Professor'
+    };
+
     tbody.innerHTML = users.length ? users.map(u => {
-      const [sc, sl] = roleMap[u.role] || ['','—'];
-      const date = new Date(u.created_at).toLocaleDateString('ar-DZ');
+      const statusClass = u.is_active ? 'status-active' : 'status-review';
+      const statusText = u.is_active ? 'Active' : 'Pending approval';
+      const date = new Date(u.created_at).toLocaleDateString(currentLang === 'ar' ? 'ar-DZ' : 'en-US');
+      const actionButton = u.is_active
+        ? `<button class="action-btn ghost" onclick="activateUser(${u.id}, false)">Deactivate</button>`
+        : `<button class="action-btn primary" onclick="activateUser(${u.id}, true)">Activate</button>`;
+
       return `<tr>
         <td><strong>${u.name}</strong></td>
         <td>${u.email}</td>
-        <td><span class="status ${sc}">${sl}</span></td>
+        <td>${applicantTypeLabels[u.applicant_type] || u.applicant_type || '—'}</td>
+        <td><span class="status ${statusClass}">${statusText}</span></td>
         <td>${date}</td>
+        <td>${actionButton}</td>
       </tr>`;
-    }).join('') : '<tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:30px;">لا يوجد مستخدمون</td></tr>';
-  } catch(e) { console.error(e); tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:30px;">خطأ في التحميل</td></tr>'; }
+    }).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--gray-mid);padding:30px;">No users found</td></tr>';
+  } catch(e) { console.error(e); tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--gray-mid);padding:30px;">Error loading users</td></tr>'; }
+}
+
+async function activateUser(userId, activate) {
+  if (!confirm(`${activate ? 'Activate' : 'Deactivate'} this account?`)) return;
+  try {
+    const res = await fetch(`/api/auth/users/${userId}/activate`, {
+      method: 'PATCH',
+      headers: authHeader(),
+      body: JSON.stringify({ activate })
+    });
+    const data = await res.json();
+    if (!res.ok) { alert(data.error || 'Unable to update user status'); return; }
+    alert(`User ${activate ? 'activated' : 'deactivated'} successfully.`);
+    await loadAdminUsers();
+  } catch (err) { alert('Unable to connect to server'); }
 }
 
 // ========== DANGER ZONE — SUPERADMIN DATA RESET ==========
@@ -2360,33 +2554,44 @@ async function resetAllData() {
 
 // ========== REGISTER ==========
 async function doRegister() {
-  const name         = document.getElementById('reg-name').value.trim();
-  const phone        = document.getElementById('reg-phone').value.trim();
-  const email        = document.getElementById('reg-email').value.trim();
+  const name          = document.getElementById('reg-name').value.trim();
+  const phone         = document.getElementById('reg-phone').value.trim();
+  const email         = document.getElementById('reg-email').value.trim();
   const applicant_type = document.getElementById('reg-type').value;
-  const faculty      = document.getElementById('reg-faculty').value;
-  const password     = document.getElementById('reg-pass').value;
-  const confirmPass  = document.getElementById('reg-confirm').value;
+  const faculty       = document.getElementById('reg-faculty').value;
+  const password      = document.getElementById('reg-pass').value;
+  const confirmPass   = document.getElementById('reg-confirm').value;
 
-  if (!name || !email || !password) { alert('يرجى ملء جميع الحقول المطلوبة'); return; }
-  if (!isValidEmail(email))          { alert('صيغة البريد الإلكتروني غير صحيحة'); return; }
-  if (password !== confirmPass)      { alert('كلمتا المرور غير متطابقتين'); return; }
-  if (password.length < 8)           { alert('كلمة المرور يجب أن تكون 8 أحرف على الأقل'); return; }
+  if (!name || !email || !password) { alert(currentLang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة' : 'Please fill all required fields'); return; }
+  if (!isValidEmail(email))          { alert(currentLang === 'ar' ? 'صيغة البريد الإلكتروني غير صحيحة' : 'Invalid email format'); return; }
+  if (password !== confirmPass)      { alert(currentLang === 'ar' ? 'كلمتا المرور غير متطابقتين' : 'Passwords do not match'); return; }
+  if (password.length < 8)           { alert(currentLang === 'ar' ? 'كلمة المرور يجب أن تكون 8 أحرف على الأقل' : 'Password must be at least 8 characters'); return; }
 
   try {
     const res  = await fetch('/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, phone, email, password, applicant_type, faculty }),
+      body: JSON.stringify({ name, phone, email, password, applicant_type, faculty, preferred_language: currentLang }),
     });
     const data = await res.json();
-    if (!res.ok) { alert(data.error || 'خطأ في إنشاء الحساب'); return; }
+    if (!res.ok) {
+      alert(data.error || (currentLang === 'ar' ? 'خطأ في إنشاء الحساب' : 'Error creating account'));
+      return;
+    }
+
+    if (data.pending) {
+      alert(data.message || (currentLang === 'ar' ? 'تم إنشاء الحساب وهو الآن قيد المراجعة' : 'Your account is pending approval'));
+      showPage('page-login');
+      return;
+    }
 
     setAuth(data.token, data.user);
     showPage('page-student');
     await renderGrants();
     loadStudentDashboard();
-  } catch { alert('تعذر الاتصال بالخادم'); }
+  } catch {
+    alert(currentLang === 'ar' ? 'تعذر الاتصال بالخادم' : 'Unable to connect to the server');
+  }
 }
 
 // ========== FILE UPLOAD HELPERS ==========

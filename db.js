@@ -13,16 +13,18 @@ const sql = neon(process.env.DATABASE_URL);
 async function initSchema() {
   await sql`
     CREATE TABLE IF NOT EXISTS users (
-      id             SERIAL PRIMARY KEY,
-      name           VARCHAR(255)  NOT NULL,
-      phone          VARCHAR(50),
-      email          VARCHAR(255)  UNIQUE NOT NULL,
-      password_hash  VARCHAR(255)  NOT NULL,
-      role           VARCHAR(50)   NOT NULL DEFAULT 'student'
-                       CHECK (role IN ('student','admin','superadmin')),
-      faculty        VARCHAR(255),
-      applicant_type VARCHAR(50)   DEFAULT 'student',
-      created_at     TIMESTAMPTZ   DEFAULT NOW()
+      id                 SERIAL PRIMARY KEY,
+      name               VARCHAR(255)  NOT NULL,
+      phone              VARCHAR(50),
+      email              VARCHAR(255)  UNIQUE NOT NULL,
+      password_hash      VARCHAR(255)  NOT NULL,
+      role               VARCHAR(50)   NOT NULL DEFAULT 'student'
+                          CHECK (role IN ('student','admin','superadmin')),
+      faculty            VARCHAR(255),
+      applicant_type     VARCHAR(50)   DEFAULT 'master_student',
+      is_active          BOOLEAN       NOT NULL DEFAULT false,
+      preferred_language VARCHAR(10)   NOT NULL DEFAULT 'en',
+      created_at         TIMESTAMPTZ   DEFAULT NOW()
     )
   `;
 
@@ -84,6 +86,12 @@ async function initSchema() {
   // Migrations for existing tables
   await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS study_level      VARCHAR(20)`;
   await sql`ALTER TABLE applications ADD COLUMN IF NOT EXISTS mobility_stage   VARCHAR(30)`;
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS is_active          BOOLEAN       NOT NULL DEFAULT false`;
+  await sql`ALTER TABLE users ADD COLUMN IF NOT EXISTS preferred_language VARCHAR(10)   NOT NULL DEFAULT 'en'`;
+
+  await sql`UPDATE users SET is_active = true WHERE role IN ('admin','superadmin')`;
+  await sql`UPDATE users SET is_active = true WHERE lower(email) LIKE '%@univ-eloued.dz'`;
+
   await sql`ALTER TABLE universities  ADD COLUMN IF NOT EXISTS agreement_file       TEXT`;
   await sql`ALTER TABLE universities  ADD COLUMN IF NOT EXISTS agreement_file_name  VARCHAR(255)`;
 
