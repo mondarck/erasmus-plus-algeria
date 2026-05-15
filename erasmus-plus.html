@@ -2179,7 +2179,7 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
 }
 
-let currentLang = 'en';
+let currentLang = localStorage.getItem('erasmus_lang') || 'en';
 const TRANSLATIONS = {
   en: {
     navGrants: 'Available grants',
@@ -2261,6 +2261,7 @@ const TRANSLATIONS = {
 
 function setLanguage(lang) {
   currentLang = lang;
+  localStorage.setItem('erasmus_lang', lang);
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
 
