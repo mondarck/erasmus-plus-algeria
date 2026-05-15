@@ -1350,9 +1350,9 @@ textarea.form-input { resize:vertical; min-height:100px; }
       <div class="sidebar-item" onclick="switchView('admin','v-universities',this)"><span class="icon">🏛️</span> <span id="admin-sidebar-unis">الجامعات</span></div>
       <div class="sidebar-item" onclick="switchView('admin','v-reports',this)"><span class="icon">📈</span> <span id="admin-sidebar-reports">التقارير</span></div>
       <div id="superadmin-menu" style="display:none;">
-        <div class="sidebar-section">مدير النظام</div>
-        <div class="sidebar-item" onclick="switchView('admin','v-users',this)"><span class="icon">👥</span> المستخدمون</div>
-        <div class="sidebar-item" onclick="switchView('admin','v-logs',this)"><span class="icon">🔍</span> سجل العمليات</div>
+        <div class="sidebar-section" id="superadmin-section-label">مدير النظام</div>
+        <div class="sidebar-item" onclick="switchView('admin','v-users',this)"><span class="icon">👥</span> <span id="superadmin-users">المستخدمون</span></div>
+        <div class="sidebar-item" onclick="switchView('admin','v-logs',this)"><span class="icon">🔍</span> <span id="superadmin-logs">سجل العمليات</span></div>
       </div>
       <div class="sidebar-bottom">
         <div class="user-info">
@@ -2263,7 +2263,9 @@ const TRANSLATIONS = {
     adminKpiAccepted: 'Accepted',
     adminKpiRejected: 'Rejected',
     adminLatestApps: 'Latest incoming applications',
-    adminViewAll: 'View all'
+    adminViewAll: 'View all',
+    adminRoleSuperadmin: 'Superadmin',
+    adminRoleAdmin: 'Admin'
     ,adminThApplicant: 'Applicant',
     adminThGrant: 'Grant',
     adminThDate: 'Date',
@@ -2353,7 +2355,9 @@ const TRANSLATIONS = {
     adminKpiAccepted: 'مقبول',
     adminKpiRejected: 'مرفوض',
     adminLatestApps: 'آخر الطلبات الواردة',
-    adminViewAll: 'عرض الكل'
+    adminViewAll: 'عرض الكل',
+    adminRoleSuperadmin: 'مدير عام',
+    adminRoleAdmin: 'مشرف'
     ,adminThApplicant: 'المتقدم',
     adminThGrant: 'المنحة',
     adminThDate: 'تاريخ التقديم',
@@ -2520,6 +2524,10 @@ function setLanguage(lang) {
     'admin-sidebar-logout': map.adminLogout
   };
   Object.entries(adminSidebarMap).forEach(([id, text]) => { const el = document.getElementById(id); if (el) el.textContent = text; });
+  // Superadmin section (visible only for superadmins)
+  if (document.getElementById('superadmin-section-label')) document.getElementById('superadmin-section-label').textContent = map.superadminSection;
+  if (document.getElementById('superadmin-users')) document.getElementById('superadmin-users').textContent = map.adminUsers;
+  if (document.getElementById('superadmin-logs')) document.getElementById('superadmin-logs').textContent = map.adminLogs;
 
   if (document.getElementById('admin-page-title')) document.getElementById('admin-page-title').textContent = map.adminDashboard;
 
@@ -2758,7 +2766,8 @@ function enterDashboard(user) {
   } else {
     showPage('page-admin');
     document.getElementById('admin-name').textContent = user.name;
-    document.getElementById('admin-role').textContent = user.role === 'superadmin' ? 'مدير عام' : 'مشرف';
+    const map = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+    document.getElementById('admin-role').textContent = user.role === 'superadmin' ? map.adminRoleSuperadmin : map.adminRoleAdmin;
     if (user.role === 'superadmin') document.getElementById('superadmin-menu').style.display = 'block';
     loadAdminDashboard();
   }
