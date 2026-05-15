@@ -1363,6 +1363,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
         <div class="sidebar-section" id="superadmin-section-label">مدير النظام</div>
         <div class="sidebar-item" onclick="switchView('admin','v-users',this)"><span class="icon">👥</span> <span id="superadmin-users">المستخدمون</span></div>
         <div class="sidebar-item" onclick="switchView('admin','v-logs',this)"><span class="icon">🔍</span> <span id="superadmin-logs">سجل العمليات</span></div>
+        <div class="sidebar-item" onclick="switchView('admin','v-danger',this)" style="color:#e74c3c;"><span class="icon">⚠️</span> منطقة الخطر</div>
       </div>
       <div class="sidebar-bottom">
         <div class="user-info">
@@ -1570,6 +1571,39 @@ textarea.form-input { resize:vertical; min-height:100px; }
             <div style="text-align:center;color:var(--gray-mid);padding:40px 20px;">
               <div style="font-size:2rem;margin-bottom:10px;">🔍</div>
               <div>لا توجد عمليات مسجلة بعد</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DANGER ZONE -->
+        <div class="dash-view" id="admin-v-danger">
+          <div class="page-header"><h2>⚠️ منطقة الخطر — إعادة تهيئة البيانات</h2></div>
+          <div class="card" style="border:2px solid var(--red);">
+            <div style="background:var(--red-light);border-radius:8px;padding:14px 16px;margin-bottom:20px;color:var(--red);font-weight:600;">
+              ⛔ تحذير: هذه العمليات لا يمكن التراجع عنها. تأكد من عمل نسخة احتياطية قبل المتابعة.
+            </div>
+            <div style="display:grid;gap:16px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;border:1px solid var(--gray-light);border-radius:8px;">
+                <div>
+                  <div style="font-weight:700;color:var(--blue-deep);">🗑️ حذف كل طلبات المشاركة</div>
+                  <div style="font-size:0.83rem;color:var(--gray-text);margin-top:4px;">يحذف جميع الطلبات المقدمة مع الاحتفاظ بالمستخدمين والمنح</div>
+                </div>
+                <button class="action-btn danger" onclick="dangerClearApplications()">حذف الطلبات</button>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;border:1px solid var(--gray-light);border-radius:8px;">
+                <div>
+                  <div style="font-weight:700;color:var(--blue-deep);">👥 حذف كل حسابات المشاركين</div>
+                  <div style="font-size:0.83rem;color:var(--gray-text);margin-top:4px;">يحذف جميع حسابات الطلاب والموظفين وطلباتهم (يبقي الإداريون)</div>
+                </div>
+                <button class="action-btn danger" onclick="dangerClearStudents()">حذف المشاركين</button>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:16px;border:2px solid var(--red);border-radius:8px;background:var(--red-light);">
+                <div>
+                  <div style="font-weight:700;color:var(--red);">💣 إعادة ضبط كامل</div>
+                  <div style="font-size:0.83rem;color:var(--gray-text);margin-top:4px;">يحذف الطلبات + المنح + الجامعات. يحتفظ بحسابات الإداريين فقط</div>
+                </div>
+                <button class="action-btn danger" onclick="dangerResetAll()">إعادة ضبط كامل</button>
+              </div>
             </div>
           </div>
         </div>
@@ -1850,21 +1884,22 @@ textarea.form-input { resize:vertical; min-height:100px; }
 
 <!-- Grant Modal -->
 <div class="modal-overlay" id="grant-modal">
-  <div class="modal">
-    <div class="modal-title">🎓 إضافة منحة جديدة</div>
+  <div class="modal" style="max-width:680px;">
+    <div class="modal-title" id="grant-modal-title">🎓 إضافة منحة جديدة</div>
+    <input type="hidden" id="grant-edit-id" value="">
     <div class="form-group">
       <label class="form-label-dark">عنوان المنحة <span style="color:#e74c3c">*</span></label>
       <input id="grant-title" class="form-input-white" placeholder="مثال: Erasmus+ دراسة — جامعة برشلونة 2025-2026">
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
       <div class="form-group">
-        <label class="form-label-dark">نوع الحركة</label>
-        <select id="grant-type" class="form-input-white">
-          <option value="study">دراسة أكاديمية</option>
-          <option value="train">تدريب</option>
-          <option value="teach">تدريس</option>
-          <option value="staff">تدريب موظفين</option>
+        <label class="form-label-dark">نوع الحركة <span style="color:#e74c3c">*</span></label>
+        <select id="grant-type" class="form-input-white" onchange="onGrantTypeChange()">
+          <option value="study">📚 دراسة — للطلاب (ماستر2 / دكتوراه)</option>
+          <option value="train">🏋️ تدريب — للموظفين (أساتذة + إداريون)</option>
+          <option value="teach">🎓 تدريس — للأساتذة فقط</option>
         </select>
+        <div id="grant-type-hint" style="font-size:0.78rem;color:#2d5aa0;margin-top:4px;padding:4px 8px;background:#f0f4ff;border-radius:6px;"></div>
       </div>
       <div class="form-group">
         <label class="form-label-dark">الجامعة الشريكة</label>
@@ -1873,11 +1908,15 @@ textarea.form-input { resize:vertical; min-height:100px; }
         </select>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;">
-      <div class="form-group"><label class="form-label-dark">طلاب ذاهبون</label><input id="grant-out-students" class="form-input-white" type="number" min="0" value="0"></div>
-      <div class="form-group"><label class="form-label-dark">طلاب قادمون</label><input id="grant-in-students" class="form-input-white" type="number" min="0" value="0"></div>
-      <div class="form-group"><label class="form-label-dark">أساتذة ذاهبون</label><input id="grant-out-staff" class="form-input-white" type="number" min="0" value="0"></div>
-      <div class="form-group"><label class="form-label-dark">أساتذة قادمون</label><input id="grant-in-staff" class="form-input-white" type="number" min="0" value="0"></div>
+    <!-- Positions: student rows (study) -->
+    <div id="grant-student-positions" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group"><label class="form-label-dark">🎓 طلاب ذاهبون (Outgoing)</label><input id="grant-out-students" class="form-input-white" type="number" min="0" value="0"></div>
+      <div class="form-group"><label class="form-label-dark">🎓 طلاب قادمون (Incoming)</label><input id="grant-in-students" class="form-input-white" type="number" min="0" value="0"></div>
+    </div>
+    <!-- Positions: staff rows (train/teach) -->
+    <div id="grant-staff-positions" style="display:none;grid-template-columns:1fr 1fr;gap:10px;">
+      <div class="form-group"><label class="form-label-dark">👨‍🏫 موظفون ذاهبون (Outgoing)</label><input id="grant-out-staff" class="form-input-white" type="number" min="0" value="0"></div>
+      <div class="form-group"><label class="form-label-dark">👨‍🏫 موظفون قادمون (Incoming)</label><input id="grant-in-staff" class="form-input-white" type="number" min="0" value="0"></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
       <div class="form-group"><label class="form-label-dark">بداية التقديم</label><input id="grant-app-start" class="form-input-white" type="date"></div>
@@ -1900,7 +1939,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
     </div>
     <div class="modal-footer">
       <button class="action-btn ghost" onclick="closeModal('grant-modal')">إلغاء</button>
-      <button class="action-btn gold-btn" onclick="addGrant()">✅ إضافة المنحة</button>
+      <button class="action-btn gold-btn" id="grant-save-btn" onclick="saveGrant()">✅ إضافة المنحة</button>
     </div>
   </div>
 </div>
@@ -2653,11 +2692,24 @@ async function fetchAllGrantsAdmin() {
   return [];
 }
 
+function getGrantTypesForUser(applicantType) {
+  if (applicantType === 'master_student' || applicantType === 'phd_student') return ['study'];
+  if (applicantType === 'academic_professor') return ['teach', 'train'];
+  if (applicantType === 'administrative_staff') return ['train'];
+  return null; // null = show all (admin/unknown)
+}
+
 function populateApplySelect(grants) {
   const sel = document.getElementById('apply-grant');
   if (!sel) return;
+  const user = getUser();
+  const allowedTypes = user ? getGrantTypesForUser(user.applicant_type) : null;
+  const filtered = allowedTypes ? grants.filter(g => allowedTypes.includes(g.type)) : grants;
   sel.innerHTML = '<option value="">— اختر منحة —</option>' +
-    grants.map(g => `<option value="${g.id}">${g.title}</option>`).join('');
+    filtered.map(g => `<option value="${g.id}">${g.title}</option>`).join('');
+  if (!filtered.length) {
+    sel.innerHTML = '<option value="">لا توجد منح متاحة لنوع حسابك</option>';
+  }
 }
 
 async function renderGrants() {
@@ -2667,9 +2719,12 @@ async function renderGrants() {
   const sg  = document.getElementById('student-quick-grants');
   const sag = document.getElementById('student-all-grants');
 
-  if (lg)  lg.innerHTML  = grants.length ? grants.map(g => makeGrantCard(g, "showPage('page-login')")).join('') : '<p style="color:var(--gray-mid);text-align:center;padding:20px;">لا توجد منح متاحة حالياً</p>';
-  if (sg)  sg.innerHTML  = grants.slice(0, 3).map(g => makeGrantCard(g, `openApplyModal(${g.id})`)).join('');
-  if (sag) sag.innerHTML = grants.length ? grants.map(g => makeGrantCard(g, `openApplyModal(${g.id})`)).join('') : '<p style="color:var(--gray-mid);text-align:center;padding:30px;">لا توجد منح متاحة حالياً</p>';
+  if (lg)  lg.innerHTML  = grants.length ? grants.map(g => makeGrantCard(g, "showPage('page-login')", true)).join('') : '<p style="color:var(--gray-mid);text-align:center;padding:20px;">لا توجد منح متاحة حالياً</p>';
+  const user = getUser();
+  const allowedTypes = user ? getGrantTypesForUser(user.applicant_type) : null;
+  const visibleGrants = allowedTypes ? grants.filter(g => allowedTypes.includes(g.type)) : grants;
+  if (sg)  sg.innerHTML  = visibleGrants.slice(0, 3).map(g => makeGrantCard(g, `openApplyModal(${g.id})`, true)).join('');
+  if (sag) sag.innerHTML = visibleGrants.length ? visibleGrants.map(g => makeGrantCard(g, `openApplyModal(${g.id})`, true)).join('') : '<p style="color:var(--gray-mid);text-align:center;padding:30px;">لا توجد منح متاحة لنوع حسابك حالياً</p>';
 
   populateApplySelect(grants);
 }
@@ -2711,6 +2766,7 @@ async function renderAdminGrantsTable() {
       <td>${statusHtml}</td>
       <td style="display:flex;gap:6px;flex-wrap:wrap;">
         ${publishBtn}
+        <button class="action-btn primary" onclick="openGrantModal(${g.id})">✏️ تعديل</button>
         <button class="action-btn danger" onclick="deleteGrant(${g.id})">حذف</button>
       </td>
     </tr>`;
@@ -2739,7 +2795,46 @@ async function deleteGrant(id) {
     if (!res.ok) { alert(data.error || 'خطأ في الحذف'); return; }
     cachedGrants = null;
     await renderGrants();
+    await renderAdminGrantsTable();
     alert('تم حذف المنحة بنجاح');
+  } catch { alert('تعذر الاتصال بالخادم'); }
+}
+
+async function dangerClearApplications() {
+  if (!confirm('⚠️ هل أنت متأكد؟ سيتم حذف جميع الطلبات المقدمة نهائياً.')) return;
+  if (!confirm('تأكيد ثانٍ: هذا الإجراء لا يمكن التراجع عنه!')) return;
+  try {
+    const res = await fetch('/api/admin/clear-applications', { method: 'DELETE', headers: authHeader() });
+    const data = await res.json();
+    if (!res.ok) { alert(data.error || 'خطأ'); return; }
+    alert('✅ ' + data.message);
+    loadAdminDashboard();
+  } catch { alert('تعذر الاتصال بالخادم'); }
+}
+
+async function dangerClearStudents() {
+  if (!confirm('⚠️ هل أنت متأكد؟ سيتم حذف جميع حسابات الطلاب والموظفين وطلباتهم نهائياً.')) return;
+  if (!confirm('تأكيد ثانٍ: هذا الإجراء لا يمكن التراجع عنه!')) return;
+  try {
+    const res = await fetch('/api/admin/clear-students', { method: 'DELETE', headers: authHeader() });
+    const data = await res.json();
+    if (!res.ok) { alert(data.error || 'خطأ'); return; }
+    alert('✅ ' + data.message);
+    loadAdminDashboard();
+  } catch { alert('تعذر الاتصال بالخادم'); }
+}
+
+async function dangerResetAll() {
+  if (!confirm('💣 إعادة ضبط كامل: سيتم حذف الطلبات + المنح + الجامعات. هذا الإجراء لا يمكن التراجع عنه!')) return;
+  if (!confirm('تأكيد أخير — اكتب موافق في الرسالة التالية للمتابعة.')) return;
+  try {
+    const res = await fetch('/api/admin/reset-all-data', { method: 'DELETE', headers: authHeader() });
+    const data = await res.json();
+    if (!res.ok) { alert(data.error || 'خطأ'); return; }
+    cachedGrants = null; cachedUniversities = null;
+    alert('✅ ' + data.message);
+    loadAdminDashboard();
+    renderGrants();
   } catch { alert('تعذر الاتصال بالخادم'); }
 }
 
@@ -4024,57 +4119,110 @@ function toggleTeachingFields() {
   if (el) el.style.display = (type === 'teaching' || type === 'combined') ? '' : 'none';
 }
 
-async function openGrantModal() {
-  // Load universities into dropdown from DB
+function onGrantTypeChange() {
+  const type = document.getElementById('grant-type')?.value;
+  const studentDiv = document.getElementById('grant-student-positions');
+  const staffDiv   = document.getElementById('grant-staff-positions');
+  const hint       = document.getElementById('grant-type-hint');
+  const hints = {
+    study: '📚 موجهة للطلاب — ماستر2 وطلبة الدكتوراه فقط',
+    train: '🏋️ موجهة للموظفين — أساتذة وموظفين إداريين',
+    teach: '🎓 موجهة للأساتذة الأكاديميين فقط',
+  };
+  if (hint) hint.textContent = hints[type] || '';
+  if (studentDiv) studentDiv.style.display = type === 'study' ? 'grid' : 'none';
+  if (staffDiv)   staffDiv.style.display   = (type === 'train' || type === 'teach') ? 'grid' : 'none';
+}
+
+async function openGrantModal(grantId) {
   const unis = cachedUniversities || await fetchUniversities();
-  const sel = document.getElementById('grant-university');
-  if (sel) {
-    sel.innerHTML = '<option value="">— اختر جامعة —</option>' +
+  const uniSel = document.getElementById('grant-university');
+  if (uniSel) {
+    uniSel.innerHTML = '<option value="">— اختر جامعة —</option>' +
       unis.map(u => `<option value="${u.id}">${u.name}${u.country ? ' — ' + u.country : ''}</option>`).join('');
   }
-  // Reset all fields
-  ['grant-title', 'grant-eligibility'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-  ['grant-out-students','grant-in-students','grant-out-staff','grant-in-staff'].forEach(id => { const el = document.getElementById(id); if (el) el.value = '0'; });
-  ['grant-app-start','grant-app-end','grant-deadline'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+
+  const editId = document.getElementById('grant-edit-id');
+  const titleEl = document.getElementById('grant-modal-title');
+  const saveBtn = document.getElementById('grant-save-btn');
+
+  if (grantId) {
+    // Edit mode — fetch existing grant data
+    try {
+      const res = await fetch(`/api/grants/${grantId}`);
+      const g = await res.json();
+      if (editId) editId.value = grantId;
+      if (titleEl) titleEl.textContent = '✏️ تعديل المنحة';
+      if (saveBtn) saveBtn.textContent = '💾 حفظ التعديلات';
+      document.getElementById('grant-title').value       = g.title || '';
+      document.getElementById('grant-type').value        = g.type  || 'study';
+      document.getElementById('grant-eligibility').value = g.eligibility || '';
+      document.getElementById('grant-out-students').value = g.outgoing_students ?? 0;
+      document.getElementById('grant-in-students').value  = g.incoming_students ?? 0;
+      document.getElementById('grant-out-staff').value    = g.outgoing_staff    ?? 0;
+      document.getElementById('grant-in-staff').value     = g.incoming_staff    ?? 0;
+      if (g.deadline)          document.getElementById('grant-deadline').value   = g.deadline.slice(0,10);
+      if (g.application_start) document.getElementById('grant-app-start').value = g.application_start.slice(0,10);
+      if (g.application_end)   document.getElementById('grant-app-end').value   = g.application_end.slice(0,10);
+      const durSel = document.getElementById('grant-duration');
+      if (durSel && g.duration) durSel.value = g.duration;
+      if (uniSel && g.university_id) uniSel.value = g.university_id;
+    } catch { alert('تعذر تحميل بيانات المنحة'); return; }
+  } else {
+    // Create mode — reset all fields
+    if (editId) editId.value = '';
+    if (titleEl) titleEl.textContent = '🎓 إضافة منحة جديدة';
+    if (saveBtn) saveBtn.textContent = '✅ إضافة المنحة';
+    ['grant-title', 'grant-eligibility'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    ['grant-out-students','grant-in-students','grant-out-staff','grant-in-staff'].forEach(id => { const el = document.getElementById(id); if (el) el.value = '0'; });
+    ['grant-app-start','grant-app-end','grant-deadline'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    document.getElementById('grant-type').value = 'study';
+  }
+  onGrantTypeChange();
   document.getElementById('grant-modal').classList.add('open');
 }
 
-async function addGrant() {
+async function saveGrant() {
+  const editId            = document.getElementById('grant-edit-id')?.value;
   const title             = document.getElementById('grant-title')?.value.trim();
   const type              = document.getElementById('grant-type')?.value;
   const university_id     = document.getElementById('grant-university')?.value || null;
   const outgoing_students = parseInt(document.getElementById('grant-out-students')?.value) || 0;
-  const incoming_students = parseInt(document.getElementById('grant-in-students')?.value) || 0;
+  const incoming_students = parseInt(document.getElementById('grant-in-students')?.value)  || 0;
   const outgoing_staff    = parseInt(document.getElementById('grant-out-staff')?.value)    || 0;
   const incoming_staff    = parseInt(document.getElementById('grant-in-staff')?.value)     || 0;
-  const application_start = document.getElementById('grant-app-start')?.value   || null;
-  const application_end   = document.getElementById('grant-app-end')?.value     || null;
-  const deadline          = document.getElementById('grant-deadline')?.value    || null;
+  const application_start = document.getElementById('grant-app-start')?.value  || null;
+  const application_end   = document.getElementById('grant-app-end')?.value    || null;
+  const deadline          = document.getElementById('grant-deadline')?.value   || null;
   const duration          = document.getElementById('grant-duration')?.value;
   const eligibility       = document.getElementById('grant-eligibility')?.value.trim() || null;
   const positions         = outgoing_students + incoming_students + outgoing_staff + incoming_staff;
 
   if (!title) { alert('يرجى إدخال عنوان المنحة'); return; }
 
+  const payload = {
+    title, type, university_id: university_id || null,
+    positions, deadline, application_start, application_end,
+    duration, eligibility,
+    outgoing_students, incoming_students, outgoing_staff, incoming_staff,
+  };
+
   try {
-    const res = await fetch('/api/grants', {
-      method: 'POST',
+    const isEdit = !!editId;
+    if (!isEdit) payload.status = 'draft';
+    const res = await fetch(isEdit ? `/api/grants/${editId}` : '/api/grants', {
+      method: isEdit ? 'PUT' : 'POST',
       headers: authHeader(),
-      body: JSON.stringify({
-        title, type, university_id: university_id || null,
-        positions, deadline, application_start, application_end,
-        duration, eligibility,
-        outgoing_students, incoming_students, outgoing_staff, incoming_staff,
-        status: 'draft'
-      }),
+      body: JSON.stringify(payload),
     });
     const data = await res.json();
-    if (!res.ok) { alert(data.error || 'خطأ في إضافة المنحة'); return; }
+    if (!res.ok) { alert(data.error || 'خطأ في حفظ المنحة'); return; }
     closeModal('grant-modal');
     cachedGrants = null;
     await renderGrants();
+    await renderAdminGrantsTable();
     loadAdminDashboard();
-    alert(`✅ تم إضافة المنحة "${data.title}" بنجاح`);
+    alert(isEdit ? `✅ تم تحديث المنحة "${data.title}"` : `✅ تم إضافة المنحة "${data.title}" بنجاح`);
   } catch { alert('تعذر الاتصال بالخادم'); }
 }
 

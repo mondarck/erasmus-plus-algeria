@@ -101,20 +101,28 @@ router.post('/', authMiddleware, requireRole('admin', 'superadmin'), async (req,
 router.put('/:id', authMiddleware, requireRole('admin', 'superadmin'), async (req, res) => {
   const {
     title, university_id, type, positions, deadline,
-    duration, eligibility, status
+    application_start, application_end,
+    duration, eligibility, status,
+    outgoing_students, incoming_students, outgoing_staff, incoming_staff,
   } = req.body;
 
   try {
     const [grant] = await sql`
       UPDATE grants SET
-        title         = COALESCE(${title         || null}, title),
-        university_id = COALESCE(${university_id || null}, university_id),
-        type          = COALESCE(${type          || null}, type),
-        positions     = COALESCE(${positions     ?? null}, positions),
-        deadline      = COALESCE(${deadline      || null}, deadline),
-        duration      = COALESCE(${duration      || null}, duration),
-        eligibility   = COALESCE(${eligibility   || null}, eligibility),
-        status        = COALESCE(${status        || null}, status)
+        title              = COALESCE(${title              || null}, title),
+        university_id      = COALESCE(${university_id      || null}, university_id),
+        type               = COALESCE(${type               || null}, type),
+        positions          = COALESCE(${positions          ?? null}, positions),
+        deadline           = COALESCE(${deadline           || null}, deadline),
+        application_start  = COALESCE(${application_start  || null}, application_start),
+        application_end    = COALESCE(${application_end    || null}, application_end),
+        duration           = COALESCE(${duration           || null}, duration),
+        eligibility        = COALESCE(${eligibility        || null}, eligibility),
+        status             = COALESCE(${status             || null}, status),
+        outgoing_students  = COALESCE(${outgoing_students  ?? null}, outgoing_students),
+        incoming_students  = COALESCE(${incoming_students  ?? null}, incoming_students),
+        outgoing_staff     = COALESCE(${outgoing_staff     ?? null}, outgoing_staff),
+        incoming_staff     = COALESCE(${incoming_staff     ?? null}, incoming_staff)
       WHERE id = ${req.params.id}
       RETURNING *
     `;

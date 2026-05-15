@@ -4,6 +4,18 @@ const { authMiddleware, requireRole } = require('../middleware/auth');
 
 const router = express.Router();
 
+// DELETE /api/admin/clear-students  — superadmin only: delete all student users + their applications
+router.delete('/clear-students', authMiddleware, requireRole('superadmin'), async (req, res) => {
+  try {
+    const apps  = await sql`DELETE FROM applications WHERE user_id IN (SELECT id FROM users WHERE role = 'student') RETURNING id`;
+    const users = await sql`DELETE FROM users WHERE role = 'student' RETURNING id`;
+    res.json({ message: `تم حذف ${users.length} مستخدم و ${apps.length} طلب` });
+  } catch (err) {
+    console.error('clear students error:', err);
+    res.status(500).json({ error: 'خطأ في الخادم' });
+  }
+});
+
 // DELETE /api/admin/clear-applications  — superadmin only
 router.delete('/clear-applications', authMiddleware, requireRole('superadmin'), async (req, res) => {
   try {
