@@ -1037,6 +1037,16 @@ textarea.form-input { resize:vertical; min-height:100px; }
     <div class="auth-title" id="register-title">Create a new account</div>
     <div class="auth-sub" id="register-sub">Join Erasmus+ and track your mobility status professionally</div>
 
+    <!-- English-only notice -->
+    <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:10px 14px;margin-bottom:16px;display:flex;gap:10px;align-items:flex-start;">
+      <span style="font-size:1.1rem;margin-top:1px;">⚠️</span>
+      <div style="color:#856404;font-size:0.85rem;line-height:1.5;">
+        <strong>Important / تنبيه:</strong><br>
+        All information entered in this form <strong>must be in English only</strong>.<br>
+        <span style="font-size:0.82rem;">جميع المعلومات المدخلة يجب أن تكون <strong>باللغة الإنجليزية فقط</strong>.</span>
+      </div>
+    </div>
+
     <!-- Step 1: Account Type -->
     <div style="margin-bottom:18px;">
       <label class="form-label" id="register-type-label" style="margin-bottom:8px;display:block;">Account type <span style="color:#e74c3c">*</span></label>
@@ -1387,7 +1397,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
             <table class="data-table">
               <thead><tr><th id="admin-th-applicant">المتقدم</th><th id="admin-th-grant">المنحة</th><th id="admin-th-date">تاريخ التقديم</th><th id="admin-th-status">الحالة</th><th id="admin-th-stage">مرحلة الحراك</th><th id="admin-th-action">الإجراء</th></tr></thead>
               <tbody id="admin-recent-apps">
-                <tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد طلبات بعد</td></tr>
+                <tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;" id="admin-no-recent-msg">لا توجد طلبات بعد</td></tr>
               </tbody>
             </table>
           </div>
@@ -1433,7 +1443,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
             <table class="data-table">
               <thead><tr><th>المتقدم</th><th>المنحة</th><th>التاريخ</th><th>الحالة</th><th>مرحلة الحراك</th><th>إجراء</th></tr></thead>
               <tbody id="admin-all-apps">
-                <tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;">لا توجد طلبات بعد</td></tr>
+                <tr><td colspan="5" style="text-align:center;color:var(--gray-mid);padding:30px;" id="admin-no-all-msg">لا توجد طلبات بعد</td></tr>
               </tbody>
             </table>
           </div>
@@ -1575,8 +1585,13 @@ textarea.form-input { resize:vertical; min-height:100px; }
 <div class="modal-overlay" id="apply-modal">
   <div class="modal" style="max-width:720px;max-height:90vh;overflow-y:auto;">
     <div class="modal-title">🎓 Erasmus+ Mobility Application</div>
-    <div style="background:#f0f4ff;border-radius:8px;padding:8px 14px;font-size:0.8rem;color:#2d5aa0;margin-bottom:14px;">
-      ⚠️ <strong>Important:</strong> All fields and uploaded documents must be in <strong>English</strong>.
+    <div style="background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:10px 14px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start;">
+      <span style="font-size:1.1rem;margin-top:1px;">⚠️</span>
+      <div style="color:#856404;font-size:0.85rem;line-height:1.5;">
+        <strong>Important / تنبيه:</strong><br>
+        All fields and uploaded documents <strong>must be in English only</strong>.<br>
+        <span style="font-size:0.82rem;">جميع الحقول والوثائق المرفوعة يجب أن تكون <strong>باللغة الإنجليزية فقط</strong>.</span>
+      </div>
     </div>
 
     <!-- Grant selection -->
@@ -2512,6 +2527,9 @@ function setLanguage(lang) {
   if (document.getElementById('no-recent-msg')) document.getElementById('no-recent-msg').textContent = map.noApps;
   if (document.getElementById('no-notifs-msg')) document.getElementById('no-notifs-msg').textContent = map.noNotifs;
   if (document.getElementById('back-to-apps')) document.getElementById('back-to-apps').textContent = `← ${map.backToApps}`;
+  // Admin table empty messages
+  if (document.getElementById('admin-no-recent-msg')) document.getElementById('admin-no-recent-msg').textContent = map.noApps;
+  if (document.getElementById('admin-no-all-msg')) document.getElementById('admin-no-all-msg').textContent = map.noApps;
 
   // ===== Admin dashboard translations =====
   if (document.getElementById('admin-section-label')) document.getElementById('admin-section-label').textContent = map.adminSection;
