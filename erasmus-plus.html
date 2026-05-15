@@ -1175,18 +1175,18 @@ textarea.form-input { resize:vertical; min-height:100px; }
         </div>
         <div class="sidebar-logo-text">Erasmus<span>+ Algeria</span></div>
       </div>
-      <div class="sidebar-section">القائمة الرئيسية</div>
-      <div class="sidebar-item active" onclick="switchView('student','v-overview',this)"><span class="icon">🏠</span> لوحة التحكم</div>
-      <div class="sidebar-item" onclick="switchView('student','v-grants',this)"><span class="icon">🔍</span> المنح المتاحة</div>
-      <div class="sidebar-item" onclick="switchView('student','v-myapps',this)"><span class="icon">📄</span> طلباتي <span class="sidebar-badge" id="badge-myapps" style="display:none;">0</span></div>
-      <div class="sidebar-item" onclick="switchView('student','v-profile',this)"><span class="icon">👤</span> ملفي الشخصي</div>
-      <div class="sidebar-item" onclick="switchView('student','v-notifs',this)"><span class="icon">🔔</span> الإشعارات <span class="sidebar-badge" id="badge-notifs" style="display:none;">0</span></div>
+      <div class="sidebar-section" id="sidebar-menu-label">القائمة الرئيسية</div>
+      <div class="sidebar-item active" onclick="switchView('student','v-overview',this)"><span class="icon">🏠</span> <span id="sidebar-dashboard">لوحة التحكم</span></div>
+      <div class="sidebar-item" onclick="switchView('student','v-grants',this)"><span class="icon">🔍</span> <span id="sidebar-grants">المنح المتاحة</span></div>
+      <div class="sidebar-item" onclick="switchView('student','v-myapps',this)"><span class="icon">📄</span> <span id="sidebar-myapps">طلباتي</span> <span class="sidebar-badge" id="badge-myapps" style="display:none;">0</span></div>
+      <div class="sidebar-item" onclick="switchView('student','v-profile',this)"><span class="icon">👤</span> <span id="sidebar-profile">ملفي الشخصي</span></div>
+      <div class="sidebar-item" onclick="switchView('student','v-notifs',this)"><span class="icon">🔔</span> <span id="sidebar-notifs">الإشعارات</span> <span class="sidebar-badge" id="badge-notifs" style="display:none;">0</span></div>
       <div class="sidebar-bottom">
         <div class="user-info">
           <div class="user-avatar">م.أ</div>
           <div><div class="user-name">محمد أحمد</div><div class="user-role">طالب — كلية العلوم</div></div>
         </div>
-        <div class="sidebar-item" onclick="logout()" style="margin-top:4px;"><span class="icon">🚪</span> تسجيل الخروج</div>
+        <div class="sidebar-item" onclick="logout()" style="margin-top:4px;"><span class="icon">🚪</span> <span id="sidebar-logout">تسجيل الخروج</span></div>
       </div>
     </aside>
     <main class="main-content">
@@ -1202,29 +1202,29 @@ textarea.form-input { resize:vertical; min-height:100px; }
         <!-- OVERVIEW -->
         <div class="dash-view active" id="student-v-overview">
           <div class="kpi-grid">
-            <div class="kpi-card"><div class="kpi-icon blue">📄</div><div><div class="kpi-num" id="s-kpi-total">—</div><div class="kpi-label">طلباتي الكلية</div></div></div>
-            <div class="kpi-card"><div class="kpi-icon green">✅</div><div><div class="kpi-num" id="s-kpi-accepted">—</div><div class="kpi-label">مقبول</div></div></div>
-            <div class="kpi-card"><div class="kpi-icon gold">⏳</div><div><div class="kpi-num" id="s-kpi-review">—</div><div class="kpi-label">قيد المراجعة</div></div></div>
-            <div class="kpi-card"><div class="kpi-icon blue">🎓</div><div><div class="kpi-num" id="s-kpi-grants">—</div><div class="kpi-label">منح متاحة</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon blue">📄</div><div><div class="kpi-num" id="s-kpi-total">—</div><div class="kpi-label" id="kpi-total">طلباتي الكلية</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon green">✅</div><div><div class="kpi-num" id="s-kpi-accepted">—</div><div class="kpi-label" id="kpi-accepted">مقبول</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon gold">⏳</div><div><div class="kpi-num" id="s-kpi-review">—</div><div class="kpi-label" id="kpi-review">قيد المراجعة</div></div></div>
+            <div class="kpi-card"><div class="kpi-icon blue">🎓</div><div><div class="kpi-num" id="s-kpi-grants">—</div><div class="kpi-label" id="kpi-grants">منح متاحة</div></div></div>
           </div>
           <div class="card">
-            <div class="card-title">آخر طلباتي <span class="card-link" onclick="switchView('student','v-myapps',null)">عرض الكل</span></div>
+            <div class="card-title"><span id="latest-apps">آخر طلباتي</span> <span class="card-link" onclick="switchView('student','v-myapps',null)" id="view-all">عرض الكل</span></div>
             <table class="data-table">
-              <thead><tr><th>المنحة</th><th>الجامعة</th><th>الحالة</th><th></th></tr></thead>
+              <thead><tr><th id="th-grant">المنحة</th><th id="th-uni">الجامعة</th><th id="th-status">الحالة</th><th></th></tr></thead>
               <tbody id="student-recent-apps">
-                <tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:24px;">لا توجد طلبات بعد</td></tr>
+                <tr><td colspan="4" style="text-align:center;color:var(--gray-mid);padding:24px;" id="no-recent-msg">لا توجد طلبات بعد</td></tr>
               </tbody>
             </table>
           </div>
           <div class="card">
-            <div class="card-title">🔥 منح تنتهي قريباً <span class="card-link" onclick="switchView('student','v-grants',null)">عرض الكل</span></div>
+            <div class="card-title" id="expiring-soon">🔥 منح تنتهي قريباً <span class="card-link" onclick="switchView('student','v-grants',null)" id="view-all-grants">عرض الكل</span></div>
             <div class="grants-grid" id="student-quick-grants" style="margin-top:0;"></div>
           </div>
         </div>
 
         <!-- GRANTS LIST -->
         <div class="dash-view" id="student-v-grants">
-          <div class="page-header"><h2>🔍 المنح المتاحة</h2><p>ابحث وقدم على المنح المناسبة لك</p></div>
+          <div class="page-header"><h2 id="page-grants-title">🔍 المنح المتاحة</h2><p id="page-grants-sub">ابحث وقدم على المنح المناسبة لك</p></div>
           <div class="filter-bar">
             <input class="filter-input" placeholder="🔍 بحث بالاسم أو الجامعة..." style="flex:1;">
             <select class="filter-select"><option>كل الأنواع</option><option>دراسة</option><option>تدريب</option><option>تدريس</option></select>
@@ -1235,12 +1235,12 @@ textarea.form-input { resize:vertical; min-height:100px; }
 
         <!-- MY APPLICATIONS -->
         <div class="dash-view" id="student-v-myapps">
-          <div class="page-header"><h2>📄 طلباتي</h2><p>تتبع حالة جميع طلباتك</p></div>
+          <div class="page-header"><h2 id="page-myapps-title">📄 طلباتي</h2><p id="page-myapps-sub">تتبع حالة جميع طلباتك</p></div>
           <div class="card">
             <table class="data-table">
-              <thead><tr><th>المنحة</th><th>الجامعة</th><th>التاريخ</th><th>الحالة</th><th>مرحلة الحراك</th><th>ملاحظة المشرف</th><th>الملفات</th></tr></thead>
+              <thead><tr><th id="th-grant2">المنحة</th><th id="th-uni2">الجامعة</th><th id="th-date">التاريخ</th><th id="th-status2">الحالة</th><th id="th-stage">مرحلة الحراك</th><th id="th-note">ملاحظة المشرف</th><th id="th-files">الملفات</th></tr></thead>
               <tbody id="student-myapps-body">
-                <tr><td colspan="7" style="text-align:center;color:var(--gray-mid);padding:30px;">لم تتقدم على أي منحة بعد</td></tr>
+                <tr><td colspan="7" style="text-align:center;color:var(--gray-mid);padding:30px;" id="no-apps-msg">لم تتقدم على أي منحة بعد</td></tr>
               </tbody>
             </table>
           </div>
@@ -1248,10 +1248,10 @@ textarea.form-input { resize:vertical; min-height:100px; }
 
         <!-- PROFILE -->
         <div class="dash-view" id="student-v-profile">
-          <div class="page-header"><h2>👤 ملفي الشخصي</h2></div>
+          <div class="page-header"><h2 id="page-profile-title">👤 ملفي الشخصي</h2></div>
           <div class="row-2col">
             <div class="card">
-              <div class="card-title">البيانات الشخصية</div>
+              <div class="card-title" id="personal-data">البيانات الشخصية</div>
               <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
                 <div style="width:70px;height:70px;background:linear-gradient(135deg,var(--blue-royal),var(--gold));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;color:white;" id="profile-avatar">—</div>
                 <div><div style="font-weight:700;font-size:1.1rem;color:var(--blue-deep);" id="profile-display-name">—</div><div style="color:var(--gray-mid);font-size:0.85rem;" id="profile-display-role">—</div></div>
@@ -1263,7 +1263,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
               <button class="action-btn primary" style="margin-top:8px;" onclick="saveProfile()">💾 حفظ التعديلات</button>
             </div>
             <div class="card">
-              <div class="card-title">تغيير كلمة المرور</div>
+              <div class="card-title" id="change-pass">تغيير كلمة المرور</div>
               <div class="form-group"><label class="form-label-dark">كلمة المرور الحالية</label><input type="password" id="profile-current-pass" class="form-input-white" placeholder="••••••••" autocomplete="current-password"></div>
               <div class="form-group"><label class="form-label-dark">كلمة المرور الجديدة</label><input type="password" id="profile-new-pass" class="form-input-white" placeholder="••••••••" autocomplete="new-password"></div>
               <div class="form-group"><label class="form-label-dark">تأكيد كلمة المرور الجديدة</label><input type="password" id="profile-confirm-pass" class="form-input-white" placeholder="••••••••" autocomplete="new-password"></div>
@@ -1274,12 +1274,12 @@ textarea.form-input { resize:vertical; min-height:100px; }
 
         <!-- NOTIFICATIONS -->
         <div class="dash-view" id="student-v-notifs">
-          <div class="page-header"><h2>🔔 الإشعارات</h2></div>
+          <div class="page-header"><h2 id="page-notifs-title">🔔 الإشعارات</h2></div>
           <div class="card">
             <div id="notifs-body">
               <div style="text-align:center;color:var(--gray-mid);padding:40px 20px;">
                 <div style="font-size:2rem;margin-bottom:10px;">🔔</div>
-                <div>لا توجد إشعارات حالياً</div>
+                <div id="no-notifs-msg">لا توجد إشعارات حالياً</div>
               </div>
             </div>
           </div>
@@ -1287,7 +1287,7 @@ textarea.form-input { resize:vertical; min-height:100px; }
 
         <!-- APP DETAIL (dynamic, filled by openAppDetail) -->
         <div class="dash-view" id="student-v-appdetail">
-          <div class="detail-back" onclick="switchView('student','v-myapps',null)">← رجوع إلى طلباتي</div>
+          <div class="detail-back" onclick="switchView('student','v-myapps',null)" id="back-to-apps">← رجوع إلى طلباتي</div>
           <div class="row-3col">
             <div>
               <div class="card" style="margin-bottom:20px;">
@@ -2217,7 +2217,37 @@ const TRANSLATIONS = {
     usersType: 'Applicant Type',
     usersStatus: 'Status',
     usersCreated: 'Created',
-    usersAction: 'Action'
+    usersAction: 'Action',
+    sidebarMenu: 'Main Menu',
+    sidebarDashboard: 'Dashboard',
+    sidebarGrants: 'Available grants',
+    sidebarMyApps: 'My applications',
+    sidebarProfile: 'My profile',
+    sidebarNotifs: 'Notifications',
+    sidebarLogout: 'Logout',
+    myAppsTitle: 'My applications',
+    myAppsSub: 'Track the status of all your applications',
+    grantCol: 'Grant',
+    uniCol: 'University',
+    dateCol: 'Date',
+    statusCol: 'Status',
+    stageCol: 'Mobility Stage',
+    noteCol: 'Supervisor Note',
+    filesCol: 'Files',
+    grantsTitle: 'Available grants',
+    grantsSub: 'Search and apply for grants suitable for you',
+    profileTitle: 'My profile',
+    personalData: 'Personal Data',
+    changePassword: 'Change Password',
+    latestApps: 'Latest applications',
+    viewAll: 'View all',
+    noApps: 'No applications yet',
+    acceptedCount: 'Accepted',
+    reviewCount: 'Under Review',
+    availableGrants: 'Available grants',
+    soonExpiring: 'Expiring soon',
+    noNotifs: 'No notifications currently',
+    backToApps: 'Back to my applications'
   },
   ar: {
     navGrants: 'المنح المتاحة',
@@ -2255,7 +2285,37 @@ const TRANSLATIONS = {
     usersType: 'نوع المتقدم',
     usersStatus: 'الحالة',
     usersCreated: 'تاريخ الإنشاء',
-    usersAction: 'الإجراء'
+    usersAction: 'الإجراء',
+    sidebarMenu: 'القائمة الرئيسية',
+    sidebarDashboard: 'لوحة التحكم',
+    sidebarGrants: 'المنح المتاحة',
+    sidebarMyApps: 'طلباتي',
+    sidebarProfile: 'ملفي الشخصي',
+    sidebarNotifs: 'الإشعارات',
+    sidebarLogout: 'تسجيل الخروج',
+    myAppsTitle: 'طلباتي',
+    myAppsSub: 'تتبع حالة جميع طلباتك',
+    grantCol: 'المنحة',
+    uniCol: 'الجامعة',
+    dateCol: 'التاريخ',
+    statusCol: 'الحالة',
+    stageCol: 'مرحلة الحراك',
+    noteCol: 'ملاحظة المشرف',
+    filesCol: 'الملفات',
+    grantsTitle: 'المنح المتاحة',
+    grantsSub: 'ابحث وقدم على المنح المناسبة لك',
+    profileTitle: 'ملفي الشخصي',
+    personalData: 'البيانات الشخصية',
+    changePassword: 'تغيير كلمة المرور',
+    latestApps: 'آخر طلباتي',
+    viewAll: 'عرض الكل',
+    noApps: 'لم تتقدم على أي منحة بعد',
+    acceptedCount: 'مقبول',
+    reviewCount: 'قيد المراجعة',
+    availableGrants: 'منح متاحة',
+    soonExpiring: 'تنتهي قريباً',
+    noNotifs: 'لا توجد إشعارات حالياً',
+    backToApps: 'رجوع إلى طلباتي'
   }
 };
 
@@ -2339,6 +2399,71 @@ function setLanguage(lang) {
   document.getElementById('users-col-status').textContent = map.usersStatus;
   document.getElementById('users-col-created').textContent = map.usersCreated;
   document.getElementById('users-col-action').textContent = map.usersAction;
+
+  // Dashboard sidebar
+  const sidebarMap = {
+    'sidebar-menu-label': map.sidebarMenu,
+    'sidebar-dashboard': map.sidebarDashboard,
+    'sidebar-grants': map.sidebarGrants,
+    'sidebar-myapps': map.sidebarMyApps,
+    'sidebar-profile': map.sidebarProfile,
+    'sidebar-notifs': map.sidebarNotifs,
+    'sidebar-logout': map.sidebarLogout
+  };
+  Object.entries(sidebarMap).forEach(([id, text]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = text;
+  });
+
+  // KPI labels
+  const kpiMap = {
+    'kpi-total': map.sidebarMyApps,
+    'kpi-accepted': map.acceptedCount,
+    'kpi-review': map.reviewCount,
+    'kpi-grants': map.availableGrants
+  };
+  Object.entries(kpiMap).forEach(([id, text]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = text;
+  });
+
+  // Dashboard cards
+  if (document.getElementById('latest-apps')) document.getElementById('latest-apps').textContent = map.latestApps;
+  if (document.getElementById('view-all')) document.getElementById('view-all').textContent = map.viewAll;
+  if (document.getElementById('expiring-soon')) {
+    const el = document.getElementById('expiring-soon');
+    el.innerHTML = `🔥 ${map.soonExpiring} <span class="card-link" onclick="switchView('student','v-grants',null)" id="view-all-grants">${map.viewAll}</span>`;
+  }
+
+  // Table headers
+  if (document.getElementById('th-grant')) document.getElementById('th-grant').textContent = map.grantCol;
+  if (document.getElementById('th-uni')) document.getElementById('th-uni').textContent = map.uniCol;
+  if (document.getElementById('th-status')) document.getElementById('th-status').textContent = map.statusCol;
+  if (document.getElementById('th-grant2')) document.getElementById('th-grant2').textContent = map.grantCol;
+  if (document.getElementById('th-uni2')) document.getElementById('th-uni2').textContent = map.uniCol;
+  if (document.getElementById('th-date')) document.getElementById('th-date').textContent = map.dateCol;
+  if (document.getElementById('th-status2')) document.getElementById('th-status2').textContent = map.statusCol;
+  if (document.getElementById('th-stage')) document.getElementById('th-stage').textContent = map.stageCol;
+  if (document.getElementById('th-note')) document.getElementById('th-note').textContent = map.noteCol;
+  if (document.getElementById('th-files')) document.getElementById('th-files').textContent = map.filesCol;
+
+  // Page headers and content
+  if (document.getElementById('page-grants-title')) document.getElementById('page-grants-title').textContent = `🔍 ${map.grantsTitle}`;
+  if (document.getElementById('page-grants-sub')) document.getElementById('page-grants-sub').textContent = map.grantsSub;
+  if (document.getElementById('page-myapps-title')) document.getElementById('page-myapps-title').textContent = `📄 ${map.myAppsTitle}`;
+  if (document.getElementById('page-myapps-sub')) document.getElementById('page-myapps-sub').textContent = map.myAppsSub;
+  if (document.getElementById('page-profile-title')) document.getElementById('page-profile-title').textContent = `👤 ${map.profileTitle}`;
+  if (document.getElementById('page-notifs-title')) document.getElementById('page-notifs-title').textContent = `🔔 ${map.sidebarNotifs}`;
+
+  // Profile sections
+  if (document.getElementById('personal-data')) document.getElementById('personal-data').textContent = map.personalData;
+  if (document.getElementById('change-pass')) document.getElementById('change-pass').textContent = map.changePassword;
+
+  // Messages
+  if (document.getElementById('no-apps-msg')) document.getElementById('no-apps-msg').textContent = map.noApps;
+  if (document.getElementById('no-recent-msg')) document.getElementById('no-recent-msg').textContent = map.noApps;
+  if (document.getElementById('no-notifs-msg')) document.getElementById('no-notifs-msg').textContent = map.noNotifs;
+  if (document.getElementById('back-to-apps')) document.getElementById('back-to-apps').textContent = `← ${map.backToApps}`;
 }
 
 function toggleLanguage() {
